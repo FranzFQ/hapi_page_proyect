@@ -1,12 +1,71 @@
-# React + Vite
+## Conventional commits
+- feat: Para nuevas funcionalidades o características. <br/>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- fix: Para corregir errores o bugs. <br/>
 
-Currently, two official plugins are available:
+- docs: Para cambios en documentación o comentarios. <br/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- style: Cambios de formato, estilo o espacios (sin modificar lógica). <br/>
 
-## Expanding the ESLint configuration
+- refactor: Cambios en el código que no afectan la funcionalidad. <br/>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- test: Agregar o modificar pruebas. <br/>
+
+- chore: Tareas de mantenimiento o configuración que no afectan código. <br/>
+
+## Estructura de los archivos
+
+mi_proyecto/ <br/>
+│ <br/>
+├── backend/                # Backend en Django <br/>
+│   ├── manage.py <br/>
+│   ├── requirements.txt <br/>
+│   ├── backend/            # Configuración principal de Django <br/>
+│   │   ├── settings.py <br/>
+│   │   ├── urls.py <br/>
+│   │   └── ... <br/>
+│   ├── apps/               # Aplicaciones personalizadas de Django <br/>
+│   │   └── usuarios/ <br/>       
+│   ├── static/             # Archivos estáticos recolectados <br/>
+│   └── media/              # Archivos subidos por usuarios <br/>
+│ <br/>
+├── frontend/               # Frontend en React con Vite <br/>
+│   ├── index.html <br/>
+│   ├── package.json <br/>
+│   ├── vite.config.js <br/>
+│   └── src/ <br/>
+│       ├── App.jsx <br/> 
+│       ├── main.jsx <br/> 
+│       ├── components/ <br/> 
+│       ├── pages/ <br/> 
+│       ├── services/       # Llamadas a la API (fetch/axios) <br/>
+│       └── context/        # Context API para estados globales <br/>
+│ <br/>
+├── .gitignore <br/>
+└── README.md <br/>
+
+## ejecucíon del proyecto
+
+git clone https://github.com/usuario/mi_proyecto.git
+
+## Configuracion del backend
+1. ubicarse en la carpeta backend <br/>
+
+2. python -m venv venv <br/>
+
+3. source venv/bin/activate   # Linux/Mac <br/> 
+venv\Scripts\activate      # Windows <br/>
+
+5. pip install -r requirements.txt <br/>
+
+6. python manage.py migrate <br/>
+
+7. python manage.py runserver <br/>
+
+## Configuracion del frontend
+1. ubicarse en la carpeta frontend
+
+2. npm install
+
+3. npm run dev
+

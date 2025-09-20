@@ -1,3 +1,38 @@
+# =========================================
+# Archivos de Python / Django
+# =========================================
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+
+# Entorno virtual
+venv/
+ENV/
+.env
+*.env
+
+# Archivos de migraciones compilados
+*/migrations/__pycache__/
+*/migrations/*.pyc
+
+# Archivos de configuración sensibles
+*.secret
+*.key
+db.sqlite3
+
+# Archivos de coverage/testing
+.coverage
+*.cover
+coverage/
+htmlcov/
+
+# =========================================
+# Node / React (Vite)
+# =========================================
+
 # Logs
 logs
 *.log

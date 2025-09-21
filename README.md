@@ -1,3 +1,6 @@
+## ¡Importante!
+Todos los commits tiene que ser en ingles y usando el formato de conventional commits
+
 ## Conventional commits
 - feat: Para nuevas funcionalidades o características. <br/>
 
@@ -25,7 +28,7 @@ mi_proyecto/ <br/>
 │   │   ├── urls.py <br/>
 │   │   └── ... <br/>
 │   ├── apps/               # Aplicaciones personalizadas de Django <br/>
-│   │   └── usuarios/ <br/>       
+│   │   └── Usuarios/<br/>       
 │   ├── static/             # Archivos estáticos recolectados <br/>
 │   └── media/              # Archivos subidos por usuarios <br/>
 │ <br/>
@@ -34,10 +37,13 @@ mi_proyecto/ <br/>
 │   ├── package.json <br/>
 │   ├── vite.config.js <br/>
 │   └── src/ <br/>
-│       ├── App.jsx <br/> 
-│       ├── main.jsx <br/> 
-│       ├── components/ <br/> 
-│       ├── pages/ <br/> 
+│       ├── App.jsx # Define la ruta principal de la inteface <br/> 
+│       ├── main.jsx # Punto de entrada que conecta con el HTML<br/>
+│       ├── style/ # Contiene el CSS para el estilo de toda la aplicacion<br/> 
+│       ├── Admin-components/ # Componenetes de uso para la vista del admin<br/>
+│       ├── global-components/ # Componentes de uso global para admin y usuario<br/> 
+│       ├── user-components/ # Componentes de uso para la vista del usuario<br/> 
+│       ├── pages/# Vistas que corresponden a cada ruta de la app (ejemplo: "Home.jsx", "login.jsx", "Dashboard.jsx")<br/>    
 │       ├── services/       # Llamadas a la API (fetch/axios) <br/>
 │       └── context/        # Context API para estados globales <br/>
 │ <br/>
@@ -46,7 +52,7 @@ mi_proyecto/ <br/>
 
 ## ejecucíon del proyecto
 
-git clone https://github.com/usuario/mi_proyecto.git
+git clone git@github.com:FranzFQ/hapi_page_proyect.git
 
 ## Configuracion del backend
 1. ubicarse en la carpeta backend <br/>

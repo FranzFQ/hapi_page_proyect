@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserRegister from "./user-components/UserRegister.jsx";
-import UserHome from "./user-components/UserHome.jsx";
+import UserHome from "./pages/UserHome.jsx";
 
 export default function App() {
   return (

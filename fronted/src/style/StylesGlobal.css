@@ -1,0 +1,275 @@
+/* ===============================
+   VARIABLES GLOBALES
+================================= */
+:root {
+  /* Colores del Tema */
+  --color-primary-1: #637BE2;
+  --color-primary-2: #5568C0;
+  --color-primary-3: #677FEB;
+  --color-primary-4: #46569E;
+  --color-primary-5: #37437C;
+  --color-primary-6: #28315A;
+  
+  /* Colores de Texto */
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --text-muted: #64748b;
+  --text-placeholder: #94a3b8;
+  --text-white: #ffffff;
+  
+  /* Colores de Estado */
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  
+  /* Colores de Fondo */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  
+  /* Colores de Borde */
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+  
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  
+  /* Transiciones */
+  --transition-base: 0.3s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Fuentes */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Tamaños de Fuente */
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  
+  /* Pesos de Fuente */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+}
+
+/* ===============================
+   RESET BÁSICO
+================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===============================
+   TIPOGRAFÍA BASE
+================================= */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ===============================
+   INPUTS Y FORMULARIOS
+================================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  background: rgba(248, 250, 252, 0.8);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: all var(--transition-smooth);
+  font-family: var(--font-sans);
+}
+
+.form-input::placeholder {
+  color: var(--text-placeholder);
+  font-weight: var(--font-normal);
+  opacity: 0.7;
+}
+
+.form-input:focus {
+  border-color: var(--color-primary-1);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    0 0 0 4px rgba(99, 123, 226, 0.12),
+    0 8px 32px rgba(99, 123, 226, 0.2);
+  transform: translateY(-3px) scale(1.01);
+}
+
+.form-input:hover:not(:focus) {
+  border-color: var(--border-medium);
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.form-input:valid:not(:placeholder-shown) {
+  border-color: var(--color-success);
+  background: rgba(240, 253, 244, 0.8);
+}
+
+.form-input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: var(--color-error);
+  background: rgba(254, 242, 242, 0.8);
+}
+
+/* ===============================
+   BOTONES
+================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 1.25rem 2rem;
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  line-height: 1;
+  text-align: center;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary-1) 0%, var(--color-primary-3) 50%, var(--color-primary-2) 100%);
+  color: var(--text-white);
+  box-shadow: 
+    0 16px 32px rgba(99, 123, 226, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 24px 48px rgba(99, 123, 226, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+/* ===============================
+   UTILIDADES
+================================= */
+.text-center { text-align: center; }
+.w-full { width: 100%; }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+/* ===============================
+   ACCESIBILIDAD
+================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary-1);
+  outline-offset: 2px;
+}

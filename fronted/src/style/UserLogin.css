@@ -1,0 +1,81 @@
+.wrapper-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background: #37437C;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #46569E;
+  color: #fff;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.login-container input::placeholder {
+  color: #cfd3ff;
+}
+
+.login-container input:focus {
+  outline: none;
+  background: #5568C0;
+  box-shadow: 0 0 0 2px #677FEB;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #677FEB;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-container button:hover {
+  background: #5568C0;
+}
+
+.login-container button:active {
+  background: #46569E;
+}
+
+.email-container .create-account {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.email-container .create-account a {
+  color: #cfd3ff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.email-container .create-account a:hover {
+  color: #fff;
+}

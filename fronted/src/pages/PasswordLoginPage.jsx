@@ -11,10 +11,15 @@ function PasswordLoginPage() {
 
   };
 
+  // arrow function que redirige a /home
+  const gotoHome = () => {
+    window.location.href = "/home";
+  }
+
   return (
     <div className="wrapper-container">
       <div className="login-container">
-        <h1>Hola</h1>
+        <h1>Ingresa la contraseña</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="password"
@@ -24,7 +29,7 @@ function PasswordLoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Ingresar</button>
+          <button type="submit" onClick={gotoHome}>Ingresar</button>
         </form>
       </div>
     </div>

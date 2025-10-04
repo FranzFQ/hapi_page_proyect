@@ -1,20 +1,11 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-  background: linear-gradient(135deg, #637BE2, #28315A);
-  color: #fff;
+.wrapper-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  height: 100vh;
 }
 
-.email-container {
+.login-container {
   background: #37437C;
   padding: 2rem 2.5rem;
   border-radius: 1rem;
@@ -23,13 +14,13 @@ body {
   max-width: 380px;
 }
 
-.email-container h1 {
+.login-container h1 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #fff;
 }
 
-.email-container input {
+.login-container input {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
@@ -41,17 +32,17 @@ body {
   transition: 0.3s ease;
 }
 
-.email-container input::placeholder {
+.login-container input::placeholder {
   color: #cfd3ff;
 }
 
-.email-container input:focus {
+.login-container input:focus {
   outline: none;
   background: #5568C0;
   box-shadow: 0 0 0 2px #677FEB;
 }
 
-.email-container button {
+.login-container button {
   width: 100%;
   padding: 0.85rem 1rem;
   border: none;
@@ -64,11 +55,11 @@ body {
   transition: 0.3s ease;
 }
 
-.email-container button:hover {
+.login-container button:hover {
   background: #5568C0;
 }
 
-.email-container button:active {
+.login-container button:active {
   background: #46569E;
 }
 

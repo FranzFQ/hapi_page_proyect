@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "../style/temp.css"
+import "../style/UserLogin.css"
 
-export function PasswordLoginPage() {
+function PasswordLoginPage() {
   const [password, setPassword] = useState("");
   const email = localStorage.getItem("email");
 
@@ -12,19 +12,23 @@ export function PasswordLoginPage() {
   };
 
   return (
-    <div className="password-container">
-      <h1>Hola, {email}</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Ingresar</button>
-      </form>
+    <div className="wrapper-container">
+      <div className="login-container">
+        <h1>Hola</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Ingresar</button>
+        </form>
+      </div>
     </div>
   );
 }
+
+export default PasswordLoginPage;

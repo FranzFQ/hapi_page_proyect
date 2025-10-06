@@ -73,9 +73,5 @@ venv\Scripts\activate      # Windows <br/>
 
 2. npm install
 
-3. npm install -D tailwindcss postcss autoprefixer
-
-4. npm exec tailwindcss init -p
-
 3. npm run dev
 

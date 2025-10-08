@@ -1,5 +1,6 @@
 /*DASHBOARD LAYOUT*/
 .dashboard-container {
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -7,8 +8,8 @@
 
 .main-content {
   display: flex;
-  flex: 2;
-  height: calc(100vh - 90px);
+  flex: 1;
+  height: calc(100vh - 80px);
 }
 
 .center-content {

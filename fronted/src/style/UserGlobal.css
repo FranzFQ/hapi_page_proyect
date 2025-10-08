@@ -7,6 +7,7 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   height: 80px;
+  z-index: 10000;
 }
 
 .logo {
@@ -20,6 +21,7 @@
   align-items: center;
   justify-content: center;
   max-width: none;
+  z-index: 10000;
 }
 
 .search-input {

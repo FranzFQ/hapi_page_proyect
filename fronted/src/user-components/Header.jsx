@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchBar from '../global-components/SearchBar.jsx'
 import '../style/UserGlobal.css';
 
 const Header = () => {
@@ -7,12 +8,10 @@ const Header = () => {
       <div className="logo">logo</div>
 
       <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Buscar..."
-        />
-        <button className="search-btn">
+        <div className="search-bar-wrapper">
+          <SearchBar placeholder="Buscar acciones, cripto, fondos..." />
+        </div>
+        <button className="search-btn" style={{zIndex: 10000, position: 'relative'}}>
           <i className="fi fi-br-search"></i>
         </button>
       </div>

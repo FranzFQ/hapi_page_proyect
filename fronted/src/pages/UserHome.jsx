@@ -9,23 +9,18 @@ import '../style/UserGlobal.css';
 import '../style/UserHome.css';
 
 const UserHome = () => {
+  const userBalance = 1234.56;
+
   return (
-    <div className="dashboard-container">
-      {/* Header */}
+    <div className="dashboard-container fade-in">
       <Header />
-
-      {/* Main Content */}
       <div className="main-content">
-        {/* Sidebar */}
         <Sidebar />
-
-        {/* Center Content */}
         <main className="center-content">
           <div className="top-section">
-            <InvestmentSection />
+            <InvestmentSection balance={userBalance} />
             <FavoritesSection />
           </div>
-
           <CategoriesSection />
         </main>
       </div>

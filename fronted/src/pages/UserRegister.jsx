@@ -123,6 +123,7 @@ const handleSubmit = (e) => {
               value={form.phone}
               onChange={handleChange}
               placeholder="12345678"
+              maxLength={8}
               required
             />
           </div>

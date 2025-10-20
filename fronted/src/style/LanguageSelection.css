@@ -1,0 +1,103 @@
+.language-selection-container {
+  width: 100%;
+  background: rgba(30, 30, 63, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-family: var(--font-sans);
+  color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-2xl);
+}
+
+.language-selection-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: var(--spacing-lg);
+}
+
+.language-selection-header .back-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-3xl);
+  color: var(--text-white);
+}
+
+.language-selection-header h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+}
+
+.language-options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.language-options-list li {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  font-size: var(--text-lg);
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.language-options-list li:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.language-options-list li.selected {
+  background-color: rgba(99, 123, 226, 0.15);
+  border-color: var(--color-primary-1);
+}
+
+.language-options-list li .flag {
+  font-size: var(--text-2xl);
+  margin-right: var(--spacing-md);
+}
+
+.language-options-list li .name {
+  flex-grow: 1;
+  font-weight: var(--font-medium);
+}
+
+.radio-button {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.2s ease;
+}
+
+.language-options-list li.selected .radio-button {
+  border-color: var(--color-primary-1);
+}
+
+.radio-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-primary-1);
+  border-radius: 50%;
+}
+
+.language-actions {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: flex-end;
+}

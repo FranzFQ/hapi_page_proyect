@@ -1,0 +1,91 @@
+.settings-menu-container {
+  width: 100%;
+  background: rgba(30, 30, 63, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-family: var(--font-sans);
+  color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-2xl);
+}
+
+.settings-menu-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: var(--spacing-lg);
+}
+
+.settings-menu-header h2 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-white);
+  margin: 0;
+}
+
+.settings-menu-header .back-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-3xl);
+  color: var(--text-white);
+  display: flex;
+  padding: 0;
+  transition: transform var(--transition-base);
+}
+
+.settings-menu-header .back-button:hover {
+  transform: scale(1.1);
+}
+
+.settings-section-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: var(--spacing-lg) 0 var(--spacing-md) var(--spacing-sm);
+}
+
+.settings-options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-options-list li {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-sm);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  font-weight: var(--font-medium);
+  font-size: var(--text-lg);
+}
+
+.settings-options-list li:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
+}
+
+.settings-options-list li .option-icon {
+  font-size: var(--text-xl);
+  margin-right: var(--spacing-md);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+}
+
+.settings-options-list li span {
+  flex-grow: 1;
+}
+
+.settings-options-list li .fi-rr-angle-small-right {
+  font-size: var(--text-xl);
+  color: rgba(255, 255, 255, 0.5);
+}

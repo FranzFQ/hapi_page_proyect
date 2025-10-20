@@ -15,18 +15,25 @@ const userData = {
 const handleExportData = () => {
   const dataStr = JSON.stringify(userData, null, 2);
   const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-  
   const exportFileDefaultName = 'user_account_data.json';
   
   const linkElement = document.createElement('a');
   linkElement.setAttribute('href', dataUri);
   linkElement.setAttribute('download', exportFileDefaultName);
   linkElement.click();
-  alert('Los datos de tu cuenta han sido exportados como un archivo JSON.');
 };
 
 export default function AccountInfo() {
   const navigate = useNavigate();
+
+  const handleDeleteAccount = () => {
+    const isConfirmed = window.confirm('¿Estás seguro de que quieres eliminar tu cuenta de forma permanente? Esta acción no se puede deshacer.');
+    
+    if (isConfirmed) {
+      alert('Tu cuenta ha sido eliminada. (Simulación Frontend)');
+      navigate('/loginEmail');
+    }
+  };
 
   return (
     <div className="account-info-container">
@@ -78,7 +85,11 @@ export default function AccountInfo() {
       <div className="account-info-actions">
         <button className="export-button" onClick={handleExportData}>
           <i className="fi fi-rr-download"></i>
-          Exportar Datos de Cuenta
+          Exportar Datos
+        </button>
+        <button className="delete-button" onClick={handleDeleteAccount}>
+          <i className="fi fi-rr-trash"></i>
+          Eliminar Cuenta
         </button>
       </div>
     </div>

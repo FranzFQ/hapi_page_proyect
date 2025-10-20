@@ -20,6 +20,10 @@ const defaultProfile = {
   riskProfile: 'Moderado',
   investmentExperience: 'Intermedio',
   profilePicture: 'https://source.unsplash.com/random/200x200?person',
+  cardNumber: '**** **** **** 4532',
+  cardHolder: 'Juan Pérez',
+  cardExpiry: '12/25',
+  cardType: 'Visa',
 };
 
 const FAKE_CORRECT_PASSWORD = 'password123';
@@ -124,13 +128,40 @@ export default function EditUserProfile() {
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="country">País de Residencia</label>
-              <select id="country" name="country" className="form-input" value={profileData.country} onChange={handleProfileChange}>
+              <select id="country" name="country" className="form-input country-select" value={profileData.country} onChange={handleProfileChange}>
                 {countries.map((country) => (
                   <option key={country.name} value={country.name}>
                     {country.flag} {country.name}
                   </option>
                 ))}
               </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="profile-section">
+          <h3 className="profile-section-title">Métodos de Pago</h3>
+          <p className="section-subtitle">Administra tu tarjeta de débito/crédito vinculada.</p>
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label" htmlFor="cardType">Tipo de Tarjeta</label>
+              <select id="cardType" name="cardType" className="form-input" value={profileData.cardType} onChange={handleProfileChange}>
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="American Express">American Express</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="cardHolder">Titular de la Tarjeta</label>
+              <input id="cardHolder" name="cardHolder" className="form-input" type="text" value={profileData.cardHolder} onChange={handleProfileChange} />
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="cardNumber">Número de Tarjeta</label>
+              <input id="cardNumber" name="cardNumber" className="form-input" type="text" value={profileData.cardNumber} onChange={handleProfileChange} placeholder="**** **** **** 1234" />
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="cardExpiry">Fecha de Expiración</label>
+              <input id="cardExpiry" name="cardExpiry" className="form-input" type="text" value={profileData.cardExpiry} onChange={handleProfileChange} placeholder="MM/AA" />
             </div>
           </div>
         </div>

@@ -5,6 +5,10 @@ import '../style/SettingsMenu.css';
 const SettingsMenu = () => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    navigate('/loginEmail');
+  };
+
   return (
     <div className="settings-menu-container">
       <div className="settings-menu-header">
@@ -59,6 +63,13 @@ const SettingsMenu = () => {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div className="settings-menu-actions">
+        <button className="logout-button" onClick={handleLogout}>
+          <i className="fi fi-rr-sign-out-alt"></i>
+          <span>Cerrar Sesión</span>
+        </button>
       </div>
     </div>
   );

@@ -28,11 +28,17 @@
   color: var(--text-white);
   display: flex;
   padding: 0;
+  transition: transform var(--transition-base);
+}
+
+.account-info-header .back-button:hover {
+  transform: scale(1.1);
 }
 
 .account-info-header h2 {
   font-size: var(--text-3xl);
   font-weight: var(--font-bold);
+  color: var(--text-white);
   margin: 0;
 }
 
@@ -81,7 +87,8 @@
   align-items: center;
 }
 
-.export-button, .delete-button {
+.export-button,
+.delete-button {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -91,7 +98,7 @@
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .export-button {
@@ -117,6 +124,7 @@
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
-.export-button i, .delete-button i {
+.export-button i,
+.delete-button i {
   font-size: var(--text-xl);
 }

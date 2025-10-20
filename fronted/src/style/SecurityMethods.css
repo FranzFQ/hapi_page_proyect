@@ -28,11 +28,17 @@
   color: var(--text-white);
   display: flex;
   padding-top: 4px;
+  transition: transform var(--transition-base);
+}
+
+.security-methods-header .back-button:hover {
+  transform: scale(1.1);
 }
 
 .security-methods-header .header-text h2 {
   font-size: var(--text-3xl);
   font-weight: var(--font-bold);
+  color: var(--text-white);
   margin: 0 0 var(--spacing-xs) 0;
 }
 
@@ -69,7 +75,7 @@
   align-items: center;
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
   font-size: var(--text-lg);
   cursor: pointer;
 }
@@ -125,7 +131,7 @@
   bottom: 0;
   background-color: var(--color-primary-6);
   border-radius: 34px;
-  transition: .4s;
+  transition: var(--transition-smooth);
 }
 
 .slider:before {
@@ -135,9 +141,9 @@
   width: 20px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: var(--text-white);
   border-radius: 50%;
-  transition: .4s;
+  transition: var(--transition-smooth);
 }
 
 input:checked + .slider {

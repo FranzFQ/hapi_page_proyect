@@ -26,11 +26,18 @@
   cursor: pointer;
   font-size: var(--text-3xl);
   color: var(--text-white);
+  transition: transform var(--transition-base);
+}
+
+.language-selection-header .back-button:hover {
+  transform: scale(1.1);
 }
 
 .language-selection-header h2 {
   font-size: var(--text-3xl);
   font-weight: var(--font-bold);
+  color: var(--text-white);
+  margin: 0;
 }
 
 .language-options-list {
@@ -47,7 +54,7 @@
   align-items: center;
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
   font-size: var(--text-lg);
   cursor: pointer;
   border: 2px solid transparent;
@@ -80,7 +87,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .language-options-list li.selected .radio-button {

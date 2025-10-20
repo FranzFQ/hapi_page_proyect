@@ -10,12 +10,16 @@
   justify-content: center;
   align-items: center;
   z-index: var(--z-modal);
-  animation: modalFadeIn 0.3s var(--transition-smooth);
+  animation: modalFadeIn var(--transition-base);
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
@@ -27,12 +31,18 @@
   max-width: 500px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: var(--shadow-2xl);
-  animation: modalScaleUp 0.4s var(--transition-smooth);
+  animation: modalScaleUp var(--transition-smooth);
 }
 
 @keyframes modalScaleUp {
-  from { transform: scale(0.9) translateY(20px); opacity: 0; }
-  to { transform: scale(1) translateY(0); opacity: 1; }
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-content h3 {

@@ -62,7 +62,7 @@
   padding: var(--spacing-md) var(--spacing-sm);
   cursor: pointer;
   border-radius: var(--radius-md);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color var(--transition-base), transform var(--transition-base);
   font-weight: var(--font-medium);
   font-size: var(--text-lg);
 }
@@ -107,7 +107,7 @@
   font-weight: var(--font-medium);
   color: var(--color-error);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-base);
   font-family: var(--font-sans);
 }
 

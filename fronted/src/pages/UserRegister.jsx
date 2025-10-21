@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
-import { registerUser } from "../service/User.api.js";
+import { clientLogin, registerUser } from "../service/User.api.js";
 import "../style/UserRegister.css";
 
 export default function UserRegister() {
@@ -58,22 +58,44 @@ const handleSubmit = (e) => {
   
   registerUser(finalForm)
     .then((response) => {
+
       console.log("User registered successfully:", response.data);
+
+      const userId = response.data.id;
+
+      const profileData = {
+        balance_available: 0.0,
+        client_profilecol: 0.0,
+        user_id: userId,
+      }
+
+      var profileId = 0
+
+      clientLogin(profileData).then((response) => {
+        profileId = response.data.id;
+        console.log("Client profile created:", response.data);
+      })
+
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("userEmail", form.email);
+      localStorage.setItem("userType", "user");
+      localStorage.setItem("profileId", profileId);
+
       alert("Registro exitoso. ¡Bienvenido!");
+
+      window.location.href = "/home";
+
     })
     .catch((error) => {
       console.error("Error completo:", error);
-      console.error("Error del servidor:", error.response?.data); // ← ESTO ES LO IMPORTANTE
-      console.error("Status:", error.response?.status);
-      console.error("Headers:", error.response?.headers);
-      
       // Mostrar el error específico
       if (error.response?.data) {
         console.log("DETALLE DEL ERROR:", JSON.stringify(error.response.data, null, 2));
       }
       
       alert("Hubo un error al registrar. Ver consola.");
-    });
+    });  
+
 };
 
   const togglePasswordVisibility = () => {

@@ -1,7 +1,7 @@
 const RecentTransferBox = () => {
   return (
-    <div className="container">
-    <p>hola</p>
+    <div className="container recent-box">
+      <h3 className="title">TRASFERENCIAS RECIENTES</h3>
     </div>
   );
 }

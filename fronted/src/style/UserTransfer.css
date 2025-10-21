@@ -1,6 +1,48 @@
 .center-content {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
+.container {
+    background-color: rgba(255, 255, 255, 0.15);;
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 10px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.option-box {
+    height: 280px;
+    width: 380px;
+    justify-content: space-around;
+}
+
+.recent-box {
+    flex: 1 1 300px;
+    min-width: 300px;
+    transition: all 0.3s ease;
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+    font-family: var(--font-archivo);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn.primary {
+    background: rgba(255, 255, 255, 0.3);
+}

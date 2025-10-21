@@ -1,8 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserHome from "./pages/UserHome.jsx";
-import UserRegister from "./user-components/UserRegister.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import UserRegister from "./pages/UserRegister.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import EmailLoginPage from "./pages/EmailLoginPage.jsx";
+import PasswordLoginPage from "./pages/PasswordLoginPage.jsx";
+import ManageStocksPage from './pages/ManageStocksPage';
+import AddStockPage from './pages/AddStockPage';
+import EditStockPage from './pages/EditStockPage';
+import StockDetailsPage from './pages/StockDetailsPage';
 
 export default function App() {
   return (

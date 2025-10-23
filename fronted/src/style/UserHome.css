@@ -187,3 +187,72 @@
   font-size: 16px;
   font-weight: bold;
 }
+
+.portfolio-container {
+  background: linear-gradient(to bottom, #295d9b, #1d3b8b);
+  color: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  flex: 1;
+}
+
+.portfolio-header {
+  text-align: left;
+}
+
+.portfolio-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-tabs {
+  display: flex;
+  justify-content: space-between;
+  max-width: 300px;
+  font-weight: 600;
+}
+
+.portfolio-divider {
+  border: none;
+  height: 6px;
+  background-color: #000;
+  border-radius: 3px;
+  margin: 1rem 0;
+}
+
+.portfolio-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.account-info {
+  flex: 1;
+}
+
+.account-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.account-info p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.account-info span {
+  float: right;
+}
+
+.chart-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.history-section {
+  margin-top: 1rem;
+  font-weight: 700;
+}

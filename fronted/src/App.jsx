@@ -5,6 +5,7 @@ import UserHome from "./pages/UserHome.jsx";
 import EmailLoginPage from "./pages/EmailLoginPage.jsx";
 import PasswordLoginPage from "./pages//PasswordLoginPage.jsx"
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import UserPortfolio from "./pages/UserPortfolio.jsx";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/loginPassword" element={<PasswordLoginPage />} />
           <Route path="/register" element={<UserRegister />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/portfolio" element={<UserPortfolio />} />
         </Routes>
     </Router>
   );

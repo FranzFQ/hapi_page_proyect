@@ -2,6 +2,7 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
 import { clientLogin, registerUser } from "../service/User.api.js";
 import "../style/UserRegister.css";
+import { Navigate } from "react-router-dom";
 
 export default function UserRegister() {
   const [showPassword, setShowPassword] = useState(false);
@@ -78,12 +79,12 @@ const handleSubmit = (e) => {
 
       localStorage.setItem("userId", userId);
       localStorage.setItem("userEmail", form.email);
-      localStorage.setItem("userType", "user");
+      localStorage.setItem("userType", "user");cd
       localStorage.setItem("profileId", profileId);
 
       alert("Registro exitoso. ¡Bienvenido!");
 
-      window.location.href = "/home";
+      Navigate("/home");
 
     })
     .catch((error) => {

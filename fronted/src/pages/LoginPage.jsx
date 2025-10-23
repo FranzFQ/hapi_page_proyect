@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import '../style/UserLogin.css'; // Reutilizamos los mismos estilos
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "../style/UserLogin.css"; // Reutilizamos los mismos estilos
+import { getUsersByEmail } from "../service/User.api";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Intentando iniciar sesión con:", { email, password });
-    // Aquí iría la lógica para verificar las credenciales con el backend
-    // Si la autenticación es exitosa:
-    navigate('/home'); 
+
+    getUsersByEmail(email)
+      .then((response) => {
+        console.log("Respuesta del servidor:", response);
+        const user = response.data;
+        if (user && user.password === password) {
+          console.log("Inicio de sesión exitoso para:", user);
+          navigate("/home");
+          // Aquí podrías guardar el estado de autenticación, token, etc.
+        } else {
+          console.error("Error de inicio de sesión: Credenciales inválidas");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener el usuario:", error);
+      });
+
     // Si falla, un mensaje de error
   };
 
@@ -39,7 +54,7 @@ export default function LoginPage() {
           />
           <button type="submit">Ingresar</button>
         </form>
-    
+
         <div className="create-account">
           <p>¿No tienes cuenta?</p>
           <Link to="/register">Crear cuenta</Link>

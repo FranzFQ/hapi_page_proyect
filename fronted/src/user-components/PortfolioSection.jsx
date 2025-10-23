@@ -60,7 +60,7 @@ export default function PortfolioSection({ balance }) {
                 <strong>Total dinero:</strong> <span>$0.00</span>
               </p>
               <p>
-                <strong>Activos bloqueados:</strong> <span>$0.00</span>
+                <strong>Activos pendientes:</strong> <span>$0.00</span>
               </p>
             </div>
           </div>

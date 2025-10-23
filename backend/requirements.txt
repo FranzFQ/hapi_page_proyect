@@ -11,4 +11,5 @@ pytz==2025.2
 PyYAML==6.0.3
 sqlparse==0.5.3
 uritemplate==4.2.0
-yfinance==0.2.66
+yahooquery==2.4.1
+

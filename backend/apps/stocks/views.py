@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -14,16 +13,8 @@ class StockViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def refresh_price(self, request, pk=None):
-        
-        #Actualiza el precio de una accion usando Yahoo Finance.
-        
         stock = self.get_object()
         updated = update_stock_price(stock.symbol)
         if updated:
             return Response({"status": "updated"}, status=status.HTTP_200_OK)
         return Response({"error": "No se pudo actualizar el precio"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer

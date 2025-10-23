@@ -1,10 +1,10 @@
 const TransferOptionBox = () => {
   return (
-    <div className="container option-box">
-      <h3 className="title">TRANSFERIR DINERO</h3>
-      <button className="btn">TRANSFERIR A TU BANCO</button>
-      <button className="btn">TRANSFERIR PORTAFOLIO</button>
-      <button className="btn">TRANSFERIR A PÁGINA</button>
+    <div className="option-box">
+      <h3 className="option-title">TRANSFERIR DINERO</h3>
+      <button className="option-btn">TRANSFERIR A TU BANCO</button>
+      <button className="option-btn">TRANSFERIR PORTAFOLIO</button>
+      <button className="option-btn">TRANSFERIR A PÁGINA</button>
     </div>
   );
 }

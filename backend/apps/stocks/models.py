@@ -2,66 +2,46 @@ from django.db import models
 from datetime import datetime
 
 
-class Category(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=120)
+class StockCategory(models.Model):
+    name = models.CharField(max_length=120, unique=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
-        managed = False  # No permitir que Django cree/modifique esta tabla
-        db_table = "stock_category"  # Nombre exacto en Supabase
+        db_table = "stock_category"  
 
     def __str__(self):
         return self.name
 
 
 class Stock(models.Model):
-    id = models.AutoField(primary_key=True)
-    symbol = models.CharField(max_length=20, null=True)
-    name = models.CharField(max_length=120, null=True)
-    last_price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
-    variation = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    update_at = models.DateTimeField(null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    symbol = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=120)
+    last_price = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    variation = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    date_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     stock_category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        db_column="stock_category_id",  # nombre de la columna en tu tabla
-        null=True,
+        StockCategory, on_delete=models.SET_NULL, null=True, db_column="stock_category_id"
     )
 
     class Meta:
-        managed = False  #  Django no tocará esta tabla
-        db_table = "stock"  
+        db_table = "stock"
 
     def __str__(self):
         return f"{self.symbol} - {self.name}"
 
-    def update_price(self):
-        """
-        Actualiza el precio del stock usando Yahoo Finance.
-        """
-        from .services.yahoo_service import update_stock_price
-
-        success = update_stock_price(self.symbol)
-        if success:
-            self.update_at = datetime.now()
-            self.save()
-        return success
-
 
 class StockPrice(models.Model):
     stock = models.ForeignKey(
-        Stock, on_delete=models.CASCADE, related_name="prices"
+        Stock, on_delete=models.CASCADE, related_name="prices", db_column="stock_id"
     )
-    date = models.DateField()
-    close_price = models.DecimalField(max_digits=12, decimal_places=2)
+    price = models.DecimalField(max_digits=15, decimal_places=2)
+    recorded_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
-        managed = False  #  si esta tabla aún no existe en Supabase
-        db_table = "stock_price"  
-        unique_together = ("stock", "date")
-        ordering = ["-date"]
+        db_table = "stock_price"
+        ordering = ["-recorded_at"]
 
     def __str__(self):
-        return f"{self.stock.symbol} - {self.date} - {self.close_price}"
+        return f"{self.stock.symbol} @ {self.recorded_at:%Y-%m-%d %H:%M}"

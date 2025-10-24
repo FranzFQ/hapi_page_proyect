@@ -17,6 +17,7 @@ import AccountInfo from './pages/AccountInfo.jsx';
 import EditUserProfile from './pages/EditUserProfile.jsx';
 import SecurityMethods from './pages/SecurityMethods.jsx';
 import LanguageSelection from './user-components/LanguageSelection.jsx';
+import ReportsPage from './pages/ReportsPage.jsx';
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="security" element={<SecurityMethods />} />
           <Route path="language" element={<LanguageSelection />} />
         </Route>
+        <Route path="/reports" element={<ReportsPage />} />
       </Routes>
     </Router>
   );

@@ -75,14 +75,6 @@ export default function ReportsPage() {
                   <span>Ganancias y Pérdidas</span>
                   <small>Rendimiento de tus activos.</small>
                 </div>
-                <div 
-                  className={`report-type-card ${reportType === 'tax' ? 'selected' : ''}`}
-                  onClick={() => setReportType('tax')}
-                >
-                  <i className="fi fi-rr-file-invoice-dollar"></i>
-                  <span>Resumen Fiscal</span>
-                  <small>Información para impuestos.</small>
-                </div>
               </div>
             </div>
 

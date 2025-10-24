@@ -10,10 +10,16 @@
   z-index: 10000;
 }
 
-.logo {
-  font-size: 1.5rem;
-  color: white;
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.logo {
+  width: 75px;
+  height: auto;
+} 
 
 .search-container {
   flex: 1;

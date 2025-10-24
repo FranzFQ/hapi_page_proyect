@@ -2,10 +2,12 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
 import { clientLogin, registerUser } from "../service/User.api.js";
 import "../style/UserRegister.css";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function UserRegister() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
 const [form, setForm] = useState({
   password: "",
   first_name: "",
@@ -70,21 +72,16 @@ const handleSubmit = (e) => {
         user_id: userId,
       }
 
-      var profileId = 0
-
       clientLogin(profileData).then((response) => {
         profileId = response.data.id;
         console.log("Client profile created:", response.data);
       })
 
-      localStorage.setItem("userId", userId);
-      localStorage.setItem("userEmail", form.email);
-      localStorage.setItem("userType", "user");cd
-      localStorage.setItem("profileId", profileId);
-
       alert("Registro exitoso. ¡Bienvenido!");
 
-      Navigate("/home");
+      localStorage.setItem("userId", userId);
+      
+      navigate("/home");
 
     })
     .catch((error) => {

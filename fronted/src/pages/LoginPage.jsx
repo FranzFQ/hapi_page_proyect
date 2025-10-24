@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../style/UserLogin.css"; // Reutilizamos los mismos estilos
-import { getUsersByEmail } from "../service/User.api";
+import { getUserByEmail } from "../service/User.api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,12 +12,14 @@ export default function LoginPage() {
     e.preventDefault();
     console.log("Intentando iniciar sesión con:", { email, password });
 
-    getUsersByEmail(email)
+    getUserByEmail(email)
       .then((response) => {
-        console.log("Respuesta del servidor:", response);
-        const user = response.data;
+        const user = response.data[0];
+        console.log(user);
         if (user && user.password === password) {
           console.log("Inicio de sesión exitoso para:", user);
+
+          localStorage.setItem("userId", user.id);
           navigate("/home");
           // Aquí podrías guardar el estado de autenticación, token, etc.
         } else {

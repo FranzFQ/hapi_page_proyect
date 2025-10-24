@@ -5,7 +5,9 @@ import '../style/UserGlobal.css';
 const Header = () => {
   return (
     <header className="header">
-      <div className="logo">logo</div>
+      <div className="logo-container">
+        <img className='logo' src="/../../public/images/Hapi.png"/>
+      </div>
 
       <div className="search-container">
         <div className="search-bar-wrapper">

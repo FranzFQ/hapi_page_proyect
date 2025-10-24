@@ -5,12 +5,16 @@ const userApi = axios.create({
 });
 
 export const registerUser = async (userData) =>
-  userApi.post("users/", userData);
+  userApi.post(`users/`, userData);
 
-export const getAllUsers = async () => userApi.get("users/");
+export const getUserById = async (userId) =>
+  userApi.get(`users/${userId}/`);
 
-export const getUsersByEmail = async (userEmail) =>
-  userApi.get(`users/${userEmail}/`);
+export const getUserByEmail = async (userEmail) =>
+  userApi.get(`users/?email=${userEmail}`);
 
-export const clientLogin = async (loginData) =>
-  userApi.post("client-profiles/", loginData);
+export const createClientProfile = async (loginData) =>
+  userApi.post(`client-profiles/`, loginData);
+
+export const getClientByUserId = async (userId) =>
+  userApi.get(`client-profiles/?user_id=${userId}/`);

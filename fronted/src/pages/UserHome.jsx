@@ -4,27 +4,22 @@ import Sidebar from "../user-components/Sidebar";
 import InvestmentSection from "../user-components/InvestmentSection";
 import FavoritesSection from "../user-components/FavoritesSection";
 import CategoriesSection from "../user-components/CategoriesSection";
-import { useEffect } from "react";
-
 import "../style/UserGlobal.css";
 import "../style/UserHome.css";
-import { getAllUsers } from "../service/User.api";
+import { useEffect, useState } from "react";
 
 const UserHome = () => {
-  
+  const [balance, setBalence] = useState(0);
+
   useEffect(() => {
   async function fetchUsers() {
-    try {
-      const response = await getAllUsers();
-      console.log("All users:", response.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
+    const userId = localStorage.getItem("userId");
+    console.log(userId)
   }
   fetchUsers();
 }, []);
 
-  const userBalance = 1234.56;
+  const userBalance = balance;
 
   return (
     <div className="dashboard-container fade-in">

@@ -1,54 +1,51 @@
 from yahooquery import Ticker
-from datetime import datetime
+from django.utils import timezone
+from apps.stocks.models import Stock, StockPrice
 
-def update_stock_price(symbol: str) -> bool:
-    from ..models import Stock, StockPrice  
-
-    #Descarga el precio más reciente de una acción desde Yahoo Finance y actualiza la base de datos.
-    
+def fetch_price(symbol: str):
     try:
         ticker = Ticker(symbol)
-        data = ticker.history(period="5d")  # últimos 5 días
-
-        # yahooquery devuelve un DataFrame MultiIndex
-        if data is None or data.empty:
-            print(f"No se encontraron datos para {symbol}")
-            return False
-
-        # Tomar el último valor (más reciente)
-        last_row = data.tail(1)
-        close_price = float(last_row['close'].iloc[0])
-        date = last_row.index.get_level_values('date')[0].date()
-
-        # Actualizar o crear Stock
-        stock_obj, _ = Stock.objects.get_or_create(symbol=symbol)
-        stock_obj.current_price = close_price
-        stock_obj.last_updated = datetime.now()
-        stock_obj.save()
-
-        # Registrar precio histórico
-        StockPrice.objects.update_or_create(
-            stock=stock_obj,
-            date=date,
-            defaults={'close_price': close_price}
-        )
-
-        print(f"Actualizado {symbol}: {close_price}")
-        return True
-
+        price_data = ticker.price
+        info = price_data.get(symbol)
+        if not info:
+            print(f"No se encontro informacion para {symbol}")
+            return None
+        return info.get("regularMarketPrice")
     except Exception as e:
-        print(f"Error actualizando {symbol}: {e}")
-        return False
+        print(f"Error obteniendo {symbol}: {e}")
+        return None
+
 
 def update_all_stocks():
     
-    #Recorre todos los registros de Stock y actualiza su precio usando Yahoo Finance (yahooquery).
-    
-    from ..models import Stock  # import dentro para evitar dependencias circulares
-    stocks = Stock.objects.all()
+    print("Iniciando actualización de precios...")
+
+    stocks = Stock.objects.filter(is_active=True)
+    updated = 0
+
     for stock in stocks:
-        updated = update_stock_price(stock.symbol)
-        if updated:
-            print(f"{stock.symbol} actualizado correctamente.")
-        else:
-            print(f"Error al actualizar {stock.symbol}.") 
+        price = fetch_price(stock.symbol)
+        if price is None:
+            print(f"Error al obtener precio de {stock.symbol}")
+            continue
+
+        # Calcula variación
+        variation = float(price) - float(stock.last_price or 0)
+
+        # Actualiza Stock
+        stock.last_price = price
+        stock.variation = variation
+        stock.update_at = timezone.now()
+        stock.save()
+
+        # Registra StockPrice
+        StockPrice.objects.create(
+            stock=stock,
+            price=price,
+            recorded_at=timezone.now()
+        )
+
+        print(f"{stock.symbol}: actualizado a {price}")
+        updated += 1
+
+    print(f"\nActualización completada: {updated} acciones actualizadas.")

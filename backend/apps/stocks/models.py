@@ -18,7 +18,7 @@ class Stock(models.Model):
     name = models.CharField(max_length=120)
     last_price = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     variation = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    date_at = models.DateTimeField(null=True, blank=True)
+    update_at = models.DateTimeField(null=True, blank=True, db_column="update_at")
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     stock_category = models.ForeignKey(

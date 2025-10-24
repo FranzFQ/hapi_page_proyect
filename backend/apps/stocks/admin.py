@@ -10,7 +10,7 @@ class StockCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ('symbol', 'name', 'last_price', 'date_at', 'is_active')
+    list_display = ('symbol', 'name', 'last_price', 'update_at', 'is_active')
     list_filter = ('is_active', 'stock_category')
     search_fields = ('symbol', 'name')
 

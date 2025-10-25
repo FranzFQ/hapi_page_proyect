@@ -1,4 +1,6 @@
-const RecentTransferBox = ({ title = "TRANSFERENCIAS RECIENTES", transfers = [] }) => {
+import "../../style/transfer/RecentTransfer.css"
+
+const RecentTransfer = ({ title = "TRANSFERENCIAS RECIENTES", transfers = [] }) => {
   return (
     <div className="recent-box">
       <h2 className="recent-title">{title}</h2>
@@ -17,4 +19,4 @@ const RecentTransferBox = ({ title = "TRANSFERENCIAS RECIENTES", transfers = [] 
   );
 };
 
-export default RecentTransferBox;
+export default RecentTransfer;

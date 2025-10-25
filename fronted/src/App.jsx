@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import UserHome from "./pages/UserHome.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 import UserRegister from "./user-components/UserRegister.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import UserPortfolio from "./pages/UserPortfolio.jsx";
@@ -24,14 +25,14 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<UserHome />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/home" element={<UserHome />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/loginEmail" element={<EmailLoginPage />} />
         <Route path="/loginPassword" element={<PasswordLoginPage />} />
-        <Route path="/portfolio" element={<UserPortfolio />} />
-        
+        <Route path="/portfolio" element={<UserPortfolio />} />        
         
         <Route path="/settings" element={<SettingsPage />}>
           <Route index element={<SettingsMenu />} />

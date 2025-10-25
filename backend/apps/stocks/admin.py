@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Stock, StockCategory, StockPrice
 
-# Register your models here.
+admin.site.register(Stock)
+admin.site.register(StockCategory)
+admin.site.register(StockPrice)

@@ -18,37 +18,115 @@
   padding: 4rem 3rem;
   border-radius: 2.5rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 
-    0 32px 64px rgba(0, 0, 0, 0.4),
-    0 16px 32px rgba(0, 0, 0, 0.3),
-    0 8px 16px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4), 0 16px 32px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   width: 100%;
   max-width: 600px;
   position: relative;
   overflow: hidden;
+  color: #1a202c; /* Color de texto oscuro por defecto */
 }
 
 .user-register-form::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -2px;
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     rgba(99, 123, 226, 0.6) 0%,
     rgba(103, 127, 235, 0.6) 25%,
     rgba(85, 104, 192, 0.6) 50%,
     rgba(70, 86, 158, 0.6) 75%,
-    rgba(99, 123, 226, 0.6) 100%);
+    rgba(99, 123, 226, 0.6) 100%
+  );
   border-radius: 2.5rem;
   z-index: -1;
   animation: borderGlow 4s ease-in-out infinite alternate;
 }
 
+.user-register-form label {
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.user-register-form h1,
+.user-register-form h2,
+.user-register-form h3 {
+  color: #1a202c;
+}
+
+.user-register-form input::placeholder {
+  color: #718096;
+}
+
+.user-register-form p,
+.user-register-form span {
+  color: #4a5568;
+}
+
+.form-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 3rem; /* Espacio para el botón */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  color: #2d3748;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #718096;
+}
+
 @keyframes borderGlow {
-  0% { opacity: 0.5; transform: scale(1); }
-  100% { opacity: 0.8; transform: scale(1.001); }
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.001);
+  }
 }

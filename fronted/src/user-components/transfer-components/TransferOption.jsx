@@ -13,21 +13,21 @@ const TransferOption = () => {
       <h3 className="option-title">TRANSFERIR DINERO</h3>
       <button
         className="option-btn"
-        onClick={() => handleNavigation("/banking/transfer")}
+        onClick={() => handleNavigation("/banking/deposit")}
       >
         TRANSFERIR A APP
       </button>
 
       <button
         className="option-btn"
-        onClick={() => handleNavigation("/banking/deposit")}
+        onClick={() => handleNavigation("/banking/withdraw")}
       >
         TRANSFERIR A TU BANCO
       </button>
 
       <button
         className="option-btn"
-        onClick={() => handleNavigation("/banking/withdraw")}
+        onClick={() => handleNavigation("/banking/transfer")}
       >
         TRANSFERIR CRIPTOMONEDAS
       </button>

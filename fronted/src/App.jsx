@@ -10,20 +10,29 @@ import ManageStocksPage from './pages/ManageStocksPage';
 import AddStockPage from './pages/AddStockPage';
 import EditStockPage from './pages/EditStockPage';
 import StockDetailsPage from './pages/StockDetailsPage';
-import UserTransferPage from "./pages/UserTransferPage.jsx";
+{/*Transfers*/}
+import BankingPage from "./pages/user-transfer/BankingPage.jsx";
+import DepositPage from "./pages/user-transfer/DepositPage.jsx";
+import WithdrawPage from "./pages/user-transfer/WithdrawPage.jsx";
+import TransferPage from "./pages/user-transfer/TransferPage.jsx";
+import MethodsPage from "./pages/user-transfer/MethodsPage.jsx";
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<UserTransferPage />} />
+        <Route path="/" element={<BankingPage />} />
         <Route path="/home" element={<UserHome />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/loginEmail" element={<EmailLoginPage />} />
         <Route path="/loginPassword" element={<PasswordLoginPage />} />
 
-        <Route path="/transfer" element={<UserTransferPage />} />
+        <Route path="/banking" element={<BankingPage />} />
+        <Route path="/banking/deposit" element={<DepositPage />} />
+        <Route path="/banking/withdraw" element={<WithdrawPage />} />
+        <Route path="/banking/transfer" element={<TransferPage />} />
+        <Route path="/banking/:operation/methods" element={<MethodsPage />}/>
 
         <Route path="/admin/stocks" element={<ManageStocksPage />} />
         <Route path="/admin/stocks/add" element={<AddStockPage />} />

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
-import { clientLogin, registerUser } from "../service/User.api.js";
-import "../style/UserRegister.css";
+import { createClientProfile, registerUser } from "../service/User.api.js";
 import { useNavigate, Link } from "react-router-dom";
+
+import "../style/UserRegister.css";
 
 export default function UserRegister() {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +73,7 @@ const handleSubmit = (e) => {
         user_id: userId,
       }
 
-      clientLogin(profileData).then((response) => {
+      createClientProfile(profileData).then((response) => {
         profileId = response.data.id;
         console.log("Client profile created:", response.data);
       })

@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # REST framework
     'rest_framework',
 
+    # Documentacio de las apis
+    'drf_yasg',
+    
     # apps
     'apps.hapi',
     'apps.users',

@@ -1,7 +1,21 @@
 import React from "react";
 import "../style/LandingPage.css";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    // Implement login navigation logic here
+    navigate("/login")
+    ;
+  }
+
+  const handleSignUpClick = () => {
+    // Implement sign-up navigation logic here
+    navigate("/register");
+  }
+
   return (
     <div className="landing">
       {/* NAVBAR */}
@@ -15,8 +29,8 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="nav__right">
-          <button className="btn btn--ghost">Entrar</button>
-          <button className="btn btn--primary">Crear cuenta</button>
+          <button className="btn btn--ghost" onClick={handleLoginClick}>Iniciar sesion</button>
+          <button className="btn btn--primary" onClick={handleSignUpClick}>Crear cuenta</button>
         </div>
       </header>
 

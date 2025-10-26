@@ -8,7 +8,7 @@ export const registerUser = async (userData) =>
   userApi.post(`users/`, userData);
 
 export const getUserById = async (userId) =>
-  userApi.get(`users/${userId}/`);
+  userApi.get(`users/${userId}`);
 
 export const getUserByEmail = async (userEmail) =>
   userApi.get(`users/?email=${userEmail}`);

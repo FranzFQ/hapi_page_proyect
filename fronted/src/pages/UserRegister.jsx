@@ -67,17 +67,6 @@ const handleSubmit = (e) => {
 
       const userId = response.data.id;
 
-      const profileData = {
-        balance_available: 0.0,
-        client_profilecol: 0.0,
-        user_id: userId,
-      }
-
-      createClientProfile(profileData).then((response) => {
-        profileId = response.data.id;
-        console.log("Client profile created:", response.data);
-      })
-
       alert("Registro exitoso. ¡Bienvenido!");
 
       localStorage.setItem("userId", userId);
@@ -87,7 +76,6 @@ const handleSubmit = (e) => {
     })
     .catch((error) => {
       console.error("Error completo:", error);
-      // Mostrar el error específico
       if (error.response?.data) {
         console.log("DETALLE DEL ERROR:", JSON.stringify(error.response.data, null, 2));
       }

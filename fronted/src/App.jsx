@@ -1,11 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 
 import UserHome from "./pages/UserHome.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import UserRegister from "./pages/UserRegister.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
-import UserPortfolio from "./pages/UserPortfolio.jsx";;
+import UserPortfolio from "./pages/UserPortfolio.jsx";
 import SettingsPage from './user-components/SettingsPage.jsx';
 import SettingsMenu from './pages/SettingsMenu.jsx';
 import AccountInfo from './pages/AccountInfo.jsx';
@@ -13,16 +13,20 @@ import EditUserProfile from './pages/EditUserProfile.jsx';
 import SecurityMethods from './pages/SecurityMethods.jsx';
 import LanguageSelection from './user-components/LanguageSelection.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
+import SessionTimeoutHandler from "./global-components/sessionTimeoutHandler.jsx";
+
 
 export default function App() {
+  
   return (
     <Router>
+      <SessionTimeoutHandler/>
+
       <Routes>
-        <Route path="/login" element={<LoginPage />} /> 
         <Route path="/" element={<LandingPage />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/home" element={<UserHome />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<UserRegister />} />
+        <Route path="/home" element={<UserHome />} />
         <Route path="/portfolio" element={<UserPortfolio />} />        
         
         <Route path="/settings" element={<SettingsPage />}>

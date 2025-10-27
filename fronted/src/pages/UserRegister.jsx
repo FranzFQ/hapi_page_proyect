@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
-import { createClientProfile, registerUser } from "../service/User.api.js";
-import { useNavigate, Link } from "react-router-dom";
+import { createUser } from "../service/User.api.js";
+import { useNavigate} from "react-router-dom";
 
 import "../style/UserRegister.css";
 
@@ -9,81 +9,81 @@ export default function UserRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-const [form, setForm] = useState({
-  password: "",
-  first_name: "",
-  last_name: "",
-  email: "",
-  phone: "",
-  used_referral_code: "",
-});
+  const [form, setForm] = useState({
+    password: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    used_referral_code: "",
+  });
 
-const generateReferralCode = () => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let code = "";
-  for (let i = 0; i < 8; i++) {
-    code += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return code;
-};
-
-const handleChange = (e) => {
-  setForm({ ...form, [e.target.name]: e.target.value });
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  const referralCode = generateReferralCode();
-  const now = new Date().toISOString();
-  
-  const finalForm = {
-    password: form.password,
-    last_login: null,
-    is_superuser: false,
-    first_name: form.first_name,
-    last_name: form.last_name,
-    email: form.email,
-    is_staff: false,
-    is_active: true,
-    date_joined: now,
-    phone: form.phone,
-    is_verified: false,
-    type: "user",
-    last_ip: "0.0.0.0",
-    status: "active",
-    referral_code: referralCode,
-    used_referral_code: form.used_referral_code,
-    created_at: now,
-    modified_at: now,
+  const generateReferralCode = () => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
+    for (let i = 0; i < 8; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return code;
   };
 
-  console.log("Form submitted:", finalForm);
-  
-  registerUser(finalForm)
-    .then((response) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-      console.log("User registered successfully:", response.data);
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      const userId = response.data.id;
+    const referralCode = generateReferralCode();
+    const now = new Date().toISOString();
 
-      alert("Registro exitoso. ¡Bienvenido!");
+    const finalForm = {
+      password: form.password,
+      last_login: null,
+      is_superuser: false,
+      first_name: form.first_name,
+      last_name: form.last_name,
+      email: form.email,
+      is_staff: false,
+      is_active: true,
+      date_joined: now,
+      phone: form.phone,
+      is_verified: false,
+      type: "user",
+      last_ip: "0.0.0.0",
+      status: "active",
+      referral_code: referralCode,
+      used_referral_code: form.used_referral_code,
+      created_at: now,
+      modified_at: now,
+    };
 
-      localStorage.setItem("userId", userId);
-      
-      navigate("/home");
+    console.log("Form submitted:", finalForm);
 
-    })
-    .catch((error) => {
-      console.error("Error completo:", error);
-      if (error.response?.data) {
-        console.log("DETALLE DEL ERROR:", JSON.stringify(error.response.data, null, 2));
-      }
-      
-      alert("Hubo un error al registrar. Ver consola.");
-    });  
+    createUser(finalForm)
+      .then((response) => {
+        console.log("User registered successfully:", response.data);
 
-};
+        const userId = response.data.id;
+
+        alert("Registro exitoso. ¡Bienvenido!");
+
+        localStorage.setItem("userId", userId);
+
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.error("Error completo:", error);
+        if (error.response?.data) {
+          console.log(
+            "DETALLE DEL ERROR:",
+            JSON.stringify(error.response.data, null, 2)
+          );
+        }
+
+        alert("Hubo un error al registrar. Ver consola.");
+      });
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -172,26 +172,6 @@ const handleSubmit = (e) => {
               </button>
             </div>
           </div>
-
-          <div className="form-group">
-            <label className="form-label">
-              Código de Referencia (Opcional)
-            </label>
-
-            <input
-              className="form-input"
-              type="text"
-              name="used_referral_code"
-              value={form.used_referral_code}
-              onChange={handleChange}
-              placeholder="Ingresa un código de referencia"
-              maxLength={8}
-            />
-            <small className="form-hint">
-              ¿Tienes un código de referencia? Ingrésalo aquí
-            </small>
-          </div>
-
           <button type="submit" className="btn btn-primary w-full">
             Registrar
           </button>

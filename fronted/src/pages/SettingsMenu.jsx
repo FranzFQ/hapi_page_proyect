@@ -1,18 +1,33 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../style/SettingsMenu.css';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "../style/SettingsMenu.css";
+import UserExist from "../hooks/userExist";
 
 const SettingsMenu = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const permition = UserExist();
+    if (permition) {
+      navigate("/");
+      return;
+    }
+  }, []);
+
   const handleLogout = () => {
-    navigate('/loginEmail');
+    localStorage.clear();
+    alert("Cierre de sesion exitoso");
+    navigate("/");
   };
 
   return (
     <div className="settings-menu-container">
       <div className="settings-menu-header">
-        <button onClick={() => navigate('/home')} className="back-button" title="Volver a inicio">
+        <button
+          onClick={() => navigate("/home")}
+          className="back-button"
+          title="Volver a inicio"
+        >
           <i className="fi fi-rr-arrow-left"></i>
         </button>
         <h2>Ajustes de Cuenta</h2>
@@ -21,7 +36,7 @@ const SettingsMenu = () => {
         <div className="settings-section">
           <h3 className="settings-section-title">CUENTA</h3>
           <ul className="settings-options-list">
-            <li onClick={() => navigate('/settings/account')}>
+            <li onClick={() => navigate("/settings/account")}>
               <div className="option-icon">
                 <i className="fi fi-rr-document"></i>
               </div>
@@ -30,35 +45,28 @@ const SettingsMenu = () => {
             </li>
           </ul>
         </div>
-        
+
         <div className="settings-section">
           <h3 className="settings-section-title">SEGURIDAD</h3>
           <ul className="settings-options-list">
-            <li onClick={() => navigate('/settings/edit-profile')}>
+            <li onClick={() => navigate("/settings/edit-profile")}>
               <div className="option-icon">
                 <i className="fi fi-rr-lock"></i>
               </div>
               <span>Modificar Datos de Cuenta</span>
               <i className="fi fi-rr-angle-small-right"></i>
             </li>
-            <li onClick={() => navigate('/settings/security')}>
-              <div className="option-icon">
-                <i className="fi fi-rr-shield-check"></i>
-              </div>
-              <span>Métodos de seguridad</span>
-              <i className="fi fi-rr-angle-small-right"></i>
-            </li>
           </ul>
         </div>
 
         <div className="settings-section">
-          <h3 className="settings-section-title">PREFERENCIAS</h3>
+          <h3 className="settings-section-title">REFERENCIA</h3>
           <ul className="settings-options-list">
-            <li onClick={() => navigate('/settings/language')}>
+            <li onClick={() => navigate("/settings/Referral")}>
               <div className="option-icon">
                 <i className="fi fi-rr-globe"></i>
               </div>
-              <span>Idioma</span>
+              <span>Ingresar codigo de referencia</span>
               <i className="fi fi-rr-angle-small-right"></i>
             </li>
           </ul>

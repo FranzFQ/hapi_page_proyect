@@ -56,7 +56,7 @@
   
   /* Fuentes */
   --font-sans: "Archivo Black", sans-serif;
-  --font-archivo: "Archivo Black", sans-serif;;
+  --font-archivo: "Archivo Black", sans-serif;
   
   /* Tamaños de Fuente */
   --text-xs: 0.75rem;
@@ -118,25 +118,30 @@ body {
     radial-gradient(circle at 25% 25%, #37437C 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, #46569E 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, #5568C0 0%, transparent 50%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: #1e293b;
   overflow-x: hidden;
+  min-height: 100%;
+  font-family: var(--font-sans);
   position: relative;
 }
 
+/* Fondo decorativo superior */
 body::before {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
   background: 
     linear-gradient(135deg, rgba(99, 123, 226, 0.1) 0%, rgba(103, 127, 235, 0.1) 100%),
     url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: cover;
   pointer-events: none;
 }
 
@@ -146,7 +151,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--font-bold);
   line-height: 1.2;
   color: var(--text-primary);
-  font-family: "Archivo Black", sans-serif;;
+  font-family: "Archivo Black", sans-serif;
 }
 
 h1 { font-size: var(--text-4xl); }
@@ -451,7 +456,7 @@ a:hover {
   border-radius: var(--radius-sm);
 }
 
-/* Mejoras de legibilidad para modo alto contraste */
+/* Modo alto contraste */
 @media (prefers-contrast: high) {
   :root {
     --border-light: #000000;
@@ -461,7 +466,7 @@ a:hover {
   }
 }
 
-/* Soporte para modo oscuro */
+/* Soporte modo oscuro */
 @media (prefers-color-scheme: dark) {
   :root {
     --text-primary: #f1f5f9;
@@ -510,25 +515,35 @@ a:hover {
     --spacing-lg: 1rem;
     --radius-lg: 1rem;
   }
+
+  /* Ejemplo: adaptar el contenedor principal en móviles */
+  .container {
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    max-width: 520px;
+    margin: 0 auto;
+  }
 }
 
 /* ESTILOS PARA SCROLLBAR*/
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary-3);
+  background: linear-gradient(180deg, var(--color-primary-3), var(--color-primary-2));
   border-radius: var(--radius-sm);
+  border: 2px solid rgba(255,255,255,0.03);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-2);
+  background: linear-gradient(180deg, var(--color-primary-2), var(--color-primary-4));
 }
 
 /* ESTILOS DE SELECCIÓN DE TEXTO*/
@@ -541,3 +556,34 @@ a:hover {
   background-color: var(--color-primary-1);
   color: var(--text-white);
 }
+
+/* Pequeña utilidad para centrar el contenido principal sin usar display:flex en body */
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  position: relative;
+  z-index: 0;
+}
+
+/* Ejemplo de un contenedor con fondo claro para formularios/ tarjetas */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-2xl);
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Asegurar que los pseudo-elementos y fondos no bloqueen la interacción */
+[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+/* Fallbacks y ajustes menores */
+img { max-width: 100%; height: auto; display: block; }
+
+/* FIN DEL CSS */

@@ -10,8 +10,7 @@ import SettingsPage from './user-components/SettingsPage.jsx';
 import SettingsMenu from './pages/SettingsMenu.jsx';
 import AccountInfo from './pages/AccountInfo.jsx';
 import EditUserProfile from './pages/EditUserProfile.jsx';
-import SecurityMethods from './pages/SecurityMethods.jsx';
-import LanguageSelection from './user-components/LanguageSelection.jsx';
+import ReferralSelection from './user-components/ReferralSelection.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
 import SessionTimeoutHandler from "./global-components/sessionTimeoutHandler.jsx";
 
@@ -33,8 +32,7 @@ export default function App() {
           <Route index element={<SettingsMenu />} />
           <Route path="account" element={<AccountInfo />} />
           <Route path="edit-profile" element={<EditUserProfile />} />
-          <Route path="security" element={<SecurityMethods />} />
-          <Route path="language" element={<LanguageSelection />} />
+          <Route path="Referral" element={<ReferralSelection />} />
         </Route>
         <Route path="/reports" element={<ReportsPage />} />
       </Routes>

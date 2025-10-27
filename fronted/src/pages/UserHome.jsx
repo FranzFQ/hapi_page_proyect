@@ -5,10 +5,17 @@ import InvestmentSection from "../user-components/InvestmentSection";
 import FavoritesSection from "../user-components/FavoritesSection";
 import CategoriesSection from "../user-components/CategoriesSection";
 import { useEffect, useState } from "react";
-import { createClientProfile, getClientByUserId, getUserById } from "../service/User.api";
+import {
+  createClientProfile,
+  getClientByUserId,
+  getReferralByUserId,
+  getUserById,
+  updateReferral,
+} from "../service/User.api";
 import { useNavigate } from "react-router-dom";
 import "../style/UserGlobal.css";
 import "../style/UserHome.css";
+import UserExist from "../hooks/userExist";
 
 const UserHome = () => {
   const [balance, setBalence] = useState(0);
@@ -16,25 +23,39 @@ const UserHome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const permition = UserExist();
+    if (permition) {
+      navigate("/");
+      return;
+    }
+
     async function fetchUsers() {
       const userId = localStorage.getItem("userId");
       localStorage.setItem("loginTime", Date.now().toString());
 
-      if (!userId) {
-        console.error("No user ID found in local storage.");
-        navigate("/");
-        return;
-      }
       getUserById(userId)
         .then((response) => {
           const userData = response.data;
           if (userData && userData.is_verified) {
-            alert("Bienvenido de nuevo, " + userData.first_name + "!");
             getClientByUserId(userId).then((response) => {
               const clientData = response.data;
+
+              getReferralByUserId(userId).then((response) => {
+                const userReferral = response.data[0]
+                if (userReferral.is_active){
+                  setAddedBalance(userBalance.bonus_amount)
+                  const data = {
+                    is_active: false,
+                  }
+                  updateReferral(userReferral.id, data)
+                  alert("Felicidades alguien ha usado tu codigo")
+                }
+              }).catch(() => {
+                return
+              })
+
               if (clientData) {
                 setBalence(clientData.balance_available);
-
               } else {
                 const profileData = {
                   balance_available: 0.0,
@@ -60,7 +81,7 @@ const UserHome = () => {
     fetchUsers();
   }, []);
 
-  const userBalance = balance;
+  const userBalance = balance + addedBalance;
 
   return (
     <div className="dashboard-container fade-in">

@@ -1,30 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SessionTimeoutHandler() {
   const navigate = useNavigate();
+  const timeoutRef = useRef(null);
+  const maxInactivityTime = 15 * 60 * 1000; // 15 minutos
 
   useEffect(() => {
-    const checkSession = () => {
-      const loginTime = localStorage.getItem("loginTime");
-
-      if (loginTime) {
-        const now = Date.now();
-        const diff = now - parseInt(loginTime, 10);
-        const maxTime = 15 * 60 * 1000; // 15 minutos
-
-        if (diff > maxTime) {
-          localStorage.clear();
-          alert("Tu sesión ha expirado. Por favor inicia sesión nuevamente.");
-          navigate("/");
-        } else {
-          const remaining = maxTime - diff;
-          setTimeout(checkSession, Math.min(remaining, 60 * 1000));
-        }
-      }
+    const resetTimer = () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => handleLogout(), maxInactivityTime);
     };
 
-    checkSession();
+    const handleLogout = () => {
+      localStorage.clear();
+      alert("Tu sesión ha expirado por inactividad.");
+      navigate("/");
+    };
+
+    const activityEvents = ["mousemove", "keydown", "click", "scroll"];
+
+    activityEvents.forEach((event) =>
+      window.addEventListener(event, resetTimer)
+    );
+
+    resetTimer();
+
+    return () => {
+      activityEvents.forEach((event) =>
+        window.removeEventListener(event, resetTimer)
+      );
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [navigate]);
 
   return null;

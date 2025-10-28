@@ -24,7 +24,7 @@ const countries = [
 const WithdrawPage = () => {
   return (
     <BankingLayout>
-      <CountrySelector countries={countries} operation="deposit" />
+      <CountrySelector countries={countries} operation="withdraw" />
       <RecentTransfer />   
     </BankingLayout>
   );

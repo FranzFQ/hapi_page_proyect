@@ -15,7 +15,7 @@ import BankingPage from "./pages/user-transfer/BankingPage.jsx";
 import DepositPage from "./pages/user-transfer/DepositPage.jsx";
 import WithdrawPage from "./pages/user-transfer/WithdrawPage.jsx";
 import TransferPage from "./pages/user-transfer/TransferPage.jsx";
-import MethodsPage from "./pages/user-transfer/MethodsPage.jsx";
+import AmountPage from "./pages/user-transfer/AmountPage.jsx";
 
 export default function App() {
   return (
@@ -32,7 +32,7 @@ export default function App() {
         <Route path="/banking/deposit" element={<DepositPage />} />
         <Route path="/banking/withdraw" element={<WithdrawPage />} />
         <Route path="/banking/transfer" element={<TransferPage />} />
-        <Route path="/banking/:operation/methods" element={<MethodsPage />}/>
+        <Route path="/banking/:operation/amount" element={<AmountPage />}/>
 
         <Route path="/admin/stocks" element={<ManageStocksPage />} />
         <Route path="/admin/stocks/add" element={<AddStockPage />} />

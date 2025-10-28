@@ -6,7 +6,7 @@ const CountryCard = ({ country, operation }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/banking/${operation}/methods?country=${country.code}`);
+    navigate(`/banking/${operation}/amount?country=${country.code}`);
   };
 
   return (

@@ -1,15 +1,25 @@
-import React from 'react';
-import Header from '../user-components/Header';
-import Sidebar from '../user-components/Sidebar';
-import InvestmentSection from '../user-components/InvestmentSection';
-import FavoritesSection from '../user-components/FavoritesSection';
-import CategoriesSection from '../user-components/CategoriesSection';
-
-import '../style/UserGlobal.css';
-import '../style/UserHome.css';
+import React from "react";
+import Header from "../user-components/Header";
+import Sidebar from "../user-components/Sidebar";
+import InvestmentSection from "../user-components/InvestmentSection";
+import FavoritesSection from "../user-components/FavoritesSection";
+import CategoriesSection from "../user-components/CategoriesSection";
+import "../style/UserGlobal.css";
+import "../style/UserHome.css";
+import { useEffect, useState } from "react";
 
 const UserHome = () => {
-  const userBalance = 1234.56;
+  const [balance, setBalence] = useState(0);
+
+  useEffect(() => {
+  async function fetchUsers() {
+    const userId = localStorage.getItem("userId");
+    console.log(userId)
+  }
+  fetchUsers();
+}, []);
+
+  const userBalance = balance;
 
   return (
     <div className="dashboard-container fade-in">

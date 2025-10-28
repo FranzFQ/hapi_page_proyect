@@ -1,57 +1,68 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "../../style/transfer/Amount.css";
 
 const DepositAmount = () => {
-  const [amount, setAmount] = useState("10.00");
+  const [amount, setAmount] = useState("250.00");
+  const parsedAmount = parseFloat(amount) || 0;
+  const fee = 2.99;
+  const total = useMemo(() => parsedAmount + fee, [parsedAmount]);
+  
+  const handleTransfer = () => {
+    console.log("Monto ingresado:", parsedAmount.toFixed(2));
+    console.log("Costo de envío:", fee.toFixed(2));
+    console.log("Total a pagar:", total.toFixed(2));
+  };
 
   return (
-    <div className="withdrawal-box">
-      <h3 className="withdrawal-title">Monto de deposito</h3>
-      <p className="withdrawal-subtitle">Airtm USD $</p>
+    <div className="amount-box">
+        <h3 className="title">Monto de depósito</h3>
+        <p className="subtitle">Airtm USD $</p>
 
-      <div className="withdrawal-amount">
-        <span className="symbol">$</span>
-        <input
-          type="number"
-          step="0.01"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="amount-input"
-        />
-      </div>
-
-      <div className="withdrawal-info">
-        <div className="info-row">
-          <span>Costo de retiro</span>
-          <span>USD$ 4.99</span>
+        <div className="amount">
+            <span className="symbol">$</span>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="amount-input"
+            />
         </div>
 
-        <div className="info-row total">
-          <span>Total a recibir</span>
-          <span>USD$ 5.01</span>
+        <div className="info-box">
+            <div className="info-row">
+                <span>Costo de envío</span>
+                <span>USD$ {fee.toFixed(2)}</span>
+            </div>
+
+            <div className="info-row total">
+                <span>Total a pagar</span>
+                <span>USD$ {total.toFixed(2)}</span>
+            </div>
         </div>
 
-        <div className="info-row available">
-          <span>Disponible para retirar</span>
-          <span>$0.00</span>
+        <div className="note">
+            <p className="note-title">Detalles del Depósito</p>
+            <ul>
+                <li>
+                  Los depósitos deben provenir de una cuenta bancaria a nombre del
+                  mismo titular de la cuenta en Hapi. Fondos enviados de terceros
+                  pueden perderse por completo.
+                </li>
+                <li>
+                  Depósitos antes de las 12 pm CT en días hábiles se validan y
+                  reflejan en un máximo de 3 horas. Después de ese horario, se
+                  procesan al siguiente día hábil.
+                </li>
+                <li>
+                  No se procesarán depósitos en efectivo, ni de usuarios menores de 18
+                  años.
+                </li>
+            </ul>
         </div>
-      </div>
 
-      <div className="withdrawal-note">
-        <p className="note-title">¡Lee esto antes!</p>
-        <ul>
-          <li>Solo se permiten retiros a cuentas del mismo titular de la cuenta en Hapi.</li>
-          <li>El tipo de cambio (si aplica) es referencial y puede variar de acuerdo al mercado.</li>
-          <li>Asegúrate que la información de la cuenta de retiro sea correcta.</li>
-        </ul>
-      </div>
-
-      <button
-        className="withdrawal-btn"
-        onClick={() => console.log("Monto ingresado:", amount)}
-      >
-        Continuar
-      </button>
+        <button className="do-btn" onClick={handleTransfer}>
+            Transferir
+        </button>
     </div>
   );
 };

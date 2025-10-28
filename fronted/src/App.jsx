@@ -2,17 +2,24 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import UserHome from "./pages/UserHome.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
 import UserRegister from "./pages/UserRegister.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import EmailLoginPage from "./pages/EmailLoginPage.jsx";
+import PasswordLoginPage from "./pages/PasswordLoginPage.jsx";
+import ManageStocksPage from "./pages/ManageStocksPage";
+import AddStockPage from "./pages/AddStockPage";
+import EditStockPage from "./pages/EditStockPage";
+import StockDetailsPage from "./pages/StockDetailsPage";
+import LoginPage from "./pages/LoginPage.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
-import UserPortfolio from "./pages/UserPortfolio.jsx";;
-import SettingsPage from './user-components/SettingsPage.jsx';
-import SettingsMenu from './pages/SettingsMenu.jsx';
-import AccountInfo from './pages/AccountInfo.jsx';
-import EditUserProfile from './pages/EditUserProfile.jsx';
-import SecurityMethods from './pages/SecurityMethods.jsx';
-import LanguageSelection from './user-components/LanguageSelection.jsx';
-import ReportsPage from './pages/ReportsPage.jsx';
+import UserPortfolio from "./pages/UserPortfolio.jsx";
+import SettingsPage from "./user-components/SettingsPage.jsx";
+import SettingsMenu from "./pages/SettingsMenu.jsx";
+import AccountInfo from "./pages/AccountInfo.jsx";
+import EditUserProfile from "./pages/EditUserProfile.jsx";
+import SecurityMethods from "./pages/SecurityMethods.jsx";
+import LanguageSelection from "./user-components/LanguageSelection.jsx";
+import ReportsPage from "./pages/ReportsPage.jsx";
 
 export default function App() {
   return (

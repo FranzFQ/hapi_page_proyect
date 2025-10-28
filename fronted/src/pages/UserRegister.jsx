@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
-import { registerUser } from "../service/User.api.js";
+import { createClientProfile, registerUser } from "../service/User.api.js";
+import { useNavigate, Link } from "react-router-dom";
+
 import "../style/UserRegister.css";
 
 export default function UserRegister() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
 const [form, setForm] = useState({
   password: "",
   first_name: "",
@@ -58,22 +62,39 @@ const handleSubmit = (e) => {
   
   registerUser(finalForm)
     .then((response) => {
+
       console.log("User registered successfully:", response.data);
+
+      const userId = response.data.id;
+
+      const profileData = {
+        balance_available: 0.0,
+        client_profilecol: 0.0,
+        user_id: userId,
+      }
+
+      createClientProfile(profileData).then((response) => {
+        profileId = response.data.id;
+        console.log("Client profile created:", response.data);
+      })
+
       alert("Registro exitoso. ¡Bienvenido!");
+
+      localStorage.setItem("userId", userId);
+      
+      navigate("/home");
+
     })
     .catch((error) => {
       console.error("Error completo:", error);
-      console.error("Error del servidor:", error.response?.data); // ← ESTO ES LO IMPORTANTE
-      console.error("Status:", error.response?.status);
-      console.error("Headers:", error.response?.headers);
-      
       // Mostrar el error específico
       if (error.response?.data) {
         console.log("DETALLE DEL ERROR:", JSON.stringify(error.response.data, null, 2));
       }
       
       alert("Hubo un error al registrar. Ver consola.");
-    });
+    });  
+
 };
 
   const togglePasswordVisibility = () => {

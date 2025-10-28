@@ -1,29 +1,42 @@
 import React from 'react';
 import '../style/UserGlobal.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const Sidebar = () => {
+export default function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => location.pathname.startsWith(path);
+
   return (
     <aside className="sidebar">
       <nav className="nav-menu">
-        <button className="nav-item active">
-          <i className="fi fi-br-home"></i>
-          PRINCIPAL
-        </button>
-        <button className="nav-item">
-          <i className="fi fi-rr-money-bill-wave"></i>
-          TRANSFERENCIAS
-        </button>
-        <button className="nav-item">
-          <i className="fi fi-br-search"></i>
-          BUSCADOR
-        </button>
-        <button className="nav-item">
-          <i className="fi fi-rs-chart-line-up"></i>
-          PORTAFOLIO
-        </button>
+        <ul>
+          <li
+            className={`nav-item ${isActive('/home') ? 'active' : ''}`}
+            onClick={() => navigate('/home')}
+          >
+            PRINCIPAL
+          </li>
+          <li
+            className={`nav-item ${isActive('/transactions') ? 'active' : ''}`}
+            onClick={() => navigate('/transactions')}
+          >
+            TRANSFERENCIAS
+          </li>
+          <li
+            className={`nav-item ${isActive('/searcher') ? 'active' : ''}`}
+            onClick={() => navigate('/searcher')}
+          >
+            BUSCADOR
+          </li>
+          <li
+            className={`nav-item ${isActive('/portfolio') ? 'active' : ''}`}
+            onClick={() => navigate('/portfolio')}
+          >
+            PORTAFOLIO
+          </li>
+        </ul>
       </nav>
     </aside>
   );
-};
-
-export default Sidebar;
+}

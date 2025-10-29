@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'apps.reports',
     'apps.referrals',
     'apps.portfolios',
+    'apps.lists',
 
 ]
 

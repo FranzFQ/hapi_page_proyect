@@ -1,196 +1,252 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../style/EditUserProfile.css';
-
-const countries = [
-  { name: 'Guatemala', flag: '🇬🇹' },
-  { name: 'México', flag: '🇲🇽' },
-  { name: 'El Salvador', flag: '🇸🇻' },
-  { name: 'Ecuador', flag: '🇪🇨' },
-  { name: 'Colombia', flag: '🇨🇴' },
-  { name: 'Estados Unidos', flag: '🇺🇸' },
-];
-
-const defaultProfile = {
-  firstName: 'Juan',
-  lastName: 'Pérez',
-  country: 'Guatemala',
-  phone: '+502 1234 5678',
-  email: 'juan.perez@email.com',
-  riskProfile: 'Moderado',
-  investmentExperience: 'Intermedio',
-  profilePicture: 'https://source.unsplash.com/random/200x200?person',
-  cardNumber: '**** **** **** 4532',
-  cardHolder: 'Juan Pérez',
-  cardExpiry: '12/25',
-  cardType: 'Visa',
-};
-
-const FAKE_CORRECT_PASSWORD = 'password123';
+import React, { useState, useEffect, use } from "react";
+import { useNavigate } from "react-router-dom";
+import { getUserById, updateUser } from "../service/User.api";
+import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
+import "../style/EditUserProfile.css";
+import UserExist from "../hooks/userExist";
 
 export default function EditUserProfile() {
   const navigate = useNavigate();
-  const [profileData, setProfileData] = useState(() => {
-    const savedProfile = localStorage.getItem('userProfile');
-    return savedProfile ? JSON.parse(savedProfile) : defaultProfile;
-  });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
-  
-  const [profilePicturePreview, setProfilePicturePreview] = useState(profileData.profilePicture);
-  const [errors, setErrors] = useState({});
+  // Estados para controlar la visibilidad de las contraseñas
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleProfileChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setProfileData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-  };
-
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setPasswordData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: null }));
+  useEffect(() => {
+    const permition = UserExist();
+    if (permition) {
+      navigate("/");
+      return;
     }
-  };
-
-  const handlePictureChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        setProfilePicturePreview(fileReader.result);
-        setProfileData(prev => ({ ...prev, profilePicture: fileReader.result }));
-      };
-      fileReader.readAsDataURL(e.target.files[0]);
-    }
-  };
+    const userId = localStorage.getItem("userId")
+    getUserById(userId).then((response) => {
+      const userData = response.data;
+      if (userData) {
+        setFirstName(userData.first_name);
+        setLastName(userData.last_name);
+        setEmail(userData.email);
+        setPhone(userData.phone);
+        setPassword(userData.password);
+      }
+    });
+  }, []);
 
   const validateAndSubmit = (e) => {
     e.preventDefault();
-    const newErrors = {};
-    const wantsToChangePassword = passwordData.currentPassword || passwordData.newPassword || passwordData.confirmPassword;
-
-    if (wantsToChangePassword) {
-      if (!passwordData.currentPassword) newErrors.currentPassword = 'Debes ingresar tu contraseña actual.';
-      else if (passwordData.currentPassword !== FAKE_CORRECT_PASSWORD) newErrors.currentPassword = 'La contraseña actual es incorrecta.';
-      if (passwordData.newPassword && passwordData.newPassword.length < 8) newErrors.newPassword = 'Debe tener al menos 8 caracteres.';
-      if (passwordData.newPassword !== passwordData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden.';
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+    const userId = localStorage.getItem("userId");
+    if (newPassword !== confirmPassword) {
+      alert("Las nuevas contraseñas no coinciden.");
       return;
-    }
+    } else {
+      setPassword(newPassword);
 
-    localStorage.setItem('userProfile', JSON.stringify(profileData));
-    alert('Perfil actualizado con éxito.');
-    navigate('/settings');
+      const newUserData = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        modified_at: new Date().toISOString(),
+      };
+
+      updateUser(userId, newUserData)
+        .then((response) => {
+          alert("Perfil actualizado con éxito.");
+          navigate("/settings");
+        })
+        .catch((error) => {
+          console.error("Error updating user profile:", error);
+          alert("Hubo un error al actualizar el perfil.");
+        });
+    }
   };
 
   return (
     <div className="profile-form-wrapper">
       <div className="profile-form-header">
-        <button type="button" onClick={() => navigate('/settings')} className="back-button" title="Volver a ajustes">
+        <button
+          type="button"
+          onClick={() => navigate("/settings")}
+          className="back-button"
+          title="Volver a ajustes"
+        >
           <i className="fi fi-rr-arrow-left"></i>
         </button>
         <h2>Gestionar Perfil</h2>
       </div>
       <form className="profile-form" onSubmit={validateAndSubmit} noValidate>
-        <div className="profile-section picture-section">
-          <img src={profilePicturePreview} alt="Vista previa de perfil" className="profile-picture-preview"/>
-          <label htmlFor="profilePictureInput" className="profile-picture-upload-btn">
-            <i className="fi fi-rr-camera"></i> Cambiar Foto
-          </label>
-          <input id="profilePictureInput" type="file" accept="image/*" onChange={handlePictureChange} style={{ display: 'none' }}/>
-        </div>
-
         <div className="profile-section">
           <h3 className="profile-section-title">Información Personal</h3>
+          <p className="section-subtitle">
+            Si no deseas cambiar de datos personale, deja los campos vacios.
+          </p>
           <div className="form-grid">
             <div className="form-group">
-              <label className="form-label" htmlFor="firstName">Nombre</label>
-              <input id="firstName" name="firstName" className="form-input" type="text" value={profileData.firstName} onChange={handleProfileChange} />
+              <label className="form-label" htmlFor="firstName">
+                Nombre
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                className="form-input"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="lastName">Apellido</label>
-              <input id="lastName" name="lastName" className="form-input" type="text" value={profileData.lastName} onChange={handleProfileChange} />
+              <label className="form-label" htmlFor="lastName">
+                Apellido
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                className="form-input"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="email">Email</label>
-              <input id="email" name="email" className="form-input" type="email" value={profileData.email} onChange={handleProfileChange} />
+              <label className="form-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                className="form-input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="phone">Teléfono</label>
-              <input id="phone" name="phone" className="form-input" type="tel" value={profileData.phone} onChange={handleProfileChange} />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="country">País de Residencia</label>
-              <select id="country" name="country" className="form-input country-select" value={profileData.country} onChange={handleProfileChange}>
-                {countries.map((country) => (
-                  <option key={country.name} value={country.name}>
-                    {country.flag} {country.name}
-                  </option>
-                ))}
-              </select>
+              <label className="form-label" htmlFor="phone">
+                Teléfono
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                className="form-input"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </div>
           </div>
         </div>
 
         <div className="profile-section">
-          <h3 className="profile-section-title">Métodos de Pago</h3>
-          <p className="section-subtitle">Administra tu tarjeta de débito/crédito vinculada.</p>
-          <div className="form-grid">
-            <div className="form-group">
-              <label className="form-label" htmlFor="cardType">Tipo de Tarjeta</label>
-              <select id="cardType" name="cardType" className="form-input" value={profileData.cardType} onChange={handleProfileChange}>
-                <option value="Visa">Visa</option>
-                <option value="Mastercard">Mastercard</option>
-                <option value="American Express">American Express</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="cardHolder">Titular de la Tarjeta</label>
-              <input id="cardHolder" name="cardHolder" className="form-input" type="text" value={profileData.cardHolder} onChange={handleProfileChange} />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="cardNumber">Número de Tarjeta</label>
-              <input id="cardNumber" name="cardNumber" className="form-input" type="text" value={profileData.cardNumber} onChange={handleProfileChange} placeholder="**** **** **** 1234" />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="cardExpiry">Fecha de Expiración</label>
-              <input id="cardExpiry" name="cardExpiry" className="form-input" type="text" value={profileData.cardExpiry} onChange={handleProfileChange} placeholder="MM/AA" />
-            </div>
-          </div>
-        </div>
-        
-        <div className="profile-section">
           <h3 className="profile-section-title">Cambiar Contraseña</h3>
-          <p className="section-subtitle">Si no deseas cambiar de contraseña, deja los campos vacios.</p>
+          <p className="section-subtitle">
+            Si no deseas cambiar de contraseña, deja los campos vacios.
+          </p>
           <div className="form-grid">
             <div className="form-group">
-              <label className="form-label" htmlFor="currentPassword">Contraseña Actual</label>
-              <input id="currentPassword" name="currentPassword" className={`form-input ${errors.currentPassword ? 'input-error' : ''}`} type="password" placeholder="••••••••" value={passwordData.currentPassword} onChange={handlePasswordChange} />
-              {errors.currentPassword && <span className="error-message">{errors.currentPassword}</span>}
+              <label className="form-label" htmlFor="currentPassword">
+                Contraseña Actual
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  id="currentPassword"
+                  name="currentPassword"
+                  type={showCurrentPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  className="form-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  aria-label={
+                    showCurrentPassword
+                      ? "Ocultar contraseña"
+                      : "Mostrar contraseña"
+                  }
+                >
+                  {showCurrentPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="newPassword">Nueva Contraseña</label>
-              <input id="newPassword" name="newPassword" className={`form-input ${errors.newPassword ? 'input-error' : ''}`} type="password" placeholder="••••••••" value={passwordData.newPassword} onChange={handlePasswordChange} />
-              {errors.newPassword && <span className="error-message">{errors.newPassword}</span>}
+              <label className="form-label" htmlFor="newPassword">
+                Nueva Contraseña
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  id="newPassword"
+                  name="newPassword"
+                  type={showNewPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="form-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  aria-label={
+                    showNewPassword
+                      ? "Ocultar contraseña"
+                      : "Mostrar contraseña"
+                  }
+                >
+                  {showNewPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="confirmPassword">Confirmar Contraseña</label>
-              <input id="confirmPassword" name="confirmPassword" className={`form-input ${errors.confirmPassword ? 'input-error' : ''}`} type="password" placeholder="••••••••" value={passwordData.confirmPassword} onChange={handlePasswordChange} />
-              {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+              <label className="form-label" htmlFor="confirmPassword">
+                Confirmar Contraseña
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="form-input"
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={
+                    showConfirmPassword
+                      ? "Ocultar contraseña"
+                      : "Mostrar contraseña"
+                  }
+                >
+                  {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="profile-form-actions">
-          <button type="button" className="btn btn-secondary" onClick={() => navigate('/settings')}>Cancelar</button>
-          <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/settings")}
+          >
+            Cancelar
+          </button>
+          <button type="submit" className="btn btn-primary">
+            Guardar Cambios
+          </button>
         </div>
       </form>
     </div>

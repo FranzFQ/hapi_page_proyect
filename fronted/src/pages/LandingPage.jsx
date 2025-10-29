@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../style/LandingPage.css";
 import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.clear()
+  }, [])
 
   const handleLoginClick = () => {
     // Implement login navigation logic here

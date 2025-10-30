@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/SearchPage.css';
 
-export default function TopGainers({ gainers, onItemClick }) {
+export default function TopGainers({ gainers }) {
+  const navigate = useNavigate();
+
+  const handleGainerClick = (symbol) => {
+    navigate(`/stock/${symbol}`);
+  };
+
   return (
     <div className="top-section-search glass-effect">
       <h3 className="section-subtitle">Top Ganadores</h3>
@@ -10,7 +17,7 @@ export default function TopGainers({ gainers, onItemClick }) {
           <div 
             key={index} 
             className="top-item-card"
-            onClick={() => onItemClick(item.symbol)}
+            onClick={() => handleGainerClick(item.symbol)}
           >
             <span className="item-symbol">{item.symbol}</span>
             <span className="item-price">{item.price}</span>

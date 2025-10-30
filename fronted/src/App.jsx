@@ -19,6 +19,9 @@ import WithdrawPage from "./pages/user-transfer/WithdrawPage.jsx";
 import TransferPage from "./pages/user-transfer/TransferPage.jsx";
 import AmountPage from "./pages/user-transfer/AmountPage.jsx";
 
+import SearchPage from './pages/SearchPage.jsx';
+import StockDetailPage from './pages/StockDetailPage.jsx';
+
 export default function App() {
   
   return (
@@ -44,6 +47,9 @@ export default function App() {
           <Route path="Referral" element={<ReferralSelection />} />
         </Route>
         <Route path="/reports" element={<ReportsPage />} />
+
+        <Route path="/search" element={<SearchPage />} /> 
+        <Route path="/stock/:symbol" element={<StockDetailPage />} />
       </Routes>
     </Router>
   );

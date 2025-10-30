@@ -24,8 +24,8 @@ export default function Sidebar() {
             TRANSFERENCIAS
           </li>
           <li
-            className={`nav-item ${isActive('/searcher') ? 'active' : ''}`}
-            onClick={() => navigate('/searcher')}
+            className={`nav-item ${isActive('/search') ? 'active' : ''}`}
+            onClick={() => navigate('/search')}
           >
             BUSCADOR
           </li>

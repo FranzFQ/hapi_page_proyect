@@ -3,13 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 
 import UserHome from "./pages/UserHome.jsx";
 import UserRegister from "./pages/UserRegister.jsx";
-import AdminDashboard from "./pages/AdminDashboard.jsx";
-import EmailLoginPage from "./pages/EmailLoginPage.jsx";
-import PasswordLoginPage from "./pages/PasswordLoginPage.jsx";
-import ManageStocksPage from "./pages/ManageStocksPage";
-import AddStockPage from "./pages/AddStockPage";
-import EditStockPage from "./pages/EditStockPage";
-import StockDetailsPage from "./pages/StockDetailsPage";
 import LoginPage from "./pages/LoginPage.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import UserPortfolio from "./pages/UserPortfolio.jsx";
@@ -25,6 +18,9 @@ import DepositPage from "./pages/user-transfer/DepositPage.jsx";
 import WithdrawPage from "./pages/user-transfer/WithdrawPage.jsx";
 import TransferPage from "./pages/user-transfer/TransferPage.jsx";
 import AmountPage from "./pages/user-transfer/AmountPage.jsx";
+
+import SearchPage from './pages/SearchPage.jsx';
+import StockDetailPage from './pages/StockDetailPage.jsx';
 
 export default function App() {
   
@@ -51,6 +47,9 @@ export default function App() {
           <Route path="Referral" element={<ReferralSelection />} />
         </Route>
         <Route path="/reports" element={<ReportsPage />} />
+
+        <Route path="/search" element={<SearchPage />} /> 
+        <Route path="/stock/:symbol" element={<StockDetailPage />} />
       </Routes>
     </Router>
   );

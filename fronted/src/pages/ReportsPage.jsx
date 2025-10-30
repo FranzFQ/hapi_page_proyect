@@ -108,40 +108,12 @@ export default function ReportsPage() {
                 </div>
               </div>
             </div>
-
-            <div className="report-step">
-              <h3 className="form-section-title">3. Seleccione el formato</h3>
-              <div className="format-select-group">
-                <label className={`format-radio ${fileFormat === 'PDF' ? 'selected' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="format" 
-                    value="PDF" 
-                    checked={fileFormat === 'PDF'} 
-                    onChange={() => setFileFormat('PDF')}
-                  />
-                  <i className="fi fi-rr-file-pdf"></i>
-                  <span>PDF</span>
-                </label>
-                <label className={`format-radio ${fileFormat === 'CSV' ? 'selected' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="format" 
-                    value="CSV" 
-                    checked={fileFormat === 'CSV'} 
-                    onChange={() => setFileFormat('CSV')}
-                  />
-                  <i className="fi fi-rr-file-csv"></i>
-                  <span>CSV</span>
-                </label>
-              </div>
-            </div>
             
             {error && <span className="error-message">{error}</span>}
 
             <div className="reports-actions">
               <button type="submit" className="btn btn-primary">
-                <i className="fi fi-rr-download"></i>
+                <i className="fi fi-rr-paper-plane"></i>
                 Generar Reporte
               </button>
             </div>

@@ -45,7 +45,7 @@ export default function ReportsPage() {
       <div className="reports-page-wrapper">
         <div className="reports-container">
           <div className="reports-header">
-            <button onClick={() => navigate('/home')} className="back-button" title="Volver a inicio">
+            <button onClick={() => navigate('/settings')} className="back-button" title="Volver a inicio">
               <i className="fi fi-rr-arrow-left"></i>
             </button>
             <div className="header-text">

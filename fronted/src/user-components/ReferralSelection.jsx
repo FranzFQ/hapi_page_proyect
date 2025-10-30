@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../style/LanguageSelection.css";
+import "../style/ReferralSelection.css";
 import UserExist from "../hooks/userExist";
 import {
   createReferral,

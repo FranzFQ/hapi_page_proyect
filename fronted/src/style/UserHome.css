@@ -187,6 +187,7 @@
   font-size: 16px;
   font-weight: bold;
 }
+
 /* === PORTFOLIO SECTION === */
 .portfolio-section {
   background: rgba(255, 255, 255, 0.15);
@@ -301,3 +302,286 @@
   font-size: 16px;
 }
 
+/* ============================= */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================= */
+
+/* Tablets y pantallas medianas (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .center-content {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .top-section {
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+  }
+
+  .investment-section,
+  .favorites-section {
+    max-width: 100%;
+    height: auto;
+    min-height: 250px;
+  }
+
+  .investment-label,
+  .investment-amount {
+    font-size: 24px;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .action-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+  }
+
+  .categories-title {
+    font-size: 32px;
+  }
+
+  .portfolio-title {
+    font-size: 28px;
+  }
+
+  .portfolio-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .portfolio-tabs {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .portfolio-body {
+    gap: 25px;
+  }
+
+  .account-card,
+  .chart-card {
+    min-width: 100%;
+  }
+}
+
+/* Móviles grandes (max-width: 768px) */
+@media (max-width: 768px) {
+  .dashboard-container {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    height: auto;
+    flex-direction: column;
+  }
+
+  .center-content {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .top-section {
+    gap: 15px;
+  }
+
+  .investment-section {
+    padding: 15px;
+    min-height: 220px;
+  }
+
+  .investment-info {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  .investment-label,
+  .investment-amount {
+    font-size: 22px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+  }
+
+  .favorites-section {
+    padding: 15px;
+  }
+
+  .sidebar-btn {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .categories-section {
+    padding: 20px;
+    min-height: auto;
+  }
+
+  .categories-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .category-item {
+    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .category-name {
+    font-size: 16px;
+  }
+
+  .category-percentage {
+    font-size: 14px;
+  }
+
+  .portfolio-section {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .portfolio-title {
+    font-size: 24px;
+  }
+
+  .portfolio-tabs {
+    gap: 15px;
+    overflow-x: auto;
+  }
+
+  .tab {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .portfolio-body {
+    gap: 20px;
+  }
+
+  .account-card,
+  .chart-card {
+    padding: 20px;
+    min-width: 100%;
+  }
+
+  .account-title {
+    font-size: 20px;
+  }
+
+  .account-details p {
+    font-size: 16px;
+  }
+
+  .history-title {
+    font-size: 20px;
+  }
+}
+
+/* Móviles pequeños (max-width: 480px) */
+@media (max-width: 480px) {
+  .center-content {
+    padding: 8px;
+    gap: 12px;
+  }
+
+  .investment-section,
+  .favorites-section,
+  .categories-section,
+  .portfolio-section {
+    border-radius: 15px;
+  }
+
+  .investment-label,
+  .investment-amount {
+    font-size: 20px;
+  }
+
+  .action-btn {
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+
+  .sidebar-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .categories-title {
+    font-size: 24px;
+  }
+
+  .category-item {
+    padding: 12px;
+  }
+
+  .category-name {
+    font-size: 15px;
+  }
+
+  .category-percentage {
+    font-size: 13px;
+  }
+
+  .portfolio-title {
+    font-size: 20px;
+  }
+
+  .tab {
+    font-size: 14px;
+  }
+
+  .account-title,
+  .history-title {
+    font-size: 18px;
+  }
+
+  .account-details p {
+    font-size: 14px;
+  }
+
+  .history-placeholder {
+    font-size: 14px;
+  }
+}
+
+/* Pantallas muy pequeñas (max-width: 360px) */
+@media (max-width: 360px) {
+  .investment-label,
+  .investment-amount {
+    font-size: 18px;
+  }
+
+  .categories-title {
+    font-size: 20px;
+  }
+
+  .portfolio-title {
+    font-size: 18px;
+  }
+
+  .action-btn,
+  .sidebar-btn {
+    font-size: 13px;
+    padding: 10px;
+  }
+}

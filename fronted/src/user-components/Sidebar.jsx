@@ -18,8 +18,8 @@ export default function Sidebar() {
             PRINCIPAL
           </li>
           <li
-            className={`nav-item ${isActive('/transactions') ? 'active' : ''}`}
-            onClick={() => navigate('/transactions')}
+            className={`nav-item ${isActive('/banking') ? 'active' : ''}`}
+            onClick={() => navigate('/banking')}
           >
             TRANSFERENCIAS
           </li>

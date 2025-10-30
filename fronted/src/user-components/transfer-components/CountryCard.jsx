@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import 'flag-icons/css/flag-icons.min.css';
-
 
 const CountryCard = ({ country, operation }) => {
   const navigate = useNavigate();
@@ -11,13 +9,15 @@ const CountryCard = ({ country, operation }) => {
 
   return (
     <div className="country-card" onClick={handleClick}>
-        <div className="country-flag">
-            <span className={`fi fi-${country.code.toLowerCase()} flag`}></span>
-            <p className="name">{country.name}</p>
-        </div>
-        <div className="country-arrow">
-            &gt;
-        </div>
+      <div className="country-flag">
+        <img
+          src={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png`}
+          alt={`${country.name} flag`}
+          className="flag-img"
+        />
+        <p className="name">{country.name}</p>
+      </div>
+      <div className="country-arrow">&gt;</div>
     </div>
   );
 };

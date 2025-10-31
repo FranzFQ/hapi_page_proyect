@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-k!8b^-%3_6hg1@#u-5(i@822=$o41g=+62a$n#f4r*q@ycdrgp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = ["https://hapipageproyect-production.up.railway.app",
+    "https://hapi-page-proyect-np3e.vercel.app",
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]

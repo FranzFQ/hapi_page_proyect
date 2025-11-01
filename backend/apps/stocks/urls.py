@@ -1,15 +1,15 @@
-from rest_framework.routers import DefaultRouter
-from .views import StockViewSet, CategoryViewSet
-from django.urls import path
-from apps.stocks.views import search_view
+from django.urls import path, include
+from rest_framework import routers
+from apps.stocks import views
 
-urlpatterns = [path("search/", search_view, name="search"),]
+router = routers.DefaultRouter()
+router.register(r"stocks", views.StockViewSet, basename="stock")
+router.register(r"categories", views.CategoryViewSet, basename="category")
 
-router = DefaultRouter()
-router.register(r'stocks', StockViewSet, basename='stock')
-router.register(r'categories', CategoryViewSet, basename='category')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path("search/", views.search_view, name="search"),  
+    path("", include(router.urls)),
+]
 
 #Agregar en backend/urls.py:
 #path('api/', include('apps.stocks.urls')),

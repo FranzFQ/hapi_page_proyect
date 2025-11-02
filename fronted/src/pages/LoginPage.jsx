@@ -16,7 +16,6 @@ export default function LoginPage() {
     getUserByEmail(email)
       .then((response) => {
         const user = response.data[0];
-        
         if (user && user.password === password) {
           localStorage.setItem("userId", user.id);
           alert("Inicio de sesion exitoso");

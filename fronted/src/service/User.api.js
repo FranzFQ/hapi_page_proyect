@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const userApi = axios.create({
-  baseURL: "http://127.0.0.1:8000/",
+  baseURL: import.meta.env.VITE_API_ENDPOINT,
 });
 
 // User APIs
@@ -25,6 +25,9 @@ export const updateUser = async (userId, updateData) =>
 
 export const createClientProfile = async (loginData) =>
   userApi.post(`client-profiles/`, loginData);
+
+export const getClientById = async (ClientId) =>
+  userApi.get(`client-profiles/${ClientId}`) 
 
 export const getClientByUserId = async (userId) =>
   userApi.get(`client-profiles/?user=${userId}`);

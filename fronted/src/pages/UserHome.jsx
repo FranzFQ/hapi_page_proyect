@@ -46,6 +46,7 @@ const UserHome = () => {
           getClientByUserId(userId).then((response) => {
             const clientData = response.data[0];
             const currentBalance = parseFloat(clientData.balance_available);
+            localStorage.setItem("clientId", clientData.id);
             setBalence(currentBalance);
             getReferralByUserId(userId)
               .then((response) => {

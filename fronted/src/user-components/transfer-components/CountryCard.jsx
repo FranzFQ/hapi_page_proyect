@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 const CountryCard = ({ country, operation }) => {
   const navigate = useNavigate();
-
   const handleClick = () => {
+    localStorage.setItem("country", country.code)
     navigate(`/banking/${operation}/amount?country=${country.code}`);
   };
 

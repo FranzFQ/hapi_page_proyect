@@ -29,7 +29,7 @@ export default function LandingPage() {
             <span className="brand__dots">
               <i></i><i></i><i></i>
             </span>
-            <span className="brand__name">Hapi Demo</span>
+            <span className="brand__name">Hapi clone</span>
           </div>
         </div>
         <div className="nav__right">
@@ -51,7 +51,7 @@ export default function LandingPage() {
           </p>
 
           <div className="hero__cta">
-            <button className="btn btn--primary">Invertir ahora</button>
+            <button className="btn btn--primary" onClick={handleSignUpClick}>Invertir ahora</button>
           </div>
 
           <p className="hero__note">
@@ -62,8 +62,6 @@ export default function LandingPage() {
         {/* MARKET CARD */}
         <aside className="market-card">
           <div className="market-card__header">
-            <span>Demo de mercado</span>
-            <span className="market-card__time">Tiempo real simulado</span>
           </div>
 
           <div className="market-grid">

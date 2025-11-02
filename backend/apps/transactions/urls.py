@@ -1,10 +1,10 @@
-# apps/transactions/urls.py
+from rest_framework import routers
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import TransactionViewSet
+from .views import TransactionViewSet, TransactionDetailViewSet
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register(r"transactions", TransactionViewSet, basename="transaction")
+router.register(r"transaction-details", TransactionDetailViewSet, basename="transaction-detail")
 
 urlpatterns = [
     path("", include(router.urls)),

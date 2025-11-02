@@ -28,3 +28,14 @@ class TransactionSerializer(serializers.ModelSerializer):
             "client_profile",
             "details"
         ]
+    
+    def create(self, validated_data):
+        # Extrae los detalles del cuerpo del POST
+        details_data = validated_data.pop("details", [])
+        transaction = Transaction.objects.create(**validated_data)
+
+        # Crea los detalles relacionados
+        for detail in details_data:
+            TransactionDetail.objects.create(transaction=transaction, **detail)
+
+        return transaction

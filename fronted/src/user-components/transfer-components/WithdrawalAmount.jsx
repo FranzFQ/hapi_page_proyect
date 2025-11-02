@@ -29,7 +29,7 @@ const WithdrawalAmount = () => {
   const [fee, setFee] = useState(0.15);
   const [balance, setBalence] = useState(0);
   const parsedAmount = parseFloat(amount) || 0;
-  const total = useMemo(() => Math.max(parsedAmount * fee, 0), [parsedAmount]);
+  const total = useMemo(() => Math.max(parsedAmount - (parsedAmount * fee), 0), [parsedAmount]);
   const available = 0.0;
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const WithdrawalAmount = () => {
         <input
           type="number"
           value={amount}
+          step="0.01"
           onChange={(e) => setAmount(e.target.value)}
           className="amount-input"
         />

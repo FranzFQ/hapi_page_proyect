@@ -27,7 +27,10 @@ export const createClientProfile = async (loginData) =>
   userApi.post(`client-profiles/`, loginData);
 
 export const getClientByUserId = async (userId) =>
-  userApi.get(`client-profiles/?user_id=${userId}`);
+  userApi.get(`client-profiles/?user=${userId}`);
+
+export const updateClient = async (clientId, updateData) =>
+  userApi.patch(`client-profiles/${clientId}/`, updateData)
 
 // Referral APIs
 

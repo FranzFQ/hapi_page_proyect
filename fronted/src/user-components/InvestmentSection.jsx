@@ -2,7 +2,7 @@ import React from 'react';
 import '../style/UserHome.css';
 
 
-export default function InvestmentSection({ balance }) {
+export default function InvestmentSection({ balance, userName }) {
   const formattedBalance = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -10,6 +10,8 @@ export default function InvestmentSection({ balance }) {
   
   return (
     <div className="investment-section">
+      <span className="investment-label">Bienvenido</span>
+      <span className="investment-label">{userName}</span>
       <div className="investment-info">
         <span className="investment-label">EMPIEZA A INVERTIR</span>
         <p className="investment-amount">{formattedBalance}</p>

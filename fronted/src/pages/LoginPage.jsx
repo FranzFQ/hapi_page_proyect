@@ -12,15 +12,12 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Intentando iniciar sesión con:", { email, password });
     
     getUserByEmail(email)
       .then((response) => {
         const user = response.data[0];
-        console.log(user);
         
         if (user && user.password === password) {
-          console.log("Inicio de sesión exitoso para:", user);
           localStorage.setItem("userId", user.id);
           alert("Inicio de sesion exitoso");
           navigate("/home");

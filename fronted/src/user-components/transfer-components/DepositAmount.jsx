@@ -6,7 +6,7 @@ const DepositAmount = () => {
   const parsedAmount = parseFloat(amount) || 0;
   const fee = 2.99;
   const total = useMemo(() => parsedAmount + fee, [parsedAmount]);
-  
+
   const handleTransfer = () => {
     console.log("Monto ingresado:", parsedAmount.toFixed(2));
     console.log("Costo de envío:", fee.toFixed(2));

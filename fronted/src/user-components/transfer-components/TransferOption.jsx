@@ -15,28 +15,14 @@ const TransferOption = () => {
         className="option-btn"
         onClick={() => handleNavigation("/banking/deposit")}
       >
-        TRANSFERIR A APP
+          DEPOSITAR A LA CUENTA  
       </button>
 
       <button
         className="option-btn"
         onClick={() => handleNavigation("/banking/withdraw")}
       >
-        TRANSFERIR A TU BANCO
-      </button>
-
-      <button
-        className="option-btn"
-        onClick={() => handleNavigation("/banking/transfer")}
-      >
-        TRANSFERIR CRIPTOMONEDAS
-      </button>
-
-      <button
-        className="option-btn"
-        onClick={() => handleNavigation("/banking/transfer?type=portfolio")}
-      >
-        TRANSFERIR PORTAFOLIO
+          RETIRAR DE LA CUENTA  
       </button>
     </div>
   );

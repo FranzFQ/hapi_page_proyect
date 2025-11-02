@@ -1,15 +1,16 @@
 import Header from "../user-components/Header";
 import Sidebar from "../user-components/Sidebar";
 import PortfolioSection from "../user-components/PortfolioSection";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../style/UserGlobal.css";
 import "../style/UserHome.css";
 import UserExist from "../hooks/userExist";
 import { useNavigate } from "react-router-dom";
+import { getClientById } from "../service/User.api";
 
 const UserPortfolio = () => {
-  const navigate = useNavigate()
-  const userBalance = 1234.56;
+  const navigate = useNavigate();
+  const [balance, setBalence] = useState(0);
 
   useEffect(() => {
     const permition = UserExist();
@@ -17,6 +18,12 @@ const UserPortfolio = () => {
       navigate("/");
       return;
     }
+
+    const clientId = localStorage.getItem("clientId");
+    getClientById(clientId).then((response) => {
+      const clientData = response.data
+      setBalence(clientData.balance_available)
+    });
   }, []);
 
   return (
@@ -25,7 +32,7 @@ const UserPortfolio = () => {
       <div className="main-content">
         <Sidebar />
         <main className="center-content">
-          <PortfolioSection balance={userBalance} />
+          <PortfolioSection balance={balance} />
         </main>
       </div>
     </div>

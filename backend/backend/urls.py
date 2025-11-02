@@ -34,6 +34,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.users.urls')),
     path('', include('apps.referrals.urls')),
+    path('', include('apps.reports.urls')),
+    path('', include('apps.portfolios.urls')),
+    path('', include('apps.stocks.urls')),
 
     # Swagger UI
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

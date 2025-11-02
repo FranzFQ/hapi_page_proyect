@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
-import { createUser } from "../service/User.api.js";
-import { useNavigate} from "react-router-dom";
+import { createUser, createClientProfile } from "../service/User.api.js";
+import { useNavigate } from "react-router-dom";
 
 import "../style/UserRegister.css";
 
@@ -65,6 +65,14 @@ export default function UserRegister() {
         console.log("User registered successfully:", response.data);
 
         const userId = response.data.id;
+
+        const profileData = {
+          balance_available: 0.0,
+          client_profilecol: 0.0,
+          user: userId,
+        };
+
+        createClientProfile(profileData)
 
         alert("Registro exitoso. ¡Bienvenido!");
 

@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Stock, Category, StockPrice
+from .models import Stock, StockCategory, StockPrice
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = StockCategory
         fields = '__all__'
 
 

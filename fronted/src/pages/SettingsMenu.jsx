@@ -38,7 +38,7 @@ const SettingsMenu = () => {
           <ul className="settings-options-list">
             <li onClick={() => navigate("/settings/account")}>
               <div className="option-icon">
-                <i className="fi fi-rr-document"></i>
+                <i className="fi fi-rs-user"></i>
               </div>
               <span>Información de cuenta</span>
               <i className="fi fi-rr-angle-small-right"></i>
@@ -51,7 +51,7 @@ const SettingsMenu = () => {
           <ul className="settings-options-list">
             <li onClick={() => navigate("/settings/edit-profile")}>
               <div className="option-icon">
-                <i className="fi fi-rr-lock"></i>
+                <i className="fi fi-rr-edit"></i>
               </div>
               <span>Modificar Datos de Cuenta</span>
               <i className="fi fi-rr-angle-small-right"></i>
@@ -64,9 +64,22 @@ const SettingsMenu = () => {
           <ul className="settings-options-list">
             <li onClick={() => navigate("/settings/Referral")}>
               <div className="option-icon">
-                <i className="fi fi-rr-globe"></i>
+                <i className="fi fi-rs-users"></i>
               </div>
               <span>Ingresar codigo de referencia</span>
+              <i className="fi fi-rr-angle-small-right"></i>
+            </li>
+          </ul>
+        </div>
+
+        <div className="settings-section">
+          <h3 className="settings-section-title">Reportes</h3>
+          <ul className="settings-options-list">
+            <li onClick={() => navigate("/reports")}>
+              <div className="option-icon">
+                <i className="fi fi-rr-document-signed"></i>
+              </div>
+              <span>Generar reporte</span>
               <i className="fi fi-rr-angle-small-right"></i>
             </li>
           </ul>

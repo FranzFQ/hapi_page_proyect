@@ -10,8 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "flag-icons": "^7.5.0",
     "axios": "^1.12.2",
+    "flag-icons": "^7.5.0",
+    "lucide-react": "^0.548.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.3",

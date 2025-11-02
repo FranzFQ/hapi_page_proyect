@@ -8,7 +8,7 @@ const BankingLayout = ({ children }) => {
             <Header />
             <div className="main-content">
                 <Sidebar />
-                <main className="center-content">
+                <main className="center-content-banking">
                     {children}
                 </main>
             </div>

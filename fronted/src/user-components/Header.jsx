@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo-container">
-        <img className="logo" src="/../../public/images/Hapi.png" />
+        <img className="logo" src="/public/images/Hapi.png" />
       </div>
 
       <div className="search-container">

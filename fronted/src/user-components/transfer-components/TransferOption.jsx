@@ -15,14 +15,14 @@ const TransferOption = () => {
         className="option-btn"
         onClick={() => handleNavigation("/banking/deposit")}
       >
-        TRANSFERIR A LA CUENTA  
+          DEPOSITAR A LA CUENTA  
       </button>
 
       <button
         className="option-btn"
         onClick={() => handleNavigation("/banking/withdraw")}
       >
-        TRANSFERIR A TU BANCO
+          RETIRAR DE LA CUENTA  
       </button>
     </div>
   );

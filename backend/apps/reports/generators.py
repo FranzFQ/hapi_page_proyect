@@ -41,6 +41,6 @@ def generate_csv(context):
     return output.getvalue().encode('utf-8')
 
 def generate_pdf_from_html(context):
-    html_string = render_to_string('reports/report_template.html', context)
+    html_string = render_to_string('reports_templates.html', context)
     pdf_file = HTML(string=html_string).write_pdf()
     return pdf_file

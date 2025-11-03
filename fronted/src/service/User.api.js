@@ -96,3 +96,31 @@ export const getTransactionByPortfolioId = async (portfolioId) =>
 export const updateTransaction = async (transactionId, updateData) =>
   userApi.patch(`transactions/${transactionId}/`, updateData);
 
+  userApi.get(`portfolioinvestment/?portafolio=${portfolioId}`);
+
+export const updatePortfolioInvestment = async (
+  portfolioInvestmentId,
+  updateData
+) => {
+  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData);
+};
+
+// Transfer APIs
+
+export const createTransfer = async (transferData) =>
+  userApi.post(`transfer/`, transferData);
+
+export const getTransferByClientId = async (clientId) => 
+  userApi.get(`transfer/?client=${clientId}`)
+
+// Lists APIs
+
+export const createList = async (listData) => {
+  userApi.post(`lists/`, listData)
+}
+
+// Lists Details APIs
+
+export const createListDetail = async (listData) => {
+  userApi.post(`lists-details`, listData)
+}

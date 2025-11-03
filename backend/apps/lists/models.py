@@ -9,21 +9,14 @@ class ListItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.title} ({self.user.username})"
-
     class Meta:
         managed = False
         db_table = 'user_lists'
 
 class ListDetail(models.Model):
     list = models.ForeignKey(ListItem, models.DO_NOTHING)
-
     item_content = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Item in {self.list.title}: {self.item_content[:30]}"
 
     class Meta:
         managed = False

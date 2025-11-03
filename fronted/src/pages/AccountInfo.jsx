@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../style/AccountInfo.css";
-import { getUserById } from "../service/User.api";
+import { getUserById, updateUser } from "../service/User.api";
 import UserExist from "../hooks/userExist";
 
 export default function AccountInfo() {
@@ -39,8 +39,13 @@ export default function AccountInfo() {
     );
 
     if (isConfirmed) {
-      alert("Tu cuenta ha sido eliminada. (Simulación Frontend)");
-      navigate("/loginEmail");
+      alert("Tu cuenta ha sido eliminada.");
+      const userId = localStorage.getItem("userId")
+      const userData = {
+        is_active: false
+      }
+      updateUser(userId, userData)
+      navigate("/");
     }
   };
 

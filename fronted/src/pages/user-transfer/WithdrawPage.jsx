@@ -1,6 +1,9 @@
-import BankingLayout from "../../user-components/layouts/BankingLayout.jsx"
-import RecentTransfer from "../../user-components/transfer-components/RecentTransfer.jsx"
+import BankingLayout from "../../user-components/layouts/BankingLayout.jsx";
+import RecentTransfer from "../../user-components/transfer-components/RecentTransfer.jsx";
 import CountrySelector from "../../user-components/transfer-components/CountrySelector.jsx";
+import { useEffect } from "react";
+import UserExist from "../../hooks/userExist.js";
+import { useNavigate } from "react-router-dom";
 
 const countries = [
   { code: "GT", name: "Guatemala" },
@@ -17,17 +20,26 @@ const countries = [
   { code: "PA", name: "Panama" },
   { code: "CR", name: "Costa Rica" },
   { code: "HN", name: "Honduras" },
-  { code: "NI", name: "Nicaragua" }
+  { code: "NI", name: "Nicaragua" },
 ];
 
-
 const WithdrawPage = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const permition = UserExist();
+    if (permition) {
+      navigate("/");
+      return;
+    }
+  });
+
   return (
     <BankingLayout>
       <CountrySelector countries={countries} operation="withdraw" />
-      <RecentTransfer />   
+      <RecentTransfer />
     </BankingLayout>
   );
-}
+};
 
 export default WithdrawPage;

@@ -17,6 +17,10 @@ export default function LoginPage() {
       .then((response) => {
         const user = response.data[0];
         if (user && user.password === password) {
+          if (!user.is_active){
+            alert("La cuenta no existe")
+            return
+          }
           localStorage.setItem("userId", user.id);
           alert("Inicio de sesion exitoso");
           navigate("/home");

@@ -62,8 +62,31 @@ export const createPortfolioInvestment = async (portfolioInvestmentData) =>
   userApi.get(`portfolioinvestment/`, portfolioInvestmentData);
 
 export const getPortfolioInvestmentByPortafolioId = async (portfolioId) =>
-  userApi.get(`portfolioinvestment/?portafolio=${portfolioId}`)
+  userApi.get(`portfolioinvestment/?portafolio=${portfolioId}`);
 
-export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) => {
-  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData)
+export const updatePortfolioInvestment = async (
+  portfolioInvestmentId,
+  updateData
+) => {
+  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData);
+};
+
+// Transfer APIs
+
+export const createTransfer = async (transferData) =>
+  userApi.post(`transfer/`, transferData);
+
+export const getTransferByClientId = async (clientId) => 
+  userApi.get(`transfer/?client=${clientId}`)
+
+// Lists APIs
+
+export const createList = async (listData) => {
+  userApi.post(`lists/`, listData)
+}
+
+// Lists Details APIs
+
+export const createListDetail = async (listData) => {
+  userApi.post(`lists-details`, listData)
 }

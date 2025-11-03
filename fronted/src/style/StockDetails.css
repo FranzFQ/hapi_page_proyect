@@ -547,3 +547,28 @@
 .similar-list::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+
+.available-shares {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.sell-btn {
+  background-color: #e74c3c !important;
+}
+
+.sell-btn:hover {
+  background-color: #c0392b !important;
+}
+
+.error-message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 12px;
+}

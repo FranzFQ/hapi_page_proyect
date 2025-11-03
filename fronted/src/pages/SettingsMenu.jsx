@@ -16,7 +16,7 @@ const SettingsMenu = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    alert("Cierre de sesion exitoso");
+    alert("Cierre de sesión exitoso");
     navigate("/");
   };
 

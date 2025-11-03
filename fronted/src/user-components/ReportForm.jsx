@@ -2,21 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/ReportsPage.css';
 
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
 export default function ReportForm() {
   const navigate = useNavigate();
   const [reportType, setReportType] = useState('transactions');
@@ -58,21 +43,26 @@ export default function ReportForm() {
     setMessage('');
     setIsLoading(true);
 
-    const csrftoken = getCookie('csrftoken');
+    const clientId = localStorage.getItem('clientId');
+    if (!clientId) {
+        setError('No se encontró tu ID de cliente. Por favor, inicia sesión de nuevo.');
+        setIsLoading(false);
+        navigate('/login');
+        return;
+    }
 
     try {
       const response = await fetch('http://localhost:8000/api/reports/', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrftoken
         },
         body: JSON.stringify({
           report_type: reportType,
           file_format: fileFormat,
           start_date: startDate,
           end_date: endDate,
+          client_id: clientId 
         }),
       });
 

@@ -37,6 +37,7 @@ urlpatterns = [
     path('', include('apps.reports.urls')),
     path('', include('apps.portfolios.urls')),
     path('', include('apps.stocks.urls')),
+    path('', include('apps.lists.urls')),
     path('', include('apps.transfer.urls')),
 
     # Swagger UI

@@ -78,3 +78,15 @@ export const createTransfer = async (transferData) =>
 
 export const getTransferByClientId = async (clientId) => 
   userApi.get(`transfer/?client=${clientId}`)
+
+// Lists APIs
+
+export const createList = async (listData) => {
+  userApi.post(`lists/`, listData)
+}
+
+// Lists Details APIs
+
+export const createListDetail = async (listData) => {
+  userApi.post(`lists-details`, listData)
+}

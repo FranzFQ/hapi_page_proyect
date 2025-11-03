@@ -8,4 +8,6 @@ router.register(r"client-profiles", views.ClientProfileView, basename="client-pr
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("login/", views.LoginView.as_view(), name="login"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
 ]

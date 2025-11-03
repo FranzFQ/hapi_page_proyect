@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// En tus imports, asegúrate de tener:
 import { 
   createTransaction, 
   getPortfolioByClientId, 
   createPortfolio, 
-  updatePortafolio,
   createPortfolioInvestment,
-  updatePortfolioInvestment  // ← AGREGAR ESTE IMPORT
+  updatePortfolioInvestment,
+  getPortfolioInvestmentByPortafolioId,
+  getClientById,
+  updateClient
 } from '../../service/User.api.js';
 
 export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower, stockId }) {
@@ -24,155 +25,261 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
     }
   }, [activeTab, symbol, stockId]);
 
+  // Función para actualizar el balance del cliente
+  const updateClientBalance = async (transactionData, currentPrice) => {
+    try {
+      const clientId = localStorage.getItem("clientId");
+      if (!clientId) {
+        // console.log('No hay clientId para actualizar balance');
+        return;
+      }
+
+      // console.log('Actualizando balance del cliente...');
+      
+      // 1. Obtener el cliente actual
+      const clientResponse = await getClientById(clientId);
+      // console.log('Cliente actual:', clientResponse.data);
+      
+      const currentClient = clientResponse.data;
+      const currentBalance = parseFloat(currentClient.balance_available || 0);
+      
+      // 2. Calcular el cambio de balance
+      const quantity = parseFloat(transactionData.details[0].quantity);
+      const unitPrice = parseFloat(transactionData.details[0].unit_price);
+      const closingCost = 0.15; // Mismo costo de cierre
+      
+      let balanceChange = 0;
+      
+      if (transactionData.type === 'compra') {
+        // COMPRA: Restar (cantidad * precio) + costo de cierre
+        balanceChange = -((quantity * unitPrice) + closingCost);
+        // console.log(`COMPRA: Balance ${currentBalance} - ${Math.abs(balanceChange)}`);
+      } else {
+        // VENTA: Sumar (cantidad * precio) - costo de cierre  
+        balanceChange = (quantity * unitPrice) - closingCost;
+        // console.log(`VENTA: Balance ${currentBalance} + ${balanceChange}`);
+      }
+      
+      const newBalance = currentBalance + balanceChange;
+      
+      // Validar que no quede balance negativo en compras
+      if (newBalance < 0 && transactionData.type === 'compra') {
+        console.error('Balance insuficiente para la compra');
+        throw new Error('Balance insuficiente');
+      }
+      
+      // console.log(`Nuevo balance: ${currentBalance} + ${balanceChange} = ${newBalance}`);
+      
+      // 3. Actualizar el balance del cliente
+      const updateResult = await updateClient(clientId, {
+        balance_available: newBalance.toFixed(2)
+      });
+      
+      // console.log('Balance actualizado:', updateResult.data);
+      
+      return newBalance;
+      
+    } catch (error) {
+      console.error('Error actualizando balance:', error);
+      throw error;
+    }
+  };
+
   // Función para cargar acciones disponibles
   const loadAvailableShares = async () => {
     try {
-      const clientId = localStorage.getItem("client_profile_id") || localStorage.getItem("clientId");
+      const clientId = localStorage.getItem("clientId");
       
       if (!clientId) {
-        console.log('❌ No hay clientId');
+        // console.log('No hay clientId');
         setAvailableShares(0);
         return;
       }
 
+      // console.log('Buscando acciones REALES para:', symbol, 'StockID:', stockId);
+
       // INTENTAR OBTENER DATOS REALES
       try {
         const portfolioResponse = await getPortfolioByClientId(clientId);
-        console.log('📊 Respuesta real de portfolio:', portfolioResponse);
+        // console.log('Respuesta real de portfolio:', portfolioResponse);
         
-        let stocksData = portfolioResponse.data || portfolioResponse;
-        let userStock = null;
+        let portfolioData = portfolioResponse.data || portfolioResponse;
         
-        if (stocksData && Array.isArray(stocksData)) {
-          userStock = stocksData.find(stock => 
-            stock.symbol === symbol || 
-            stock.stock_id === stockId ||
-            stock.stock?.id === stockId
-          );
-        }
-        
-        if (userStock) {
-          const quantity = parseFloat(userStock.quantity || userStock.shares || 0);
-          setAvailableShares(quantity);
-          console.log(`✅ Acciones reales de ${symbol}: ${quantity}`);
+        if (!portfolioData || portfolioData.length === 0) {
+          // console.log('No hay portfolio creado');
+          setAvailableShares(0);
           return;
         }
+
+        const portfolioId = portfolioData[0].id;
+        // console.log('Portfolio ID:', portfolioId);
+
+        // OBTENER LAS INVERSIONES DEL PORTFOLIO
+        const investmentsResponse = await getPortfolioInvestmentByPortafolioId(portfolioId);
+        // console.log('Inversiones del portfolio:', investmentsResponse.data);
+        
+        let investmentsData = investmentsResponse.data || investmentsResponse;
+        
+        if (!investmentsData || investmentsData.length === 0) {
+          // console.log('No hay inversiones en este portfolio');
+          setAvailableShares(0);
+          return;
+        }
+
+        // BUSCAR LA INVERSIÓN ESPECÍFICA PARA ESTE STOCK
+        const stockInvestment = investmentsData.find(inv => {
+            console.log('Comparando investment:', {
+            investmentStockId: inv.stock,
+            targetStockId: stockId,
+            investmentData: inv
+          });
+          return inv.stock === stockId;
+        });
+
+        // console.log('Stock investment encontrado:', stockInvestment);
+
+        if (stockInvestment && stockInvestment.is_active !== false) {
+          const quantity = parseFloat(stockInvestment.quantity || 0);
+          setAvailableShares(quantity);
+          // console.log(`Acciones REALES de ${symbol}: ${quantity}`);
+          return;
+        } else {
+          // console.log(`No se encontró inversión para ${symbol}`);
+          setAvailableShares(0);
+          return;
+        }
+
       } catch (error) {
-        console.log('⚠️ Error obteniendo portafolio real:', error);
+        // console.log('Error obteniendo datos reales:', error);
+        setAvailableShares(0);
+        return;
       }
 
-      // DATOS MOCK TEMPORALES
-      console.log('🔄 Usando datos mock temporales');
-      const mockShares = {
-        'AAPL': 15.5,
-        'MSFT': 8.2,
-        'TSLA': 3.1,
-        'GOOGL': 2.5,
-        'AMZN': 4.0,
-        'NVDA': 6.7
-      };
-      const mockQuantity = mockShares[symbol] || 5.0;
-      setAvailableShares(mockQuantity);
-      console.log(`📊 Acciones mock de ${symbol}: ${mockQuantity}`);
-
     } catch (error) {
-      console.error('❌ Error cargando stocks:', error);
-      setAvailableShares(5.0);
+      console.error('Error cargando stocks:', error);
+      setAvailableShares(0);
     }
   };
 
-  // Función para actualizar el portafolio
-  // Función para actualizar el portafolio CORREGIDA
+  // Función para actualizar el portafolio CORREGIDA (arreglo el error toFixed)
   const updateUserPortfolio = async (transactionData) => {
     try {
-      const clientId = localStorage.getItem("client_profile_id") || localStorage.getItem("clientId");
-      if (!clientId) return;
-
-      console.log('🔄 Actualizando portafolio investment...');
+      const clientId = localStorage.getItem("clientId");
+      // console.log('ClientID:', clientId);
       
-      // Obtener portafolio actual del usuario
-      const currentPortfolio = await getPortfolioByClientId(clientId);
-      console.log('📊 Portafolio actual:', currentPortfolio);
-
-      const portfolioData = currentPortfolio.data || currentPortfolio;
-      
-      // Buscar si ya existe una inversión para este stock
-      let existingInvestment = null;
-      let portfolioId = null;
-
-      if (portfolioData && Array.isArray(portfolioData)) {
-        // Buscar en portfolio_investment
-        existingInvestment = portfolioData.find(item => 
-          item.stock_id === stockId || 
-          item.stock?.id === stockId ||
-          item.portfolio_investment?.stock_id === stockId
-        );
-        
-        // Obtener el portfolio_id principal
-        portfolioId = existingInvestment?.portfolio_id || 
-                    existingInvestment?.portfolio?.id || 
-                    portfolioData[0]?.id;
+      if (!clientId) {
+        // console.log('No hay clientId');
+        return;
       }
 
-      const quantity = parseFloat(transactionData.details[0].quantity);
-      const unitPrice = parseFloat(transactionData.details[0].unit_price);
-      const isBuy = transactionData.type === 'compra';
+      // console.log('Iniciando actualización de portfolio...');
 
-      if (existingInvestment && existingInvestment.id) {
-        // Actualizar inversión existente en PortfolioInvestment
-        const currentQuantity = parseFloat(existingInvestment.quantity || 0);
-        const newQuantity = isBuy ? currentQuantity + quantity : currentQuantity - quantity;
-        
-        console.log(`📈 Actualizando investment: ${currentQuantity} -> ${newQuantity}`);
-
-        if (newQuantity > 0) {
-          // Actualizar la cantidad en PortfolioInvestment
-          await updatePortfolioInvestment(existingInvestment.id, {
-            quantity: newQuantity.toFixed(4),
-            // Para compras, actualizar el precio promedio
-            purchase_price: isBuy ? 
-              ((currentQuantity * parseFloat(existingInvestment.purchase_price || unitPrice)) + (quantity * unitPrice)) / newQuantity :
-              existingInvestment.purchase_price
-          });
-          console.log('✅ PortfolioInvestment actualizado');
-        } else {
-          // Si la cantidad llega a 0, marcar como inactiva
-          await updatePortfolioInvestment(existingInvestment.id, {
-            is_active: false
-          });
-          console.log('📝 Investment marcado como inactivo');
-        }
-      } else if (isBuy) {
-        // Crear nueva inversión en PortfolioInvestment
-        console.log('🆕 Creando nueva inversión en PortfolioInvestment');
-        
-        // Primero necesitamos el portfolio_id principal
-        if (!portfolioId) {
-          // Si no existe portfolio, crear uno primero
-          const newPortfolio = await createPortfolio({
+      // 1. OBTENER O CREAR PORTFOLIO
+      let portfolioResponse;
+      try {
+        portfolioResponse = await getPortfolioByClientId(clientId);
+        // console.log('Portfolio encontrado:', portfolioResponse.data);
+      } catch (error) {
+        // console.log('No hay portfolio, creando uno...');
+        try {
+          portfolioResponse = await createPortfolio({
             client_profile: parseInt(clientId),
             name: "Portafolio Principal",
             created_at: new Date().toISOString(),
             is_active: true
           });
-          portfolioId = newPortfolio.data.id;
-          console.log('✅ Nuevo portfolio creado:', portfolioId);
+          // // console.log('Nuevo portfolio creado:', portfolioResponse.data);
+        } catch (createError) {
+          console.error('Error creando portfolio:', createError);
+          return;
         }
-        
-        // Crear la inversión en PortfolioInvestment
-        await createPortfolioInvestment({
-          portfolio: portfolioId,
-          stock: stockId,
-          quantity: quantity.toFixed(4),
-          purchase_price: unitPrice.toFixed(2),
-          purchased_at: new Date().toISOString(),
-          is_active: true
-        });
-        console.log('✅ Nueva inversión creada en PortfolioInvestment');
       }
 
+      const portfolioData = portfolioResponse.data || portfolioResponse;
+      const portfolioId = Array.isArray(portfolioData) ? portfolioData[0]?.id : portfolioData.id;
+      // console.log('Portfolio ID:', portfolioId);
+
+      if (!portfolioId) {
+        console.error('No se pudo obtener portfolio ID');
+        return;
+      }
+
+      // 2. OBTENER INVERSIONES EXISTENTES
+      let investmentsResponse;
+      try {
+        investmentsResponse = await getPortfolioInvestmentByPortafolioId(portfolioId);
+        // console.log('Inversiones encontradas:', investmentsResponse.data);
+      } catch (error) {
+        // console.log('No hay inversiones aún');
+        investmentsResponse = { data: [] };
+      }
+
+      let investmentsData = investmentsResponse.data || investmentsResponse;
+      const quantity = parseFloat(transactionData.details[0].quantity);
+      const unitPrice = parseFloat(transactionData.details[0].unit_price);
+      const isBuy = transactionData.type === 'compra';
+
+      // console.log(`Transacción: ${quantity} acciones a $${unitPrice} (${isBuy ? 'COMPRA' : 'VENTA'})`);
+
+      // 3. BUSCAR INVERSIÓN EXISTENTE
+      const existingInvestment = Array.isArray(investmentsData) 
+        ? investmentsData.find(inv => inv.stock === stockId)
+        : null;
+
+      // console.log('Investment existente:', existingInvestment);
+
+      if (existingInvestment) {
+        // ACTUALIZAR INVERSIÓN EXISTENTE
+        const currentQuantity = parseFloat(existingInvestment.quantity || 0);
+        let newQuantity, newPrice;
+
+        if (isBuy) {
+          newQuantity = currentQuantity + quantity;
+          // Calcular nuevo precio promedio ponderado
+          const totalValue = (currentQuantity * parseFloat(existingInvestment.purchase_price || 0)) + (quantity * unitPrice);
+          newPrice = totalValue / newQuantity;
+          // console.log(`COMPRA: ${currentQuantity} + ${quantity} = ${newQuantity}, precio promedio: $${newPrice.toFixed(2)}`);
+        } else {
+          newQuantity = currentQuantity - quantity;
+          // ARREGLADO: Asegurar que newPrice sea un número, no el objeto completo
+          newPrice = parseFloat(existingInvestment.purchase_price || 0); // Convertir a número
+          // console.log(`VENTA: ${currentQuantity} - ${quantity} = ${newQuantity}, precio mantiene: $${newPrice.toFixed(2)}`);
+        }
+
+        try {
+          // console.log('Actualizando investment...');
+          const updateResult = await updatePortfolioInvestment(existingInvestment.id, {
+            quantity: newQuantity.toFixed(4),
+            purchase_price: newPrice.toFixed(2), // Ahora newPrice es un número, no un objeto
+            is_active: newQuantity > 0
+          });
+          // console.log('Investment actualizado:', updateResult.data);
+        } catch (error) {
+          console.error('Error actualizando investment:', error);
+        }
+
+      } else if (isBuy) {
+        // CREAR NUEVA INVERSIÓN
+        // console.log('Creando nueva inversión...');
+        try {
+          const createResult = await createPortfolioInvestment({
+            portfolio: portfolioId,
+            stock: stockId,
+            quantity: quantity.toFixed(4),
+            purchase_price: unitPrice.toFixed(2),
+            purchased_at: new Date().toISOString(),
+            is_active: true
+          });
+          // console.log('Nueva inversión creada:', createResult.data);
+        } catch (error) {
+          console.error('Error creando investment:', error);
+        }
+      }
+
+      // console.log('Proceso de portfolio completado');
+
     } catch (error) {
-      console.error('❌ Error actualizando portfolio investment:', error);
+      console.error('Error crítico:', error);
     }
   };
 
@@ -196,9 +303,73 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
     ? (buyIn === 'dollars' ? parseFloat(amount || 0) + closingCost : (buyIn === 'shares' ? (amount * currentPrice) + closingCost : closingCost))
     : (buyIn === 'shares' ? (amount * currentPrice) - closingCost : parseFloat(amount || 0) - closingCost);
 
+  const validateBalance = async (amount, currentPrice, buyIn) => {
+    try {
+      const clientId = localStorage.getItem("clientId");
+      if (!clientId) return false;
+
+      const clientResponse = await getClientById(clientId);
+      const currentBalance = parseFloat(clientResponse.data.balance_available || 0);
+      
+      const closingCost = 0.15;
+      let requiredAmount = 0;
+      
+      if (buyIn === 'dollars') {
+        requiredAmount = parseFloat(amount) + closingCost;
+      } else {
+        requiredAmount = (parseFloat(amount) * currentPrice) + closingCost;
+      }
+      
+      // console.log(`Validación balance: ${currentBalance} >= ${requiredAmount}`);
+      
+      return currentBalance >= requiredAmount;
+    } catch (error) {
+      console.error('Error validando balance:', error);
+      return false;
+    }
+  };
+
+  // Componente para mostrar el balance real
+  const RealBalanceDisplay = () => {
+    const [balance, setBalance] = useState(0);
+    
+    useEffect(() => {
+      loadBalance();
+    }, []);
+
+    const loadBalance = async () => {
+      try {
+        const clientId = localStorage.getItem("clientId");
+        if (!clientId) return;
+        
+        const clientResponse = await getClientById(clientId);
+        const currentBalance = parseFloat(clientResponse.data.balance_available || 0);
+        setBalance(currentBalance);
+      } catch (error) {
+        console.error('Error cargando balance:', error);
+      }
+    };
+
+    return (
+      <div className="purchase-power">
+        <span>Balance disponible: ${balance.toFixed(2)}</span>
+        <button className="info-button" onClick={() => { loadBalance(); onShowPurchasePower(); }}>+</button>
+      </div>
+    );
+  };
+
   // Función para manejar la compra/venta
   const handleTransaction = async () => {
     if (!amount || amount <= 0) return;
+
+    // Validar balance para compras
+    if (activeTab === 'buy') {
+      const hasSufficientBalance = await validateBalance(amount, currentPrice, buyIn);
+      if (!hasSufficientBalance) {
+        alert('Error: Balance insuficiente para realizar esta compra.');
+        return;
+      }
+    }
 
     if (activeTab === 'sell') {
       const sharesToSell = buyIn === 'shares' ? parseFloat(amount) : (parseFloat(amount) / currentPrice);
@@ -211,7 +382,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
     setIsLoading(true);
     
     try {
-      const clientId = localStorage.getItem("client_profile_id") || localStorage.getItem("clientId");
+      const clientId = localStorage.getItem("clientId");
       
       if (!clientId) {
         alert("Error: No se encontró la información del cliente. Por favor inicia sesión nuevamente.");
@@ -233,33 +404,57 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
         ]
       };
 
-      console.log('📤 Enviando transacción:', transactionData);
+      // console.log('INICIANDO TRANSACCIÓN COMPLETA ==========');
 
+      // ORDEN CORREGIDO DE OPERACIONES:
+      
+      // 1. PRIMERO: Actualizar balance del cliente
+      // console.log('Paso 1: Actualizando balance...');
+      const newBalance = await updateClientBalance(transactionData, currentPrice);
+      
+      // 2. SEGUNDO: Crear transacción
+      // console.log('Paso 2: Creando transacción...');
       const response = await createTransaction(transactionData);
-      console.log('✅ Transacción creada:', response);
+      // console.log('Transacción creada:', response.data);
 
+      // 3. TERCERO: Actualizar portfolio
+      // console.log('Paso 3: Actualizando portfolio...');
       await updateUserPortfolio(transactionData);
 
-      alert(`¡${activeTab === 'buy' ? 'Compra' : 'Venta'} realizada exitosamente!`);
+      // 4. Recargar datos
+      // console.log('Paso 4: Recargando datos...');
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await loadAvailableShares();
+
+      // Mostrar mensaje de éxito con el nuevo balance
+      alert(`¡${activeTab === 'buy' ? 'Compra' : 'Venta'} realizada exitosamente!\nNuevo balance: $${newBalance.toFixed(2)}`);
       
       setAmount('');
       
-      if (activeTab === 'sell') {
-        await loadAvailableShares();
+      // Actualizar el balance en la UI si existe una función para ello
+      if (window.updateUserBalance) {
+        window.updateUserBalance(newBalance);
       }
       
       if (window.refreshPortfolio) {
         window.refreshPortfolio();
       }
 
+      // console.log('TRANSACCIÓN COMPLETADA');
+
     } catch (error) {
-      console.error('❌ Error en la transacción:', error);
-      alert(`Error al realizar la ${activeTab === 'buy' ? 'compra' : 'venta'}. Por favor intenta nuevamente.`);
+      console.error('Error en la transacción:', error);
+      
+      if (error.message === 'Balance insuficiente') {
+        alert('Error: Balance insuficiente para realizar la compra.');
+      } else {
+        alert(`Error al realizar la ${activeTab === 'buy' ? 'compra' : 'venta'}. Por favor intenta nuevamente.`);
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   // Función para usar el monto máximo disponible
   const handleMaxAmount = () => {
     if (activeTab === 'buy') {
@@ -370,11 +565,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
                 {isLoading ? 'Procesando...' : 'Continuar'}
               </button>
             </div>
-
-            <div className="purchase-power">
-              <span>Poder de compra ${0.00.toFixed(2)}</span>
-              <button className="info-button" onClick={onShowPurchasePower}>+</button>
-            </div>
+            <RealBalanceDisplay />
           </>
         ) : (
           <>
@@ -413,7 +604,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
                 onChange={(e) => setAmount(e.target.value)} 
                 step={buyIn === 'dollars' ? '0.01' : '0.000001'}
               />
-              <div className="available-shares">
+              <div className="summary-item">
                 Disponibles: <strong>{availableShares.toFixed(4)}</strong> acciones
               </div>
             </div>
@@ -456,7 +647,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
 
             {!isValidAmount() && amount > 0 && (
               <div className="error-message">
-                ❌ No tienes suficientes acciones para vender
+                No tienes suficientes acciones para vender
               </div>
             )}
           </>

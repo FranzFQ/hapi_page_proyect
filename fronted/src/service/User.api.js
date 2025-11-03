@@ -50,23 +50,22 @@ export const updateReferral = async (referralId, updateData) =>
 export const createPortfolio = async (portfolioData) =>
   userApi.post(`portfolio/`, portfolioData);
 
-export const getPortfolioByClientId = async (ClientId) =>
-  userApi.get(`portfolio/?client_profile=${ClientId}`);
+export const getPortfolioByClientId = async (clientId) =>
+  userApi.get(`portfolio/?client_profile=${clientId}`);
 
-export const updatePortafolio = async (portfolioId, updateData) =>
+export const updatePortfolio = async (portfolioId, updateData) =>
   userApi.patch(`portfolio/${portfolioId}/`, updateData);
 
-// Portafolio investment APIs 
-
+// Portfolio Investment APIs  
 export const createPortfolioInvestment = async (portfolioInvestmentData) =>
-  userApi.get(`portfolioinvestment/`, portfolioInvestmentData);
+  userApi.post(`portfolioinvestment/`, portfolioInvestmentData);
 
 export const getPortfolioInvestmentByPortafolioId = async (portfolioId) =>
-  userApi.get(`portfolioinvestment/?portafolio=${portfolioId}`)
+  userApi.get(`portfolioinvestment/?portfolio=${portfolioId}`);
 
-export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) => {
-  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData)
-}
+export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) =>
+  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData);
+
 
 // Stock APIs
 
@@ -96,3 +95,4 @@ export const getTransactionByPortfolioId = async (portfolioId) =>
 
 export const updateTransaction = async (transactionId, updateData) =>
   userApi.patch(`transactions/${transactionId}/`, updateData);
+

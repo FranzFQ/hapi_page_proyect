@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { searchAllStocks } from '../service/User.api.js';
 import ReactDOM from 'react-dom';
+
 import FilterPanel from './FilterPanel.jsx';
 import SearchResults from './SearchResults.jsx';
 import '../style/SearchDropdown.css';
@@ -8,25 +10,55 @@ const SearchDropdown = ({ searchValue, onClose }) => {
   const [activeFilter, setActiveFilter] = useState('todos');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [allStocks, setAllStocks] = useState([]);
 
-  const mockDatabase = [
-    { id: 1, name: 'Apple Inc.', type: 'acciones', symbol: 'AAPL', price: 182.63, change: '+2.3%' },
-    { id: 2, name: 'Microsoft Corporation', type: 'acciones', symbol: 'MSFT', price: 415.50, change: '+1.8%' },
-    { id: 3, name: 'Amazon.com Inc', type: 'acciones', symbol: 'AMZN', price: 174.45, change: '+3.1%' },
-    { id: 4, name: 'Tesla Inc', type: 'acciones', symbol: 'TSLA', price: 238.72, change: '-1.2%' },
-    { id: 5, name: 'NVIDIA Corporation', type: 'acciones', symbol: 'NVDA', price: 495.22, change: '+5.4%' },
-    { id: 6, name: 'Meta Platforms', type: 'acciones', symbol: 'META', price: 352.89, change: '+2.1%' },
-    { id: 7, name: 'Alphabet Inc', type: 'acciones', symbol: 'GOOGL', price: 141.80, change: '+1.5%' },
-    { id: 8, name: 'Bitcoin', type: 'cripto', symbol: 'BTC', price: 43467.21, change: '+5.2%' },
-    { id: 9, name: 'Ethereum', type: 'cripto', symbol: 'ETH', price: 2287.45, change: '+3.7%' },
-    { id: 10, name: 'Cardano', type: 'cripto', symbol: 'ADA', price: 0.58, change: '+2.9%' },
-    { id: 11, name: 'Solana', type: 'cripto', symbol: 'SOL', price: 98.34, change: '+8.1%' },
-    { id: 12, name: 'Ripple', type: 'cripto', symbol: 'XRP', price: 0.52, change: '-0.8%' },
-    { id: 13, name: 'Fondo S&P 500', type: 'fondos', symbol: 'SPY', price: 442.30, change: '+1.2%' },
-    { id: 14, name: 'Vanguard Total Stock', type: 'fondos', symbol: 'VTI', price: 234.56, change: '+0.9%' },
-    { id: 15, name: 'iShares MSCI Emerging', type: 'fondos', symbol: 'EEM', price: 40.12, change: '+1.7%' },
-    { id: 16, name: 'Fondo NASDAQ-100', type: 'fondos', symbol: 'QQQ', price: 387.92, change: '+2.4%' },
-  ];
+  // Función para transformar datos de API a formato frontend
+  const transformApiData = (apiData) => {
+    const categoryToTypeMap = {
+      1: 'acciones',
+      2: 'acciones', 
+      3: 'acciones',
+      4: 'acciones',
+      5: 'criptomonedas',
+      6: 'ETFs'
+    };
+
+    return apiData.map(stock => {
+      const changeValue = parseFloat((stock.variation/stock.last_price * 100).toFixed(2));
+      const changeSign = changeValue >= 0 ? '+' : '';
+      
+      return {
+        id: stock.id,
+        name: stock.name,
+        type: categoryToTypeMap[stock.stock_category_id] || 'acciones',
+        symbol: stock.symbol,
+        price: parseFloat(stock.last_price),
+        change: `${changeSign}${changeValue}%`
+      };
+    });
+  };
+
+  // Cargar todos los stocks al montar el componente
+  useEffect(() => {
+    const loadAllStocks = async () => {
+      try {
+        console.log('Cargando todos los stocks de la API...');
+        const response = await searchAllStocks();
+        console.log('Respuesta de API:', response);
+        
+        const transformedData = transformApiData(response.data || response);
+        console.log('Datos transformados:', transformedData);
+        
+        setAllStocks(transformedData);
+      } catch (error) {
+        console.error('Error cargando stocks:', error);
+        // Si hay error, dejar allStocks vacío
+        setAllStocks([]);
+      }
+    };
+    
+    loadAllStocks();
+  }, []);
 
   const performSearch = (query, filter) => {
     if (!query || query.trim().length === 0) {
@@ -40,7 +72,8 @@ const SearchDropdown = ({ searchValue, onClose }) => {
     setTimeout(() => {
       const queryLower = query.toLowerCase().trim();
       
-      const filteredResults = mockDatabase.filter(item => {
+      // Filtrar desde todos los stocks cargados (igual que tu mock original)
+      const filteredResults = allStocks.filter(item => {
         const matchesFilter = filter === 'todos' || item.type === filter;
         const matchesSearch = 
           item.name.toLowerCase().includes(queryLower) || 
@@ -49,6 +82,7 @@ const SearchDropdown = ({ searchValue, onClose }) => {
         return matchesFilter && matchesSearch;
       });
 
+      console.log('🔍 Resultados filtrados:', filteredResults);
       setSearchResults(filteredResults);
       setIsLoading(false);
     }, 200);
@@ -56,7 +90,7 @@ const SearchDropdown = ({ searchValue, onClose }) => {
 
   useEffect(() => {
     performSearch(searchValue, activeFilter);
-  }, [searchValue, activeFilter]);
+  }, [searchValue, activeFilter, allStocks]); // Agregamos allStocks a las dependencias
 
   useEffect(() => {
     const handleEscape = (event) => {

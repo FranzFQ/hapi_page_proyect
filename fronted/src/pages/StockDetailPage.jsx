@@ -12,36 +12,86 @@ import StockNews from '../user-components/stock-detail-components/StockNews';
 import BuySellPanel from '../user-components/stock-detail-components/BuySellPanel';
 import PurchasingPowerModal from '../user-components/stock-detail-components/PurchasingPowerModal';
 import '../style/StockDetails.css';
+import { searchAllStocks } from '../service/User.api.js';
 
-const fetchStockData = (symbol) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        symbol: symbol.toUpperCase(),
-        name: `${symbol.toUpperCase()} Example Corp - Ordinary Shares`,
-        price: 1.81 + Math.random(),
-        changeValue: 1.19 + Math.random(),
-        changePercent: 193.68 + Math.random(),
-        about: `Acerca de ${symbol.toUpperCase()} NETWORKS CORP... Backed by dynamic business fundamentals...`,
-        keyStats: {
-          open: 2.27, high: 2.44, low: 1.58, close: 0.61, marketCap: '17.50M', volume: '302.94M', avgVolume: '188.65K', dividendYield: 'N/A', peRatio: -0.2, beta: 1.46, eps: -0.34
-        },
-        analystRatings: { buy: 50, hold: 50, sell: 0 },
-        similar: [
-          { symbol: 'AAPL', name: 'Apple', logoUrl: 'https://via.placeholder.com/30/cccccc/000000?text=A' },
-          { symbol: 'TSLA', name: 'Tesla', logoUrl: 'https://via.placeholder.com/30/FF0000/ffffff?text=T' },
-          { symbol: 'AMC', name: 'AMC Entertainment', logoUrl: 'https://via.placeholder.com/30/0000FF/ffffff?text=A' },
-          { symbol: 'F', name: 'Ford Motor', logoUrl: 'https://via.placeholder.com/30/00FF00/000000?text=F' },
-          { symbol: 'SNDL', name: 'Sundial Growers', logoUrl: 'https://via.placeholder.com/30/FFFF00/000000?text=S' },
-        ],
-        news: [
-          { id: 'n1', title: `${symbol.toUpperCase()} reports quarterly earnings beat, shares surge`, source: 'Reuters', date: 'Oct 29', url: '#' },
-          { id: 'n2', title: `Analyst upgrades ${symbol.toUpperCase()} to 'Buy' citing strong growth prospects`, source: 'Bloomberg', date: 'Oct 28', url: '#' },
-          { id: 'n3', title: `New product launch expected from ${symbol.toUpperCase()} next month`, source: 'The Verge', date: 'Oct 27', url: '#' },
-        ]
-      });
-    }, 800);
-  });
+// Función para obtener datos reales de la API
+const fetchStockData = async (symbol) => {
+  try {
+    console.log('📥 Buscando stock:', symbol);
+    const response = await searchAllStocks();
+    const stocks = response.data || response;
+    
+    // Buscar el stock por símbolo
+    const stock = stocks.find(s => s.symbol.toLowerCase() === symbol.toLowerCase());
+    
+    if (!stock) {
+      throw new Error('Stock no encontrado');
+    }
+
+    return {
+      id: stock.id, // ← ESTE ES EL ID IMPORTANTE PARA EL BUYSELLPANEL
+      symbol: stock.symbol,
+      name: stock.name,
+      price: parseFloat(stock.last_price),
+      changeValue: parseFloat(stock.variation),
+      changePercent: (parseFloat(stock.variation) / parseFloat(stock.last_price)) * 100,
+      about: `${stock.name} - ${stock.symbol} es una empresa líder en su sector...`,
+      keyStats: {
+        open: parseFloat(stock.last_price) * 0.98,
+        high: parseFloat(stock.last_price) * 1.02,
+        low: parseFloat(stock.last_price) * 0.96,
+        close: parseFloat(stock.last_price),
+        marketCap: '17.50M', 
+        volume: '302.94M', 
+        avgVolume: '188.65K', 
+        dividendYield: 'N/A', 
+        peRatio: -0.2, 
+        beta: 1.46, 
+        eps: -0.34
+      },
+      analystRatings: { buy: 50, hold: 50, sell: 0 },
+      similar: [
+        { symbol: 'AAPL', name: 'Apple', logoUrl: 'https://via.placeholder.com/30/cccccc/000000?text=A' },
+        { symbol: 'TSLA', name: 'Tesla', logoUrl: 'https://via.placeholder.com/30/FF0000/ffffff?text=T' },
+        { symbol: 'AMC', name: 'AMC Entertainment', logoUrl: 'https://via.placeholder.com/30/0000FF/ffffff?text=A' },
+        { symbol: 'F', name: 'Ford Motor', logoUrl: 'https://via.placeholder.com/30/00FF00/000000?text=F' },
+        { symbol: 'SNDL', name: 'Sundial Growers', logoUrl: 'https://via.placeholder.com/30/FFFF00/000000?text=S' },
+      ],
+      news: [
+        { id: 'n1', title: `${stock.symbol} reports quarterly earnings beat, shares surge`, source: 'Reuters', date: 'Oct 29', url: '#' },
+        { id: 'n2', title: `Analyst upgrades ${stock.symbol} to 'Buy' citing strong growth prospects`, source: 'Bloomberg', date: 'Oct 28', url: '#' },
+        { id: 'n3', title: `New product launch expected from ${stock.symbol} next month`, source: 'The Verge', date: 'Oct 27', url: '#' },
+      ]
+    };
+  } catch (error) {
+    console.error('Error fetching stock data:', error);
+    // Datos de respaldo
+    return {
+      id: 1, // ID por defecto
+      symbol: symbol.toUpperCase(),
+      name: `${symbol.toUpperCase()} Example Corp - Ordinary Shares`,
+      price: 1.81 + Math.random(),
+      changeValue: 1.19 + Math.random(),
+      changePercent: 193.68 + Math.random(),
+      about: `Acerca de ${symbol.toUpperCase()} NETWORKS CORP... Backed by dynamic business fundamentals...`,
+      keyStats: {
+        open: 2.27, high: 2.44, low: 1.58, close: 0.61, marketCap: '17.50M', volume: '302.94M', avgVolume: '188.65K', dividendYield: 'N/A', peRatio: -0.2, beta: 1.46, eps: -0.34
+      },
+      analystRatings: { buy: 50, hold: 50, sell: 0 },
+      similar: [
+        { symbol: 'AAPL', name: 'Apple', logoUrl: 'https://via.placeholder.com/30/cccccc/000000?text=A' },
+        { symbol: 'TSLA', name: 'Tesla', logoUrl: 'https://via.placeholder.com/30/FF0000/ffffff?text=T' },
+        { symbol: 'AMC', name: 'AMC Entertainment', logoUrl: 'https://via.placeholder.com/30/0000FF/ffffff?text=A' },
+        { symbol: 'F', name: 'Ford Motor', logoUrl: 'https://via.placeholder.com/30/00FF00/000000?text=F' },
+        { symbol: 'SNDL', name: 'Sundial Growers', logoUrl: 'https://via.placeholder.com/30/FFFF00/000000?text=S' },
+      ],
+      news: [
+        { id: 'n1', title: `${symbol.toUpperCase()} reports quarterly earnings beat, shares surge`, source: 'Reuters', date: 'Oct 29', url: '#' },
+        { id: 'n2', title: `Analyst upgrades ${symbol.toUpperCase()} to 'Buy' citing strong growth prospects`, source: 'Bloomberg', date: 'Oct 28', url: '#' },
+        { id: 'n3', title: `New product launch expected from ${symbol.toUpperCase()} next month`, source: 'The Verge', date: 'Oct 27', url: '#' },
+      ]
+    };
+  }
 };
 
 export default function StockDetailPage() {
@@ -110,6 +160,7 @@ export default function StockDetailPage() {
              <BuySellPanel 
                symbol={stockData.symbol} 
                currentPrice={stockData.price}
+               stockId={stockData.id} // ← ESTA ES LA PROPS NUEVA IMPORTANTE
                onShowPurchasePower={() => setShowPurchaseModal(true)} 
              />
           )}

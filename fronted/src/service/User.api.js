@@ -45,7 +45,7 @@ export const getReferralByUserId = async (userId) =>
 export const updateReferral = async (referralId, updateData) =>
   userApi.patch(`referrals/${referralId}/`, updateData);
 
-// Portafolio APIs
+// Portafolio APIs 
 
 export const createPortfolio = async (portfolioData) =>
   userApi.post(`portfolio/`, portfolioData);
@@ -56,7 +56,7 @@ export const getPortfolioByClientId = async (ClientId) =>
 export const updatePortafolio = async (portfolioId, updateData) =>
   userApi.patch(`portfolio/${portfolioId}/`, updateData);
 
-// Portafolio investment APIs
+// Portafolio investment APIs 
 
 export const createPortfolioInvestment = async (portfolioInvestmentData) =>
   userApi.get(`portfolioinvestment/`, portfolioInvestmentData);
@@ -67,3 +67,32 @@ export const getPortfolioInvestmentByPortafolioId = async (portfolioId) =>
 export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) => {
   userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData)
 }
+
+// Stock APIs
+
+export const createStock = async (stockData) =>
+  userApi.post(`stocks/`, stockData);
+
+export const getStockByPortfolioId = async (portfolioId) =>
+  userApi.get(`stocks/?portfolio=${portfolioId}`);
+
+export const updateStock = async (stockId, updateData) =>
+  userApi.patch(`stocks/${stockId}/`, updateData);
+
+export const searchAllStocks = async () =>
+  userApi.get(`stocks/`);
+
+export const searchStocks = async (query) =>
+  userApi.get(`search/?q=${query}`);
+
+
+// Transaction APIs
+
+export const createTransaction = async (transactionData) =>
+  userApi.post(`transactions/`, transactionData);
+
+export const getTransactionByPortfolioId = async (portfolioId) =>
+  userApi.get(`transactions/?portfolio=${portfolioId}`);
+
+export const updateTransaction = async (transactionId, updateData) =>
+  userApi.patch(`transactions/${transactionId}/`, updateData);

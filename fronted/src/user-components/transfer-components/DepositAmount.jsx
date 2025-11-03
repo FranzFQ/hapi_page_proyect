@@ -1,7 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import "../../style/transfer/Amount.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserExist from "../../hooks/userExist";
+import {
+  createTransfer,
+  getClientById,
+  updateClient,
+} from "../../service/User.api";
 
 const bankAccountDigits = {
   GT: { min: 10, max: 15, name: "Guatemala" },
@@ -22,13 +27,17 @@ const bankAccountDigits = {
 };
 
 const DepositAmount = () => {
-  const [countryName, setCountryName] = useState("")
-  const [max, setMax] = useState(10)
+  const [countryName, setCountryName] = useState("");
+  const [max, setMax] = useState(10);
   const [amount, setAmount] = useState("0.00");
   const [bankAccount, setBankAccount] = useState("");
-  const [fee, setFee] = useState(0.15);
+  const navigate = useNavigate();
+  const fee = 0.1;
   const parsedAmount = parseFloat(amount) || 0;
-  const total = useMemo(() => parsedAmount - (parsedAmount * fee), [parsedAmount]);
+  const total = useMemo(
+    () => parsedAmount - parsedAmount * fee,
+    [parsedAmount]
+  );
 
   useEffect(() => {
     const permition = UserExist();
@@ -37,15 +46,45 @@ const DepositAmount = () => {
       return;
     }
     const contry = localStorage.getItem("country");
-    if (bankAccountDigits[contry]){
-      const bankCountry = bankAccountDigits[contry]
-      setCountryName(bankCountry.name)
-      setMax(bankCountry.max)
+    if (bankAccountDigits[contry]) {
+      const bankCountry = bankAccountDigits[contry];
+      setCountryName(bankCountry.name);
+      setMax(bankCountry.max);
     }
   }, []);
 
   const handleTransfer = () => {
     // aqui va la logica del deposito
+    if (bankAccount.length !== max) {
+      alert("La cuenta no es valida");
+      return;
+    }
+    const clientId = localStorage.getItem("clientId");
+    const now = new Date().toISOString();
+    const discount = parsedAmount * fee;
+    const new_amount = parsedAmount - parsedAmount * fee;
+    const transferData = {
+      created_at: now,
+      client: clientId,
+      amount: new_amount,
+      transfer_type: "Deposito",
+      discountdiscount: Math.round(discount),
+    };
+    getClientById(clientId).then((response) => {
+      const clientData = response.data;
+      if (clientData) {
+        const balanceClient = parseFloat(clientData.balance_available);
+        const total = (balanceClient + new_amount).toFixed(2);
+        const updateClientData = {
+          balance_available: total,
+        };
+        updateClient(clientId, updateClientData);
+        createTransfer(transferData);
+      }
+    });
+
+    alert("Transaccion exitosa");
+    navigate("/home");
   };
 
   return (
@@ -66,7 +105,7 @@ const DepositAmount = () => {
       <div className="info-box">
         <div className="info-row">
           <span>Cobro por deposito</span>
-          <span>{(fee * 100)}%</span>
+          <span>{fee * 100}%</span>
         </div>
 
         <div className="info-row total">

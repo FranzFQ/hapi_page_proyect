@@ -1,7 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import "../../style/transfer/Amount.css";
 import UserExist from "../../hooks/userExist";
-import { getClientById, getClientByUserId } from "../../service/User.api";
+import {
+  createTransfer,
+  getClientById,
+  updateClient,
+} from "../../service/User.api";
+import { useNavigate } from "react-router-dom";
 
 const bankAccountDigits = {
   GT: { min: 10, max: 15, name: "Guatemala" },
@@ -24,13 +29,16 @@ const bankAccountDigits = {
 const WithdrawalAmount = () => {
   const [countryName, setCountryName] = useState("");
   const [max, setMax] = useState(10);
-  const [amount, setAmount] = useState("0.00");
+  const [amount, setAmount] = useState(0.0);
   const [bankAccount, setBankAccount] = useState("");
-  const [fee, setFee] = useState(0.15);
   const [balance, setBalence] = useState(0);
-  const parsedAmount = parseFloat(amount) || 0;
-  const total = useMemo(() => Math.max(parsedAmount - (parsedAmount * fee), 0), [parsedAmount]);
-  const available = 0.0;
+  const navigate = useNavigate()
+  const fee = 0.1;
+  const parsedAmount = parseFloat(amount).toFixed(2) || 0;
+  const total = useMemo(
+    () => Math.max(parsedAmount - parsedAmount * fee, 0),
+    [parsedAmount]
+  );
 
   useEffect(() => {
     const permition = UserExist();
@@ -38,11 +46,12 @@ const WithdrawalAmount = () => {
       navigate("/");
       return;
     }
-    const clientId = localStorage.getItem("clientId")
+    const clientId = localStorage.getItem("clientId");
     getClientById(clientId).then((response) => {
-      const clientData = response.data
-      setBalence(clientData.balance_available)
-    })
+      const clientData = response.data;
+      const balanceClient = parseFloat(clientData.balance_available);
+      setBalence(balanceClient);
+    });
     const contry = localStorage.getItem("country");
     if (bankAccountDigits[contry]) {
       const bankCountry = bankAccountDigits[contry];
@@ -51,7 +60,34 @@ const WithdrawalAmount = () => {
     }
   }, []);
   const handleWithdraw = () => {
-    // aqui va ir la logi
+    // aqui va ir la logica del retiro
+    if (bankAccount.length !== max) {
+      alert("La cuenta no es valida");
+      return;
+    }
+    if (balance < parsedAmount) {
+      alert("La catidad el mayor a la que tiene en su cuenta");
+      return;
+    }
+    const clientId = localStorage.getItem("clientId");
+    const now = new Date().toISOString();
+    const discount = parsedAmount * fee;
+    const transferData = {
+      created_at: now,
+      client: clientId,
+      amount: parsedAmount,
+      transfer_type: "Retiro",
+      discountdiscount: Math.round(discount),
+    };
+    const total = (balance - parsedAmount).toFixed(2);
+    const updateClientData = {
+      balance_available: total,
+    };
+
+    updateClient(clientId, updateClientData);
+    createTransfer(transferData)
+    alert("Se ha realizado el retiro");
+    navigate("/home")
   };
 
   return (

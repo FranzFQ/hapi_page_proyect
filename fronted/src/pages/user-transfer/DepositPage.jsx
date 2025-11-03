@@ -1,6 +1,9 @@
 import BankingLayout from "../../user-components/layouts/BankingLayout.jsx"
 import RecentTransfer from "../../user-components/transfer-components/RecentTransfer.jsx"
 import CountrySelector from "../../user-components/transfer-components/CountrySelector.jsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import UserExist from "../../hooks/userExist.js";
 
 const countries = [
   { code: "GT", name: "Guatemala" },
@@ -23,6 +26,17 @@ const countries = [
 
 
 const DepositPage = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const permition = UserExist();
+    if (permition) {
+      navigate("/");
+      return;
+    }
+  });
+
+
   return (
     <BankingLayout>
       <CountrySelector countries={countries} operation="deposit" />

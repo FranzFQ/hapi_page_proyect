@@ -100,8 +100,8 @@ const ListsManager = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
   const [lists, setLists] = useState([
-    { id: 1, name: 'Inversiones 2025', activeCount: 2 },
-    { id: 2, name: 'Criptos favoritas', activeCount: 5 },
+    { id: 1, name: 'Inversiones 2025', activeCount: 2, favorite: false },
+    { id: 2, name: 'Criptos favoritas', activeCount: 5, favorite: true },
   ]);
 
   const handleCreateList = () => {
@@ -122,6 +122,20 @@ const ListsManager = () => {
     }
   };
 
+  // 🗑️ FUNCIÓN ELIMINAR LISTA
+  const handleDeleteList = (id) => {
+    setLists((prev) => prev.filter((list) => list.id !== id));
+  };
+
+  // ❤️ FUNCIÓN FAVORITO
+  const handleToggleFavorite = (id) => {
+    setLists((prev) =>
+      prev.map((list) =>
+        list.id === id ? { ...list, favorite: !list.favorite } : list
+      )
+    );
+  };
+
   return (
     <div className="lists-manager">
       <div className="lists-container">
@@ -137,23 +151,45 @@ const ListsManager = () => {
             <p className="empty-lists-msg">No tienes listas aún</p>
           ) : (
             lists.map((list) => (
-              <div
-                key={list.id}
-                className="list-item"
-                onClick={() => handleEditList(list)}
-              >
-                <div className="list-item-content">
+              <div key={list.id} className="list-item">
+                <div className="list-item-content" onClick={() => handleEditList(list)}>
                   <div className="list-item-icon">
                     <i className="fi fi-rr-smile"></i>
                   </div>
                   <div className="list-item-info">
                     <h3 className="list-item-name">{list.name}</h3>
-                    <p className="list-item-count">
-                      {list.activeCount} activos
-                    </p>
+                    <p className="list-item-count">{list.activeCount} activos</p>
                   </div>
                 </div>
-                <i className="fi fi-rr-angle-right list-item-arrow"></i>
+
+                <div className="list-item-actions">
+                  {/* ❤️ ÍCONO FAVORITO */}
+                  <button
+                    className={`favorite-btn ${list.favorite ? 'active' : ''}`}
+                    onClick={() => handleToggleFavorite(list.id)}
+                    title="Marcar como favorito"
+                  >
+                    <i className="fi fi-rr-heart"></i>
+                  </button>
+
+                  {/* 🗑️ ÍCONO ELIMINAR */}
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteList(list.id)}
+                    title="Eliminar lista"
+                  >
+                    <i className="fi fi-rr-trash"></i>
+                  </button>
+
+                  {/* ⚙️ ÍCONO CONFIGURAR (reemplaza la flecha) */}
+                  <button
+                    className="config-btn"
+                    onClick={() => handleEditList(list)}
+                    title="Configurar lista"
+                  >
+                    <i className="fi fi-rr-settings"></i>
+                  </button>
+                </div>
               </div>
             ))
           )}

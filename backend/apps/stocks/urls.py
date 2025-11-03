@@ -5,6 +5,7 @@ from apps.stocks import views
 router = routers.DefaultRouter()
 router.register(r"stocks", views.StockViewSet, basename="stock")
 router.register(r"categories", views.CategoryViewSet, basename="category")
+router.register(r"news", views.NewsArticleViewSet, basename="news")
 
 urlpatterns = [
     path("search/", views.search_view, name="search"),  

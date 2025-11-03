@@ -157,3 +157,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+FINNHUB_API_KEY = 'd44d8ghr01qt371ufpv0d44d8ghr01qt371ufpvg'

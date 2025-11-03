@@ -67,3 +67,6 @@ export const getPortfolioInvestmentByPortafolioId = async (portfolioId) =>
 export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) => {
   userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData)
 }
+
+export const getNewsByStockSymbol = (symbol) =>
+  userApi.get(`news/?stock__symbol=${symbol}`);

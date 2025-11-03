@@ -547,3 +547,10 @@
 .similar-list::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+.news-list-empty {
+  padding: var(--spacing-lg) 0;
+  text-align: center;
+  opacity: 0.7;
+  font-style: italic;
+}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Stock, StockCategory, StockPrice
+from .models import Stock, StockCategory, StockPrice, NewsArticle
 
 
 @admin.register(StockCategory)
@@ -20,3 +20,10 @@ class StockPriceAdmin(admin.ModelAdmin):
     list_display = ('stock', 'price', 'recorded_at')
     list_filter = ('stock',)
     search_fields = ('stock__symbol',)
+
+
+@admin.register(NewsArticle)
+class NewsArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'stock', 'source', 'published_at', 'is_active')
+    list_filter = ('is_active', 'source', 'stock')
+    search_fields = ('title', 'stock__symbol')

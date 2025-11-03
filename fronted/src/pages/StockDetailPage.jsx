@@ -11,6 +11,7 @@ import SimilarStocks from '../user-components/stock-detail-components/SimilarSto
 import StockNews from '../user-components/stock-detail-components/StockNews';
 import BuySellPanel from '../user-components/stock-detail-components/BuySellPanel';
 import PurchasingPowerModal from '../user-components/stock-detail-components/PurchasingPowerModal';
+import { getNewsByStockSymbol } from '../service/User.api';
 import '../style/StockDetails.css';
 
 const fetchStockData = (symbol) => {
@@ -34,11 +35,7 @@ const fetchStockData = (symbol) => {
           { symbol: 'F', name: 'Ford Motor', logoUrl: 'https://via.placeholder.com/30/00FF00/000000?text=F' },
           { symbol: 'SNDL', name: 'Sundial Growers', logoUrl: 'https://via.placeholder.com/30/FFFF00/000000?text=S' },
         ],
-        news: [
-          { id: 'n1', title: `${symbol.toUpperCase()} reports quarterly earnings beat, shares surge`, source: 'Reuters', date: 'Oct 29', url: '#' },
-          { id: 'n2', title: `Analyst upgrades ${symbol.toUpperCase()} to 'Buy' citing strong growth prospects`, source: 'Bloomberg', date: 'Oct 28', url: '#' },
-          { id: 'n3', title: `New product launch expected from ${symbol.toUpperCase()} next month`, source: 'The Verge', date: 'Oct 27', url: '#' },
-        ]
+        news: []
       });
     }, 800);
   });
@@ -48,6 +45,7 @@ export default function StockDetailPage() {
   const { symbol } = useParams();
   const navigate = useNavigate();
   const [stockData, setStockData] = useState(null);
+  const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [activeTab, setActiveTab] = useState('resumen');
@@ -59,13 +57,26 @@ export default function StockDetailPage() {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
+      setNewsData([]);
       const data = await fetchStockData(symbol);
       setStockData(data);
       setLoading(false);
-      setActiveTab('resumen'); // Reset tab on data load
+      setActiveTab('resumen');
     };
+    
+    const loadNews = async () => {
+      try {
+        const response = await getNewsByStockSymbol(symbol.toUpperCase());
+        setNewsData(response.data);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setNewsData([]);
+      }
+    };
+
     loadData();
-    window.scrollTo(0, 0); // Scroll al inicio al cargar nueva acción
+    loadNews();
+    window.scrollTo(0, 0);
   }, [symbol]);
 
   const handleTabClick = (tabId) => {
@@ -73,7 +84,7 @@ export default function StockDetailPage() {
     if (tabId === 'resumen' && aboutRef.current) {
       aboutRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (tabId === 'mis-inversiones') {
-      navigate('/portfolio'); // Navega a la página de portafolio
+      navigate('/portfolio');
     } else if (tabId === 'similares' && similarRef.current) {
       similarRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (tabId === 'noticias' && newsRef.current) {
@@ -102,7 +113,7 @@ export default function StockDetailPage() {
                 <StockKeyStats stats={stockData.keyStats} />
                 <StockAnalystRatings ratings={stockData.analystRatings} />
                 <div ref={similarRef}><SimilarStocks similar={stockData.similar} /></div>
-                <div ref={newsRef}><StockNews news={stockData.news} /></div>
+                <div ref={newsRef}><StockNews news={newsData} /></div>
               </div>
             )}
           </div>

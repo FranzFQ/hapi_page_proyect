@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Stock, StockCategory, StockPrice
+from .models import Stock, StockCategory, StockPrice, NewsArticle
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,3 +21,8 @@ class StockSerializer(serializers.ModelSerializer):
         model = Stock
         fields = ['id', 'symbol', 'name', 'category', 'current_price', 'last_updated', 'prices']
 
+
+class NewsArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsArticle
+        fields = ['id', 'stock', 'title', 'source', 'url', 'published_at']

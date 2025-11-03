@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand
-from apps.stocks.services.yahoo_service import update_all_stocks
+from apps.stocks.services.yahoo_service import update_all_stock_prices
 
 class Command(BaseCommand):
-    help = "Actualiza precios de acciones desde Yahoo Finance y guarda el historial."
+    help = "Actualiza PRECIOS de acciones desde Yahoo Finance y guarda el historial."
 
     def handle(self, *args, **kwargs):
-        update_all_stocks()
+        update_all_stock_prices()

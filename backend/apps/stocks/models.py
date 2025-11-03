@@ -45,3 +45,21 @@ class StockPrice(models.Model):
 
     def __str__(self):
         return f"{self.stock.symbol} @ {self.recorded_at:%Y-%m-%d %H:%M}"
+
+
+class NewsArticle(models.Model):
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name="news_articles", db_column="stock_id")
+    title = models.CharField(max_length=255)
+    source = models.CharField(max_length=100)
+    url = models.TextField()
+    published_at = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-published_at']
+        db_table = 'news_article'
+
+    def __str__(self):
+        return f"{self.stock.symbol} - {self.title}"

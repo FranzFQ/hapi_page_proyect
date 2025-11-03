@@ -2,6 +2,21 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/ReportsPage.css';
 
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 export default function ReportForm() {
   const navigate = useNavigate();
   const [reportType, setReportType] = useState('transactions');
@@ -9,6 +24,8 @@ export default function ReportForm() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const setDateRange = (days) => {
     const end = new Date();
@@ -29,14 +46,51 @@ export default function ReportForm() {
     setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!startDate || !endDate) {
       setError('Debes seleccionar un rango de fechas válido.');
+      setMessage('');
       return;
     }
+    
     setError('');
-    alert(`Simulación: Generando reporte de ${reportType} en formato ${fileFormat} (Desde ${startDate} hasta ${endDate}). Revisa tu correo.`);
+    setMessage('');
+    setIsLoading(true);
+
+    const csrftoken = getCookie('csrftoken');
+
+    try {
+      const response = await fetch('http://localhost:8000/api/reports/', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({
+          report_type: reportType,
+          file_format: fileFormat,
+          start_date: startDate,
+          end_date: endDate,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMsg = data.detail || data.error || 'Ocurrió un error.';
+        throw new Error(errorMsg);
+      }
+      
+      setMessage(data.message); 
+
+    } catch (err) {
+      console.error('Error en handleSubmit:', err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -135,11 +189,16 @@ export default function ReportForm() {
         </div>
         
         {error && <span className="error-message">{error}</span>}
+        {message && <span className="success-message">{message}</span>}
 
         <div className="reports-actions">
-          <button type="submit" className="btn btn-primary">
-            <i className="fi fi-rr-download"></i>
-            Generar Reporte
+          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            {isLoading ? (
+              <i className="fi fi-rr-spinner fi-spin"></i> 
+            ) : (
+              <i className="fi fi-rr-download"></i>
+            )}
+            {isLoading ? 'Generando...' : 'Generar Reporte'}
           </button>
         </div>
       </form>

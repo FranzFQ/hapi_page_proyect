@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Transacciones</title>
+    <style>
+        body { font-family: sans-serif; margin: 2cm; }
+        h1 { color: #333; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f9f9f9; }
+        .header { margin-bottom: 40px; }
+        .summary p { font-size: 1.1em; }
+        .footer { margin-top: 40px; font-size: 0.8em; color: #888; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reporte de Transacciones</h1>
+        <p><strong>Cliente:</strong> {{ user.first_name }} {{ user.last_name }} ({{ user.email }})</p>
+        <p><strong>Periodo:</strong> {{ report.start_date|date:"Y-m-d" }} al {{ report.end_date|date:"Y-m-d" }}</p>
+    </div>
+    <div class="summary">
+        <h2>Resumen</h2>
+        <p>Total de transacciones en el periodo: <strong>{{ total_transactions }}</strong></p>
+    </div>
+    <div class="details">
+        <h2>Detalle de Transacciones</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Activo</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if transactions %}
+                    {% for tx in transactions %}
+                    <tr>
+                        <td>{{ tx.created_at|date:"Y-m-d H:i" }}</td>
+                        <td>{{ tx.type }}</td>
+                        <td>{{ tx.stock.symbol }}</td>
+                        <td>${{ tx.amount|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No se encontraron transacciones en este periodo.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        Generado el {% now "Y-m-d H:i" %}
+    </div>
+</body>
+</html>

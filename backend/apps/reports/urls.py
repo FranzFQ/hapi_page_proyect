@@ -1,11 +1,10 @@
 from django.urls import path, include
-from rest_framework import routers
-from apps.reports import views
+from rest_framework.routers import DefaultRouter
+from .views import ReportViewSet
 
-router = routers.DefaultRouter()
-router.register(r"reports", views.ReportView)
-router.register(r"notification", views.NotificationView)
+router = DefaultRouter()
+router.register(r'reports', ReportViewSet, basename='report')
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path('api/', include(router.urls)),
 ]

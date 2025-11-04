@@ -45,7 +45,7 @@ export const getReferralByUserId = async (userId) =>
 export const updateReferral = async (referralId, updateData) =>
   userApi.patch(`referrals/${referralId}/`, updateData);
 
-// Portafolio APIs 
+// Portfolio APIs 
 
 export const createPortfolio = async (portfolioData) =>
   userApi.post(`portfolio/`, portfolioData);
@@ -96,14 +96,6 @@ export const getTransactionByPortfolioId = async (portfolioId) =>
 export const updateTransaction = async (transactionId, updateData) =>
   userApi.patch(`transactions/${transactionId}/`, updateData);
 
-  userApi.get(`portfolioinvestment/?portafolio=${portfolioId}`);
-
-export const updatePortfolioInvestment = async (
-  portfolioInvestmentId,
-  updateData
-) => {
-  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData);
-};
 
 // Transfer APIs
 

@@ -1,0 +1,121 @@
+import axios from "axios";
+import { EclipseIcon } from "lucide-react";
+
+const userApi = axios.create({
+  baseURL: import.meta.env.VITE_API_ENDPOINT,
+});
+
+// User APIs
+
+export const createUser = async (userData) => userApi.post(`users/`, userData);
+
+export const getUserById = async (userId) => userApi.get(`users/${userId}`);
+
+export const getUserByEmail = async (userEmail) =>
+  userApi.get(`users/?email=${userEmail}`);
+
+export const getUserByReferralCode = async (referralcode) =>
+  userApi.get(`users/?referral_code=${referralcode}`);
+
+export const updateUser = async (userId, updateData) =>
+  userApi.patch(`users/${userId}/`, updateData);
+
+// Client Profile APIs
+
+export const createClientProfile = async (loginData) =>
+  userApi.post(`client-profiles/`, loginData);
+
+export const getClientById = async (ClientId) =>
+  userApi.get(`client-profiles/${ClientId}`);
+
+export const getClientByUserId = async (userId) =>
+  userApi.get(`client-profiles/?user=${userId}`);
+
+export const updateClient = async (clientId, updateData) =>
+  userApi.patch(`client-profiles/${clientId}/`, updateData);
+
+// Referral APIs
+
+export const createReferral = async (referralData) =>
+  userApi.post(`referrals/`, referralData);
+
+export const getReferralByUserId = async (userId) =>
+  userApi.get(`referrals/?user_recibe=${userId}`);
+
+export const updateReferral = async (referralId, updateData) =>
+  userApi.patch(`referrals/${referralId}/`, updateData);
+
+// Portfolio APIs 
+
+export const createPortfolio = async (portfolioData) =>
+  userApi.post(`portfolio/`, portfolioData);
+
+export const getPortfolioByClientId = async (clientId) =>
+  userApi.get(`portfolio/?client_profile=${clientId}`);
+
+export const updatePortfolio = async (portfolioId, updateData) =>
+  userApi.patch(`portfolio/${portfolioId}/`, updateData);
+
+// Portfolio Investment APIs  
+export const createPortfolioInvestment = async (portfolioInvestmentData) =>
+  userApi.post(`portfolioinvestment/`, portfolioInvestmentData);
+
+export const getPortfolioInvestmentByPortafolioId = async (portfolioId) =>
+  userApi.get(`portfolioinvestment/?portfolio=${portfolioId}`);
+
+export const updatePortfolioInvestment = async (portfolioInvestmentId, updateData) =>
+  userApi.patch(`portfolioinvestment/${portfolioInvestmentId}/`, updateData);
+
+
+// Stock APIs
+
+export const createStock = async (stockData) =>
+  userApi.post(`stocks/`, stockData);
+
+export const getStockByPortfolioId = async (portfolioId) =>
+  userApi.get(`stocks/?portfolio=${portfolioId}`);
+
+export const updateStock = async (stockId, updateData) =>
+  userApi.patch(`stocks/${stockId}/`, updateData);
+
+export const searchAllStocks = async () =>
+  userApi.get(`stocks/`);
+
+export const searchStocks = async (query) =>
+  userApi.get(`search/?q=${query}`);
+
+export const getStockById = async (stockId) => 
+  userApi.get(`stocks/${stockId}`)
+
+
+// Transaction APIs
+
+export const createTransaction = async (transactionData) =>
+  userApi.post(`transactions/`, transactionData);
+
+export const getTransactionByPortfolioId = async (portfolioId) =>
+  userApi.get(`transactions/?portfolio=${portfolioId}`);
+
+export const updateTransaction = async (transactionId, updateData) =>
+  userApi.patch(`transactions/${transactionId}/`, updateData);
+
+
+// Transfer APIs
+
+export const createTransfer = async (transferData) =>
+  userApi.post(`transfer/`, transferData);
+
+export const getTransferByClientId = async (clientId) => 
+  userApi.get(`transfer/?client=${clientId}`)
+
+// Lists APIs
+
+export const createList = async (listData) => {
+  userApi.post(`lists/`, listData)
+}
+
+// Lists Details APIs
+
+export const createListDetail = async (listData) => {
+  userApi.post(`lists-details`, listData)
+}

@@ -1,0 +1,78 @@
+.search-overlay {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  z-index: 9998;
+  animation: fadeIn 0.2s var(--transition-smooth);
+}
+
+.search-dropdown {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  max-height: 70vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  overflow: hidden;
+  z-index: 9999;
+  animation: slideDownFade 0.3s var(--transition-smooth);
+  pointer-events: auto;
+}
+
+.search-overlay {
+  pointer-events: none;
+}
+
+.search-overlay * {
+  pointer-events: none;
+}
+
+.search-dropdown * {
+  pointer-events: auto;
+}
+
+.search-bar-wrapper {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.search-bar-container {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.search-input {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.search-bar-icon {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.search-clear-btn {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.search-btn {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}

@@ -1,0 +1,77 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-modal);
+  animation: modalFadeIn var(--transition-base);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: #28315A;
+  background-image: radial-gradient(circle at 100% 0%, #37437C 0%, transparent 50%);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-2xl);
+  animation: modalScaleUp var(--transition-smooth);
+}
+
+@keyframes modalScaleUp {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  color: var(--text-white);
+  font-size: var(--text-2xl);
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal-content p {
+  color: var(--text-white);
+  opacity: 0.8;
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-content .form-label {
+  color: var(--text-white);
+}
+
+.modal-content .form-input {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-white);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}

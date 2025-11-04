@@ -8,6 +8,10 @@ __pycache__/
 *.pot
 *.pyc
 
+#configuracion de pnpm
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
 # Entorno virtual
 venv/
 ENV/

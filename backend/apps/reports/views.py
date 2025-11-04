@@ -34,7 +34,7 @@ class ReportViewSet(viewsets.ModelViewSet):
 
         report = serializer.save(client_profile=client_profile)
         
-        process_report_generation.delay(report.id)
+        process_report_generation(report.id)
         
         headers = self.get_success_headers(serializer.data)
         return Response(

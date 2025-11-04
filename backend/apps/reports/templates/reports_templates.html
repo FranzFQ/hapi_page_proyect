@@ -19,7 +19,7 @@
     <div class="header">
         <h1>Reporte de Transacciones</h1>
         <p><strong>Cliente:</strong> {{ user.first_name }} {{ user.last_name }} ({{ user.email }})</p>
-        <p><strong>Periodo:</strong> {{ report.start_date|date:"Y-m-d" }} al {{ report.end_date|date:"Y-m-d" }}</p>
+        <p><strong>Periodo:</strong> {{ report.start_date|date:"Y-m-d" }} al {{ report.end_date|date:"Y-md" }}</p>
     </div>
     <div class="summary">
         <h2>Resumen</h2>
@@ -33,22 +33,26 @@
                     <th>Fecha</th>
                     <th>Tipo</th>
                     <th>Activo</th>
-                    <th>Monto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Monto Total</th>
                 </tr>
             </thead>
             <tbody>
-                {% if transactions %}
-                    {% for tx in transactions %}
+                {% if transaction_details %}
+                    {% for detail in transaction_details %}
                     <tr>
-                        <td>{{ tx.created_at|date:"Y-m-d H:i" }}</td>
-                        <td>{{ tx.type }}</td>
-                        <td>{{ tx.stock.symbol }}</td>
-                        <td>${{ tx.amount|floatformat:2 }}</td>
+                        <td>{{ detail.transaction.created_at|date:"Y-m-d H:i" }}</td>
+                        <td>{{ detail.transaction.type }}</td>
+                        <td>{{ detail.stock.symbol }}</td>
+                        <td>{{ detail.quantity|floatformat:4 }}</td>
+                        <td>${{ detail.unit_price|floatformat:2 }}</td>
+                        <td>${{ detail.transaction.total_amount|floatformat:2 }}</td>
                     </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="4" style="text-align: center;">No se encontraron transacciones en este periodo.</td>
+                        <td colspan="6" style="text-align: center;">No se encontraron transacciones en este periodo.</td>
                     </tr>
                 {% endif %}
             </tbody>

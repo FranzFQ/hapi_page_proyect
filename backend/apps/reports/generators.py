@@ -2,19 +2,20 @@ import csv
 import io
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from apps.transactions.models import Transaction 
+from apps.transactions.models import Transaction, TransactionDetail 
 
 def generate_report_content(report):
-    transactions = Transaction.objects.filter(
-        client_profile=report.client_profile,
-        created_at__date__range=[report.start_date, report.end_date]
-    ).order_by('created_at')
+    
+    transaction_details = TransactionDetail.objects.filter(
+        transaction__client_profile=report.client_profile,
+        transaction__created_at__date__range=[report.start_date, report.end_date]
+    ).order_by('transaction__created_at').select_related('stock', 'transaction')
 
     context = {
         'report': report,
         'user': report.client_profile.user,
-        'transactions': transactions,
-        'total_transactions': transactions.count(),
+        'transaction_details': transaction_details,
+        'total_transactions': transaction_details.count(),
     }
 
     if report.file_format == 'PDF':
@@ -26,16 +27,16 @@ def generate_csv(context):
     output = io.StringIO()
     writer = csv.writer(output)
     
-    writer.writerow(['Fecha', 'Tipo', 'Activo (Símbolo)', 'Cantidad', 'Precio', 'Monto Total'])
+    writer.writerow(['Fecha', 'Tipo', 'Activo (Símbolo)', 'Cantidad', 'Precio Unitario', 'Monto Total'])
     
-    for tx in context['transactions']:
+    for detail in context['transaction_details']:
         writer.writerow([
-            tx.created_at.strftime('%Y-%m-%d %H:%M'),
-            tx.type,
-            tx.stock.symbol,
-            tx.quantity,
-            tx.price,
-            tx.amount
+            detail.transaction.created_at.strftime('%Y-%m-%d %H:%M'),
+            detail.transaction.type,
+            detail.stock.symbol,
+            detail.quantity,
+            detail.unit_price,
+            detail.quantity * detail.unit_price
         ])
     
     return output.getvalue().encode('utf-8')

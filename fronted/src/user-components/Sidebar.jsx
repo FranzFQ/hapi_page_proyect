@@ -18,14 +18,14 @@ export default function Sidebar() {
             PRINCIPAL
           </li>
           <li
-            className={`nav-item ${isActive('/transactions') ? 'active' : ''}`}
-            onClick={() => navigate('/transactions')}
+            className={`nav-item ${isActive('/banking') ? 'active' : ''}`}
+            onClick={() => navigate('/banking')}
           >
             TRANSFERENCIAS
           </li>
           <li
-            className={`nav-item ${isActive('/searcher') ? 'active' : ''}`}
-            onClick={() => navigate('/searcher')}
+            className={`nav-item ${isActive('/search') ? 'active' : ''}`}
+            onClick={() => navigate('/search')}
           >
             BUSCADOR
           </li>

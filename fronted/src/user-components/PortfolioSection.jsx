@@ -54,7 +54,8 @@ export default function PortfolioSection({ balance }) {
             <h3 className="account-title">Mi cuenta</h3>
             <div className="account-details">
               <p>
-                <strong>Total en activos:</strong> <span>{formattedBalance}</span>
+                <strong>Total en activos:</strong>{" "}
+                <span>{formattedBalance}</span>
               </p>
               <p>
                 <strong>Total dinero:</strong> <span>$0.00</span>
@@ -107,7 +108,10 @@ export default function PortfolioSection({ balance }) {
                   dataKey="value"
                 >
                   {dataActivos.map((entry, index) => (
-                    <Cell key={`cell-activo-${index}`} fill={COLORS_ACTIVOS[index]} />
+                    <Cell
+                      key={`cell-activo-${index}`}
+                      fill={COLORS_ACTIVOS[index]}
+                    />
                   ))}
                 </Pie>
               </PieChart>
@@ -120,9 +124,7 @@ export default function PortfolioSection({ balance }) {
 
       <div className="portfolio-history">
         <h3 className="history-title">Historial</h3>
-        <p className="history-placeholder">
-          No hay movimientos recientes.
-        </p>
+        <p className="history-placeholder">No hay movimientos recientes.</p>
       </div>
     </div>
   );

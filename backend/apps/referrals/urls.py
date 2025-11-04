@@ -3,7 +3,7 @@ from rest_framework import routers
 from apps.referrals import views
 
 router = routers.DefaultRouter()
-router.register(r"referrals", views.ReferralView, basename="referral")
+router.register(r"referrals", views.ReferralView)
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -71,7 +71,14 @@
 
 .fi-rr-user {
   color: white;
+  background: transparent;
   font-size: 28px;
+}
+
+.user-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 /*SIDEBAR STYLES*/

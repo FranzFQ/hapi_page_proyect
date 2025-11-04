@@ -51,8 +51,10 @@ export default function ReportForm() {
         return;
     }
 
+    const apiUrl = `${import.meta.env.VITE_API_ENDPOINT}api/reports/`;
+
     try {
-      const response = await fetch('http://localhost:8000/api/reports/', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

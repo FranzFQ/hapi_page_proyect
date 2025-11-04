@@ -1,22 +1,76 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/LandingPage.css";
 import { useNavigate } from "react-router-dom";
+import { searchAllStocks } from "../service/User.api.js";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [marketData, setMarketData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    localStorage.clear()
-  }, [])
+    localStorage.clear();
+    loadMarketData();
+  }, []);
+
+  // Función para transformar datos de API a formato frontend
+  const transformApiData = (apiData) => {
+    const categoryToTypeMap = {
+      1: 'acciones',
+      2: 'acciones', 
+      3: 'acciones',
+      4: 'acciones'
+    };
+
+    return apiData.map(stock => {
+      const changeValue = parseFloat((stock.variation/stock.last_price * 100).toFixed(2));
+      const changeSign = changeValue >= 0 ? '+' : '';
+      
+      return {
+        symbol: stock.symbol,
+        name: stock.name,
+        type: categoryToTypeMap[stock.stock_category_id] || 'acciones',
+        price: parseFloat(stock.last_price).toFixed(2),
+        change: `${changeSign}${changeValue}%`
+      };
+    });
+  };
+
+  // Cargar datos del mercado desde la API
+  const loadMarketData = async () => {
+    try {
+      console.log('Cargando datos del mercado...');
+      const response = await searchAllStocks();
+      console.log('Respuesta de API:', response);
+      
+      const transformedData = transformApiData(response.data || response);
+      console.log('Datos transformados:', transformedData);
+      
+      // Tomar solo los primeros 6 stocks para mostrar
+      const topStocks = transformedData.slice(0, 6);
+      setMarketData(topStocks);
+      
+    } catch (error) {
+      console.error('Error cargando datos del mercado:', error);
+      // Datos de respaldo en caso de error
+      setMarketData([
+        { symbol: "AAPL", name: "Apple", price: "224.18", change: "+1.2%" },
+        { symbol: "MSFT", name: "Microsoft", price: "410.33", change: "-0.5%" },
+        { symbol: "NVDA", name: "NVIDIA", price: "117.82", change: "+2.7%" },
+        { symbol: "AMZN", name: "Amazon", price: "184.51", change: "+0.8%" },
+        { symbol: "TSLA", name: "Tesla", price: "260.70", change: "+3.1%" },
+        { symbol: "XOM", name: "Exxon", price: "117.10", change: "-1.1%" },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleLoginClick = () => {
-    // Implement login navigation logic here
-    navigate("/login")
-    ;
+    navigate("/login");
   }
 
   const handleSignUpClick = () => {
-    // Implement sign-up navigation logic here
     navigate("/register");
   }
 
@@ -62,28 +116,22 @@ export default function LandingPage() {
         {/* MARKET CARD */}
         <aside className="market-card">
           <div className="market-card__header">
+            {isLoading ? "Cargando datos..." : "Mercado en Tiempo Real"}
           </div>
 
           <div className="market-grid">
-            {[
-              { t: "AAPL", n: "Apple", p: "224.18", c: "+1.2%" },
-              { t: "MSFT", n: "Microsoft", p: "410.33", c: "-0.5%" },
-              { t: "NVDA", n: "NVIDIA", p: "117.82", c: "+2.7%" },
-              { t: "AMZN", n: "Amazon", p: "184.51", c: "+0.8%" },
-              { t: "TSLA", n: "Tesla", p: "260.70", c: "+3.1%" },
-              { t: "XOM", n: "Exxon", p: "117.10", c: "-1.1%" },
-            ].map(({ t, n, p, c }) => (
-              <div key={t} className="ticker">
-                <div className="ticker__sym">{t}</div>
-                <div className="ticker__name">{n}</div>
-                <div className="ticker__price">${p}</div>
+            {marketData.map(({ symbol, name, price, change }) => (
+              <div key={symbol} className="ticker">
+                <div className="ticker__sym">{symbol}</div>
+                <div className="ticker__name">{name}</div>
+                <div className="ticker__price">${price}</div>
                 <div
                   className={
                     "ticker__chg " +
-                    (c.startsWith("-") ? "neg" : "pos")
+                    (change.startsWith("-") ? "neg" : "pos")
                   }
                 >
-                  {c}
+                  {change}
                 </div>
               </div>
             ))}

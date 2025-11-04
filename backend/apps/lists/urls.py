@@ -1,10 +1,11 @@
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ListItemViewSet
+from .views import ListItemViewSet, ListDetailViewSet
 
 router = DefaultRouter()
-router.register(r'lists', ListItemViewSet, basename='lists')
+router.register(r'lists', ListItemViewSet)
+router.register(r'lists-details', ListDetailViewSet)
 
-urlpatterns = router.urls
-
-#Agregar en backend/urls.py:
-#path('api/', include('apps.lists.urls')),
+urlpatterns = [
+    path('', include(router.urls))
+]

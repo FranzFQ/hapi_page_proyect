@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../style/UserLogin.css";
+import { getUserByEmail, getClientByUserId } from "../service/User.api";
 import { EyeIcon, EyeOffIcon } from "../global-components/EyeIcon";
 
 export default function LoginPage() {
@@ -12,31 +13,41 @@ export default function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    fetch('http://localhost:8000/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include'
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Credenciales inválidas');
-      }
-    })
-    .then(data => {
-      localStorage.setItem("userId", data.userId);
-      localStorage.setItem("clientId", data.clientId);
-      alert("Inicio de sesión exitoso");
-      navigate("/home");
-    })
-    .catch((error) => {
-      alert("Hubo un error al iniciar sesión: " + error.message);
-      console.error("Error al hacer login:", error);
-    });
+    getUserByEmail(email)
+      .then((response) => {
+        const user = response.data[0];
+        if (user && user.password === password) {
+          if (!user.is_active){
+            alert("La cuenta no existe")
+            return
+          }
+          
+          localStorage.setItem("userId", user.id);
+          
+          getClientByUserId(user.id)
+            .then((clientResponse) => {
+              const clientData = clientResponse.data[0];
+              if (clientData) {
+                localStorage.setItem("clientId", clientData.id);
+              }
+              alert("Inicio de sesion exitoso");
+              navigate("/home");
+            })
+            .catch((clientError) => {
+              console.error("Error al obtener el clientProfile:", clientError);
+              alert("Inicio de sesión exitoso, pero no se pudo encontrar el perfil de cliente.");
+              navigate("/home");
+            });
+
+        } else {
+          alert("Error de inicio de sesión: Credenciales inválidas");
+          console.error("Error de inicio de sesión: Credenciales inválidas");
+        }
+      })
+      .catch((error) => {
+        alert("Hubo un error a la hora de iniciar sesion");
+        console.error("Error al obtener el usuario:", error);
+      });
   };
 
   return (

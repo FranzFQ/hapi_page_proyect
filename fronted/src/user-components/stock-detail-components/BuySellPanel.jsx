@@ -30,15 +30,15 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
     try {
       const clientId = localStorage.getItem("clientId");
       if (!clientId) {
-        // console.log('No hay clientId para actualizar balance');
+        // // console.log('No hay clientId para actualizar balance');
         return;
       }
 
-      // console.log('Actualizando balance del cliente...');
+      // // console.log('Actualizando balance del cliente...');
       
       // 1. Obtener el cliente actual
       const clientResponse = await getClientById(clientId);
-      // console.log('Cliente actual:', clientResponse.data);
+      // // console.log('Cliente actual:', clientResponse.data);
       
       const currentClient = clientResponse.data;
       const currentBalance = parseFloat(currentClient.balance_available || 0);
@@ -53,11 +53,11 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
       if (transactionData.type === 'compra') {
         // COMPRA: Restar (cantidad * precio) + costo de cierre
         balanceChange = -((quantity * unitPrice) + closingCost);
-        // console.log(`COMPRA: Balance ${currentBalance} - ${Math.abs(balanceChange)}`);
+        // // console.log(`COMPRA: Balance ${currentBalance} - ${Math.abs(balanceChange)}`);
       } else {
         // VENTA: Sumar (cantidad * precio) - costo de cierre  
         balanceChange = (quantity * unitPrice) - closingCost;
-        // console.log(`VENTA: Balance ${currentBalance} + ${balanceChange}`);
+        // // console.log(`VENTA: Balance ${currentBalance} + ${balanceChange}`);
       }
       
       const newBalance = currentBalance + balanceChange;
@@ -68,14 +68,14 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
         throw new Error('Balance insuficiente');
       }
       
-      // console.log(`Nuevo balance: ${currentBalance} + ${balanceChange} = ${newBalance}`);
+      // // console.log(`Nuevo balance: ${currentBalance} + ${balanceChange} = ${newBalance}`);
       
       // 3. Actualizar el balance del cliente
       const updateResult = await updateClient(clientId, {
         balance_available: newBalance.toFixed(2)
       });
       
-      // console.log('Balance actualizado:', updateResult.data);
+      // // console.log('Balance actualizado:', updateResult.data);
       
       return newBalance;
       
@@ -91,37 +91,37 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
       const clientId = localStorage.getItem("clientId");
       
       if (!clientId) {
-        // console.log('No hay clientId');
+        // // console.log('No hay clientId');
         setAvailableShares(0);
         return;
       }
 
-      // console.log('Buscando acciones REALES para:', symbol, 'StockID:', stockId);
+      // // console.log('Buscando acciones REALES para:', symbol, 'StockID:', stockId);
 
       // INTENTAR OBTENER DATOS REALES
       try {
         const portfolioResponse = await getPortfolioByClientId(clientId);
-        // console.log('Respuesta real de portfolio:', portfolioResponse);
+        // // console.log('Respuesta real de portfolio:', portfolioResponse);
         
         let portfolioData = portfolioResponse.data || portfolioResponse;
         
         if (!portfolioData || portfolioData.length === 0) {
-          // console.log('No hay portfolio creado');
+          // // console.log('No hay portfolio creado');
           setAvailableShares(0);
           return;
         }
 
         const portfolioId = portfolioData[0].id;
-        // console.log('Portfolio ID:', portfolioId);
+        // // console.log('Portfolio ID:', portfolioId);
 
         // OBTENER LAS INVERSIONES DEL PORTFOLIO
         const investmentsResponse = await getPortfolioInvestmentByPortafolioId(portfolioId);
-        // console.log('Inversiones del portfolio:', investmentsResponse.data);
+        // // console.log('Inversiones del portfolio:', investmentsResponse.data);
         
         let investmentsData = investmentsResponse.data || investmentsResponse;
         
         if (!investmentsData || investmentsData.length === 0) {
-          // console.log('No hay inversiones en este portfolio');
+          // // console.log('No hay inversiones en este portfolio');
           setAvailableShares(0);
           return;
         }
@@ -136,21 +136,21 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
           return inv.stock === stockId;
         });
 
-        // console.log('Stock investment encontrado:', stockInvestment);
+        // // console.log('Stock investment encontrado:', stockInvestment);
 
         if (stockInvestment && stockInvestment.is_active !== false) {
           const quantity = parseFloat(stockInvestment.quantity || 0);
           setAvailableShares(quantity);
-          // console.log(`Acciones REALES de ${symbol}: ${quantity}`);
+          // // console.log(`Acciones REALES de ${symbol}: ${quantity}`);
           return;
         } else {
-          // console.log(`No se encontró inversión para ${symbol}`);
+          // // console.log(`No se encontró inversión para ${symbol}`);
           setAvailableShares(0);
           return;
         }
 
       } catch (error) {
-        // console.log('Error obteniendo datos reales:', error);
+        // // console.log('Error obteniendo datos reales:', error);
         setAvailableShares(0);
         return;
       }
@@ -162,41 +162,59 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
   };
 
   // Función para actualizar el portafolio CORREGIDA (arreglo el error toFixed)
+  // Función para actualizar el portafolio CORREGIDA
   const updateUserPortfolio = async (transactionData) => {
     try {
       const clientId = localStorage.getItem("clientId");
-      // console.log('ClientID:', clientId);
+      // // console.log('ClientID:', clientId);
       
       if (!clientId) {
-        // console.log('No hay clientId');
+        // // console.log('No hay clientId');
         return;
       }
 
-      // console.log('Iniciando actualización de portfolio...');
+      // // console.log('Iniciando actualización de portfolio...');
 
       // 1. OBTENER O CREAR PORTFOLIO
-      let portfolioResponse;
+      let portfolio;
       try {
-        portfolioResponse = await getPortfolioByClientId(clientId);
-        // console.log('Portfolio encontrado:', portfolioResponse.data);
-      } catch (error) {
-        // console.log('No hay portfolio, creando uno...');
-        try {
-          portfolioResponse = await createPortfolio({
+        const portfolioResponse = await getPortfolioByClientId(clientId);
+        
+        // IF: Si no existe portfolio, crear uno nuevo
+        if (!portfolioResponse.data || portfolioResponse.data.length === 0) {
+          // console.log('No hay portfolio, creando uno...');
+          const newPortfolio = await createPortfolio({
             client_profile: parseInt(clientId),
             name: "Portafolio Principal",
             created_at: new Date().toISOString(),
-            is_active: true
+            is_active: true,
+            total_investion: 0,
+            average_price: 0,
+            current_value: 0
           });
-          // // console.log('Nuevo portfolio creado:', portfolioResponse.data);
-        } catch (createError) {
-          console.error('Error creando portfolio:', createError);
-          return;
+          portfolio = newPortfolio.data;
+          // console.log('Nuevo portfolio creado:', portfolio);
+        } else {
+          portfolio = portfolioResponse.data[0];
+          // console.log('Portfolio encontrado:', portfolio);
         }
+      } catch (error) {
+        // console.log('Error obteniendo portfolio, creando uno nuevo...');
+        // Si hay error al obtener, crear nuevo portfolio
+        const newPortfolio = await createPortfolio({
+          client_profile: parseInt(clientId),
+          name: "Portafolio Principal",
+          created_at: new Date().toISOString(),
+          is_active: true,
+          total_investion: 0,
+          average_price: 0,
+          current_value: 0
+        });
+        portfolio = newPortfolio.data;
+        // console.log('Nuevo portfolio creado por error:', portfolio);
       }
 
-      const portfolioData = portfolioResponse.data || portfolioResponse;
-      const portfolioId = Array.isArray(portfolioData) ? portfolioData[0]?.id : portfolioData.id;
+      const portfolioId = portfolio.id;
       // console.log('Portfolio ID:', portfolioId);
 
       if (!portfolioId) {
@@ -241,8 +259,8 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
           // console.log(`COMPRA: ${currentQuantity} + ${quantity} = ${newQuantity}, precio promedio: $${newPrice.toFixed(2)}`);
         } else {
           newQuantity = currentQuantity - quantity;
-          // ARREGLADO: Asegurar que newPrice sea un número, no el objeto completo
-          newPrice = parseFloat(existingInvestment.purchase_price || 0); // Convertir a número
+          // ARREGLADO: Asegurar que newPrice sea un número
+          newPrice = parseFloat(existingInvestment.purchase_price || 0);
           // console.log(`VENTA: ${currentQuantity} - ${quantity} = ${newQuantity}, precio mantiene: $${newPrice.toFixed(2)}`);
         }
 
@@ -250,7 +268,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
           // console.log('Actualizando investment...');
           const updateResult = await updatePortfolioInvestment(existingInvestment.id, {
             quantity: newQuantity.toFixed(4),
-            purchase_price: newPrice.toFixed(2), // Ahora newPrice es un número, no un objeto
+            purchase_price: newPrice.toFixed(2),
             is_active: newQuantity > 0
           });
           // console.log('Investment actualizado:', updateResult.data);
@@ -320,7 +338,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
         requiredAmount = (parseFloat(amount) * currentPrice) + closingCost;
       }
       
-      // console.log(`Validación balance: ${currentBalance} >= ${requiredAmount}`);
+      // // console.log(`Validación balance: ${currentBalance} >= ${requiredAmount}`);
       
       return currentBalance >= requiredAmount;
     } catch (error) {
@@ -404,25 +422,15 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
         ]
       };
 
-      // console.log('INICIANDO TRANSACCIÓN COMPLETA ==========');
-
-      // ORDEN CORREGIDO DE OPERACIONES:
       
-      // 1. PRIMERO: Actualizar balance del cliente
-      // console.log('Paso 1: Actualizando balance...');
       const newBalance = await updateClientBalance(transactionData, currentPrice);
       
-      // 2. SEGUNDO: Crear transacción
-      // console.log('Paso 2: Creando transacción...');
       const response = await createTransaction(transactionData);
-      // console.log('Transacción creada:', response.data);
-
-      // 3. TERCERO: Actualizar portfolio
-      // console.log('Paso 3: Actualizando portfolio...');
+      
       await updateUserPortfolio(transactionData);
 
-      // 4. Recargar datos
-      // console.log('Paso 4: Recargando datos...');
+      
+      
       await new Promise(resolve => setTimeout(resolve, 500));
       await loadAvailableShares();
 
@@ -440,7 +448,7 @@ export default function BuySellPanel({ symbol, currentPrice, onShowPurchasePower
         window.refreshPortfolio();
       }
 
-      // console.log('TRANSACCIÓN COMPLETADA');
+      // // console.log('TRANSACCIÓN COMPLETADA');
 
     } catch (error) {
       console.error('Error en la transacción:', error);

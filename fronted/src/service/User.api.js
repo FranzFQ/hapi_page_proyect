@@ -84,6 +84,9 @@ export const searchAllStocks = async () =>
 export const searchStocks = async (query) =>
   userApi.get(`search/?q=${query}`);
 
+export const getStockById = async (stockId) => 
+  userApi.get(`stocks/${stockId}`)
+
 
 // Transaction APIs
 

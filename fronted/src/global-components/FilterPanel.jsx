@@ -6,7 +6,7 @@ const FilterPanel = ({ activeFilter, onFilterChange }) => {
     { id: 'todos', label: 'Todos', icon: 'fi fi-rr-apps' },
     { id: 'acciones', label: 'Acciones', icon: 'fi fi-rr-chart-line-up' },
     { id: 'cripto', label: 'Cripto', icon: 'fi fi-rr-bitcoin' },
-    { id: 'fondos', label: 'Fondos', icon: 'fi fi-rr-piggy-bank' },
+    { id: 'etf', label: 'ETFs', icon: 'fi fi-rr-piggy-bank' },
   ];
 
   return (

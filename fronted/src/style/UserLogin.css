@@ -49,7 +49,7 @@
   box-shadow: 0 0 0 3px rgba(99, 123, 226, 0.3);
 }
 
-.login-container button {
+.login-container button[type="submit"] {
   width: 100%;
   padding: var(--spacing-md) var(--spacing-lg);
   border: none;
@@ -64,13 +64,13 @@
   text-transform: uppercase;
 }
 
-.login-container button:hover {
+.login-container button[type="submit"]:hover {
   background: var(--color-primary-2);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
-.login-container button:active {
+.login-container button[type="submit"]:active {
   background: var(--color-primary-3);
   transform: translateY(0);
 }
@@ -97,4 +97,56 @@
 .create-account a:hover {
   color: var(--color-primary-1);
   text-decoration: underline;
+}
+
+/* Wrapper para el input de contraseña con el botón de toggle */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--spacing-lg);
+}
+
+.password-input-wrapper input {
+  padding-right: 50px !important;
+  width: 100%;
+  margin-bottom: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Botón para mostrar/ocultar contraseña */
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+  z-index: 10;
+  height: auto;
+  width: auto;
+}
+
+.password-toggle-btn:hover {
+  color: var(--color-primary-1);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.password-toggle-btn:focus {
+  outline: 2px solid var(--color-primary-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.password-toggle-btn svg {
+  pointer-events: none;
+  width: 22px;
+  height: 22px;
+  stroke-width: 2.5;
 }

@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../style/SearchResults.css';
 
 const SearchResults = ({ searchValue, results, isLoading, activeFilter, onClose }) => {
+  const navigate = useNavigate(); 
+  
   const filterLabels = {
     todos: 'Todos',
     acciones: 'Acciones',
@@ -10,8 +13,8 @@ const SearchResults = ({ searchValue, results, isLoading, activeFilter, onClose 
   };
 
   const handleResultClick = (item) => {
-    console.log('Seleccionado:', item);
     onClose();
+    navigate(`/stock/${item.symbol}`);
   };
 
   if (!searchValue || searchValue.trim().length === 0) {

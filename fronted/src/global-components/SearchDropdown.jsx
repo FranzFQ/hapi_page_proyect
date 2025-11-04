@@ -19,8 +19,8 @@ const SearchDropdown = ({ searchValue, onClose }) => {
       2: 'acciones', 
       3: 'acciones',
       4: 'acciones',
-      5: 'criptomonedas',
-      6: 'ETFs'
+      5: 'cripto',
+      6: 'etf'
     };
 
     return apiData.map(stock => {
